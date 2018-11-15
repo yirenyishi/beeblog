@@ -18,7 +18,8 @@ func RegistDB()  {
 		os.MkdirAll(path.Dir(_DB_NAME),os.ModePerm)
 		os.Create(_DB_NAME)
 	}
-	orm.RegisterModel(new(Category),new(Topic))
+	//orm.RegisterModel(new(Attachment),new(Topic))
+	orm.RegisterModel(new(Attachment),new(User))
 	orm.RegisterDriver(_SQLITE3_DRIVER,orm.DRSqlite)
 	orm.RegisterDataBase("default",_SQLITE3_DRIVER,_DB_NAME,10)
 }
