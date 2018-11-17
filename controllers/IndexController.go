@@ -9,5 +9,6 @@ type IndexController struct {
 }
 
 func (c *IndexController) Get() {
+	c.Data["IsHome"] = true
 	c.TplName = "index.html"
 }

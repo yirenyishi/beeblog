@@ -4,27 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <title>个人随笔</title>
+    <meta name="description" content="个人随笔是一个面向IT技术人员,提供个人平时工作总结和在线记录学习笔记,个人技术博客,在线云笔记,码农笔录,最新的技术博客,www.aiprose.com">
+    <meta name="keywords" content="个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,www.aiprose.com,aiprose.com,aiprose">
     <link href="http://g.alicdn.com/sj/dpl/1.5.1/css/sui.min.css" rel="stylesheet">
     <script type="text/javascript" src="http://g.alicdn.com/sj/lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="http://g.alicdn.com/sj/dpl/1.5.1/js/sui.min.js"></script>
-</head>
-<body>
-<div class='container'>
-    <div class="sui-navbar">
-        <div class="navbar-inner">
-            <a href="/" class="sui-brand">个人随笔</a>
-            <ul class="sui-nav">
-                <li class="active"><a href="/">首页</a></li>
-                <li><a href="#">笔记</a></li>
-                <li><a href="#">地图</a></li>
-            </ul>
-            <form class="sui-form sui-form pull-right">
-                <input type="text" placeholder="宝贝/店铺名称...">
-                <button class="sui-btn">搜索</button>
-            </form>
-        </div>
-    </div>
-</div>
 {{end}}

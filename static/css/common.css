@@ -1,0 +1,9 @@
+.nav-container{
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+.nav-container .sui-navbar .navbar-inner{
+    padding: 0 50px;
+}

@@ -1,0 +1,57 @@
+{{template "header"}}
+<title>谷歌影像图 - 个人随笔</title>
+<script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.10&key=74c9586333eaf8d6191c576cf59739fa"></script>
+<script src="https://webapi.amap.com/ui/1.0/main.js"></script>
+<link type="text/css" rel="styleSheet" href="/static/css/common.css"/>
+<link type="text/css" rel="styleSheet" href="/static/css/map.css" />
+</head>
+<body>
+{{template "nav" .}}
+<div class="map-root">
+    <div id="map-container" class="map-container"></div>
+</div>
+</body>
+<script>
+    var googleLayerimage = new AMap.TileLayer({
+        getTileUrl: 'https://mt{1,2,3,0}.google.cn/maps/vt?lyrs=s@194&hl=zh-CN&gl=cn&x=[x]&y=[y]&z=[z]',
+        zIndex: 2
+    })
+    var googleLayervector = new AMap.TileLayer()
+
+    // var roadNet = new AMap.TileLayer.RoadNet()
+    var mapObj = new AMap.Map('map-container', {
+        layers: [googleLayervector, googleLayerimage],
+        center: [108.963148, 34.232709],
+        zoom: 11
+    })
+
+    var marker = new AMap.Marker({
+        position: new AMap.LngLat(108.963148, 34.232709),
+        map: mapObj
+    })
+
+    AMap.event.addListener(marker, 'click', function () {
+        AMapUI.loadUI(['overlay/SimpleInfoWindow'], function (SimpleInfoWindow) {
+            var infoWindow = new SimpleInfoWindow({
+                infoTitle: '<strong>我的位置</strong>',
+                infoBody: '<p>我在这里、看我</p>',
+                offset: new AMap.Pixel(0, -30),
+                autoMove: true
+            })
+            infoWindow.open(mapObj, e.target.getPosition())
+        })
+    })
+
+
+    AMapUI.loadUI(['overlay/SimpleInfoWindow'], function (SimpleInfoWindow) {
+        var infoWindow = new SimpleInfoWindow({
+            infoTitle: '<strong>我的位置</strong>',
+            infoBody: '<p>我在这里、看我</p>',
+            offset: new AMap.Pixel(0, -30),
+            autoMove: true
+        })
+        infoWindow.open(mapObj, new AMap.LngLat(108.963148, 34.232709))
+    })
+</script>
+</html>
