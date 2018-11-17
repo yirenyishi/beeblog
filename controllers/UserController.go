@@ -16,28 +16,7 @@ type UserController struct {
 }
 
 func (u *UserController) LoginPage() {
-	//o := orm.NewOrm()
-	//
-	//category := &models.Category{Title: "slene", Views: 5, TopicCount: 0}
-	//
-	//id,err := o.Insert(category)
-	//fmt.Printf("ID: %d, ERR: %v\n", id, err)
-	//
-	//category.Title = "nelson"
-	//num, err := o.Update(&category)
-	//fmt.Printf("NUM: %d, ERR: %v\n", num, err)
-	//
-	//c := &models.Category{Id:1}
-	//err := o.Read(c)
-	//fmt.Printf("ERR: %v\n", err)
-	//fmt.Println(c.Title)
-	////c.Title = "nelson"
-	////num, err := o.Update(c)
-	////fmt.Printf("NUM: %d, ERR: %v\n", num, err)
-	//qs := o.QueryTable(&models.Category{})
-	//var tests []*models.Category
-	//qs.Filter("Title","slene")
-	//qs.All(&tests)
+
 	//
 	//for i:=0; i<len(tests) ; i++ {
 	//	fmt.Println(tests[i].Title,tests[i].Id)

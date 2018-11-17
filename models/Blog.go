@@ -3,18 +3,22 @@ package models
 import "time"
 
 type Blog struct {
-	Id int64
-	UserId int64
-	Title string
-	BlogValue string  `orm:"size(5000)"`
-	BlogHtml string  `orm:"size(5000)"`
-	Ctime time.Time `orm:"datetime"`
-	Utime time.Time `orm:"datetime"`
-	Browses int64 `orm:"datetime"`
-	Top int
-	Hot int
-	Ttime time.Time `orm:"datetime"`
-	Htime time.Time `orm:"datetime"`
-	Delflag int
+	Id         int64
+	UserId     int64
+	Title      string
+	BlogValue  string    `orm:"type(text)"`
+	BlogHtml   string    `orm:"type(text)"`
+	Ctime      time.Time `orm:"auto_now_add;type(datetime)"`
+	Utime      time.Time `orm:"auto_now_add;type(datetime)"`
+	Browses    int64     `orm:"default(0)"`
+	Top        int       `orm:"default(0)"`
+	Hot        int       `orm:"default(0)"`
+	Ttime      time.Time `orm:"null;type(date)"`
+	Htime      time.Time `orm:"null;type(date)"`
+	Delflag    int       `orm:"default(0)"`
 	CategoryId int64
+
+	CtimeStr string `orm:"-"`
+	UserName string `orm:"-"`
+	CateName string `orm:"-"`
 }
