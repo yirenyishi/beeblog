@@ -1,5 +1,5 @@
 {{template "header"}}
-<title>登录 - 个人随笔</title>
+<title>注册 - 个人随笔</title>
 <link type="text/css" rel="styleSheet" href="/static/css/login.css"/>
 </head>
 <body>
@@ -8,19 +8,19 @@
     <div class="login-root">
         <div class="input-container">
             <div class="input-root">
-                <p>登录</p>
+                <p>注册</p>
                 <div class="inputs-class">
                     <div class="input-group input-group-lg input-class">
                         <span class="input-group-addon" id="sizing-addon1">用户</span>
-                        <input type="text" class="form-control" placeholder="请输入用户名" aria-describedby="sizing-addon1"
-                               id="username">
+                        <input type="text" class="form-control" placeholder="请输入用户名" id="username"
+                               aria-describedby="sizing-addon1">
                     </div>
                     <div class="input-group input-group-lg input-class">
                         <span class="input-group-addon" id="sizing-addon1">密码</span>
-                        <input type="password" class="form-control" placeholder="请输入密码" aria-describedby="sizing-addon1"
-                               id="userpwd">
+                        <input type="password" class="form-control" placeholder="请输入密码" id="userpwd"
+                               aria-describedby="sizing-addon1">
                     </div>
-                    <button type="button" class="btn btn-primary btn-lg btn-bordered btn-block" id="loginBtn">登录
+                    <button type="button" class="btn btn-primary btn-lg btn-bordered btn-block" id="loginBtn">注册
                     </button>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                 });
                 return
             }
-            $.post('/login', {
+            $.post('/regist', {
                         username: username,
                         userpwd: userpwd
                     },
@@ -51,8 +51,11 @@
                         console.log(data)
                         if (data.Status == 1) {
                             layer.msg(data.Msg, {icon: 5});
-                        }else{
-                            layer.msg("登录成功", {icon: 6});
+                        } else {
+                            layer.msg("注册成功,现在去登陆哦", {icon: 6});
+                            setTimeout(function () {
+                                window.location.href = "/login"
+                            }, 800)
                         }
                     }, 'json')
         })

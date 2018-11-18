@@ -9,6 +9,7 @@ import (
 	"time"
 	"strconv"
 	"encoding/hex"
+	"fmt"
 )
 
 type UserController struct {
@@ -27,6 +28,9 @@ func (u *UserController) LoginPage() {
 
 	//u.Ctx.WriteString("login page")
 	u.TplName = "login.html"
+}
+func (u *UserController) RegistPage() {
+	u.TplName = "regist.html"
 }
 
 func (this *UserController) Login() {
@@ -55,6 +59,9 @@ func (this *UserController) Login() {
 		userpwd = hex.EncodeToString(h.Sum(nil))
 		if userpwd == user.UserPwd {
 			this.Data["json"] = models.ReurnSuccess("")
+			this.SetSession("userid", user.Id)
+			tt := this.GetSession("userid").(int64)
+			fmt.Println(tt > 0)
 		} else {
 			this.Data["json"] = models.ReurnError("用户名或密码错误")
 		}
@@ -99,7 +106,7 @@ func (this *UserController) Regist() {
 	user = &models.User{UserName: username, UserPwd: userpwd, Salt: salt}
 	err := service.SaveUser(user)
 	if err == nil {
-		this.Data["json"] = user
+		this.Data["json"] = models.ReurnSuccess("")
 	} else {
 		this.Data["json"] = models.ReurnError("注册失败")
 	}
