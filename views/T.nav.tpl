@@ -1,22 +1,43 @@
 {{define "nav"}}
 <div class='nav-container'>
-    <div class="sui-navbar">
-        <div class="navbar-inner">
-            <a href="/" class="sui-brand">个人随笔</a>
-            <ul class="sui-nav">
-                <li {{if .IsHome}}class="active"{{end}}><a href="/">首页</a></li>
-                <li {{if .IsNote}}class="active"{{end}}><a href="/note">笔记</a></li>
-                <li {{if .IsMap}}class="active"{{end}}><a href="/map">地图</a></li>
-            </ul>
-            <form class="sui-form sui-form pull-left">
-                <input type="text" placeholder="宝贝/店铺名称...">
-                <button class="sui-btn">搜索</button>
-            </form>
-            <ul class="sui-nav pull-right">
-                <li><a href="#">个人中心</a></li>
-                <li><a href="#">帮助</a></li>
-            </ul>
-        </div>
-    </div>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">个人随笔</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="/" target="_blank">首页 </a>
+                    </li>
+                    <li>
+                        <a href="/note" target="_blank">笔记</a>
+                    </li>
+                    <li>
+                        <a href="/map" target="_blank">地图</a>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">个人中心</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
 </div>
 {{end}}

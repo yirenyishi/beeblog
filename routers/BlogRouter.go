@@ -6,6 +6,7 @@ import (
 )
 
 func init() {
-	beego.Router("/blog/save", &controllers.BlogController{}, "get:Save")
+	beego.Router("/blog/new", &controllers.BlogController{}, "post:Save")
 	beego.Router("/blog/:id([0-9]+)", &controllers.BlogController{}, "get:Get")
+	beego.Router("/blog/new", &controllers.BlogController{}, "get:New")
 }

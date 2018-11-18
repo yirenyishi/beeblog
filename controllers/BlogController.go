@@ -5,6 +5,7 @@ import (
 	"beeblog/models"
 	"beeblog/service"
 	"strconv"
+	"fmt"
 )
 
 type BlogController struct {
@@ -12,8 +13,14 @@ type BlogController struct {
 }
 
 func (this *BlogController) Save() {
-	blog := &models.Blog{Title: "ELK+logback+kafska+nginx 搭建分布式日志分析平台"}
-	err := service.SaveBlog(blog)
+	title := this.GetString("title")
+	blogHtml := this.GetString("blogHtml")
+	catory := this.GetString("catory")
+	catoryId, _ := strconv.ParseInt(catory, 10, 64)
+	labels := this.GetStrings("labels[]")
+	fmt.Println(title,blogHtml,catoryId,labels,labels[0])
+	blog := &models.Blog{Title: title,BlogHtml:blogHtml,CategoryId:catoryId}
+	err := service.SaveBlog(blog,labels)
 	if (err == nil) {
 		this.Data["json"] = blog
 	} else {
@@ -31,4 +38,8 @@ func (this *BlogController) Get() {
 	}
 	//this.Data["IsHome"] = true
 	this.TplName = "blog.html"
+}
+
+func (this *BlogController) New() {
+	this.TplName = "newblog.html"
 }

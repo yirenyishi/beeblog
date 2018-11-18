@@ -18,7 +18,6 @@ type Blog struct {
 	Delflag    int       `orm:"default(0)"`
 	CategoryId int64
 
-	CtimeStr string `orm:"-"`
 	UserName string `orm:"-"`
 	CateName string `orm:"-"`
 }

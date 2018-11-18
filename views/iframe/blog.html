@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="个人随笔是一个面向IT技术人员,提供个人平时工作总结和在线记录学习笔记,个人技术博客,在线云笔记,码农笔录,最新的技术博客,www.aiprose.com">
+    <meta name="keywords"
+          content="个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,www.aiprose.com,aiprose.com,aiprose">
+    <link rel="stylesheet" href="//g.alicdn.com/sui/sui3/0.0.18/css/sui.min.css">
+    <script type="text/javascript" src="//g.alicdn.com/sj/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="//g.alicdn.com/sui/sui3/0.0.18/js/sui.min.js"></script>
+    <script type="text/javascript" src="/static/js/layer.js"></script>
+    <title>首页 - 个人随笔</title>
+    <style>
+        .common {
+            margin: 10px 0;
+        }
+
+        .tag {
+            margin: 3px 0;
+        }
+    </style>
+</head>
+<body>
+<div style="margin: 5px 10px">
+    <div class="common">
+        <span>开发语言:</span>
+        <span>
+            <select class="form-control " style="width: 150px;display: inline-block;height: 32px" id="catory">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </span>
+    </div>
+    <div class="common">
+        <span style="flex: 1;height: 30px;line-height: 30px;">文章标签:</span>
+        <div class="tag-group tag-removable" data-toggle='tag' id="labels">
+
+        </div>
+    </div>
+    <div class="common">
+        <span>添加标签:</span>
+        <input type="text" placeholder="输入标签" class="input-xfat" style="height: 26px;" id="lable">
+        <button type="button" class="btn btn-primary" style="height: 26px;margin-top: -5px;" id="addBtn">添加</button>
+    </div>
+    <div class="common" style="text-align: center">
+        <button type="button" class="btn btn-primary" id="saveBtn">首要</button>
+        <button type="button" class="btn btn-warning" id="cacelBtn">取消</button>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        if (parent.tobj.catory) {
+            $("#catory").val(parent.tobj.catory)
+        }
+        if (parent.tobj.labels) {
+            for (var i = 0; i < parent.tobj.labels.length; i++) {
+                var child = "<label class='tag tag-primary'>" + parent.tobj.labels[i] + "<a name='remove'><i class=\"iconfont icon-close\"></i></a> "
+                        + "<input type='checkbox' class='simple-tag' name='simple-tag-1' value='" + parent.tobj.labels[i] + "' checked='checked'/></label>"
+                $("#labels").append(child)
+            }
+        }
+
+        $("#addBtn").click(function () {
+            var temp = $("#lable").val()
+            if (temp.trim().length != 0) {
+                if ($("#labels").children().length > 5) {
+                    layer.msg('5个标签还不够', function () {
+                    });
+                    return
+                }
+                var child = "<label class='tag tag-primary'>" + temp + "<a name='remove'><i class=\"iconfont icon-close\"></i></a> "
+                        + "<input type='checkbox' class='simple-tag' name='simple-tag-1' value='" + temp + "' checked='checked'/></label>"
+                $("#labels").append(child)
+                $("#lable").val("")
+            }
+        })
+
+        $("#saveBtn").click(function () {
+            parent.tobj.catory = $("#catory").val()
+            var tarr = []
+            $.each($(".simple-tag"), function () {
+                tarr.push($(this).val())
+            });
+            parent.tobj.labels = tarr
+            console.log(tarr)
+            parent.saveBlog(function (flag) {
+                debugger
+                if (flag) {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                }
+            })
+        })
+
+        $("#cacelBtn").click(function () {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        })
+    })
+</script>
+</html>

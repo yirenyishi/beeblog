@@ -8,5 +8,5 @@ import (
 func init() {
 	beego.Router("/", &controllers.IndexController{})
 	beego.Router("/map", &controllers.MapController{})
-
+	beego.Include(&controllers.PageController{})
 }

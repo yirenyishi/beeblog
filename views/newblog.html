@@ -1,0 +1,77 @@
+{{template "header"}}
+<title>博客 - 个人随笔</title>
+<link type="text/css" rel="styleSheet" href="/static/css/newblog.css"/>
+<script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+{{/*<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>*/}}
+</head>
+<body>
+<div class="root-container">
+    <div class="blog-title">
+        <input type="text" id="blog-title">
+        <button type="button" id="newBtn" class="btn btn-danger" style="border-radius: 12px">发布文章</button>
+    </div>
+    <div id="editor" class="editor">
+
+    </div>
+    <div id="myModal" tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+                    <h4 id="myModalLabel" class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">我是内容body</div>
+                <div class="modal-footer">
+                    <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large">可自定ok</button>
+                    <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">可自定dismiss</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var E = window.wangEditor
+    var editor = new E('#editor')
+    editor.customConfig.uploadImgServer = '/upload'
+    // 或者 var editor = new E( document.getElementById('editor') )
+    editor.create()
+    var tobj = {}
+    $(function () {
+        var height = document.documentElement.clientHeight
+        $(".w-e-text-container").height(height - 50 - 40 - 1);
+        $("#newBtn").click(function () {
+            var title = $("#blog-title").val();
+            if (title.trim().length < 3) {
+                layer.msg('文章标题最少三个字', function () {
+                });
+                return
+            }
+            tobj.title = $("#blog-title").val();
+            if (editor.txt.text().trim().length == 0) {
+                layer.msg('文章内容不能为空哦', function () {
+                });
+                return
+            }
+            tobj.blogHtml = editor.txt.html();
+            layer.open({
+                type: 2,
+                title: '发布文章',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['420px', '280px'],
+                content: '/iframe/blog.html/' //iframe的url
+            });
+        })
+    })
+
+    function saveBlog(callback) {
+        $.post('/blog/new',tobj,
+                function (data) {
+                    console.log(data)
+                    debugger
+                    callback(true)
+                },'json')
+    }
+</script>
+</html>

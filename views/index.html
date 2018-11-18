@@ -8,26 +8,21 @@
     <div class="home-container">
         <div class="home-hearder">
             <div style="flex: 1">
-            <span class="sui-dropdown dropdown-bordered select dropdown-large">
-                <span class="dropdown-inner">
-                    <a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown"
-                       class="dropdown-toggle">
-                      <input value="hz" name="city" type="hidden"><i class="caret"></i><span>选择分类</span></a>
-                    <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);"
-                                                 value="bj">北京</a></li>
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="sb">圣彼得堡</a></li>
-                      <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);"
-                                                                value="hz">杭州</a></li>
-                </ul>
+                <span>
+                    <select class="form-control input-lg" style="width: 150px;display: inline-block;height: 32px">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </select>
                 </span>
-            </span>
-                <div class="sui-btn-group ">
-                    <button class="sui-btn btn-primary btn-large btn-bordered">最新</button>
-                    <button class="sui-btn btn-primary btn-large btn-bordered">最热</button>
+                <div class="btn-group" role="group" style="display: inline-block;margin-top: -3px">
+                    <button type="button" class="btn btn-default btn-xl">最新</button>
+                    <button type="button" class="btn btn-default btn-xl">最热</button>
                 </div>
             </div>
-            <a href="/blog/new" target="_blank" class="sui-btn btn-bordered btn-large nelson-btn">写文章</a>
+            <button type="button"  onclick="window.open('/blog/new')" class="btn btn-danger" style="border-radius: 12px">写文章</button>
         </div>
         <div>
             <div class="home-content" style="min-height: 40px;line-height: 40px;color: #888">
@@ -49,14 +44,14 @@
         <div>
             <div class="home-content">
                 <div class="home-content-title cursor">
-                    <a href="/blog/{{.Id}}">{{.Title}}</a>
+                    <a href="/blog/{{.Id}}" target="_blank">{{.Title}}</a>
                 </div>
                 <div style="display: inline-block;width: 260px">
                     <div class="home-content-desc">
                         <span style="width: 60px;font-size: 14px">{{.CateName}}</span>
                         <span style="width: 60px" class="cursor">{{.UserName}}</span>
-                        <span style="width: 60px;font-size: 14px">2555</span>
-                        <span style="flex: 1;font-size: 14px">{{.CtimeStr}}</span>
+                        <span style="width: 60px;font-size: 14px">{{.Browses}}</span>
+                        <span style="flex: 1;font-size: 14px">{{.Ctime.Format "2006-01-02"}}</span>
                     </div>
                 </div>
             </div>
@@ -64,4 +59,11 @@
         </div>
         {{end}}
 </body>
+        <script>
+            // $(function () {
+            //     $("#").click(function () {
+            //         window.open("")
+            //     })
+            // })
+        </script>
 </html>
