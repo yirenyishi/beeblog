@@ -10,3 +10,9 @@ type PageController struct {
 func (this *PageController) Blog() {
 	this.TplName = "iframe/blog.html"
 }
+
+// @router /note [get]
+func (this *PageController) Note() {
+	this.Data["IsNote"] = true
+	this.TplName = "note.html"
+}
