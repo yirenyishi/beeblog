@@ -1,0 +1,59 @@
+{{template "header"}}
+<title>博客 - 个人随笔</title>
+<link type="text/css" rel="styleSheet" href="/static/css/blog.css"/>
+</head>
+<body>
+<div class="root-container">
+{{template "nav" .}}
+    <div class="blog-root">
+        <h1 style="text-align: center">{{.Blog.Title}}</h1>
+        <div style="text-align: center">
+            <span>
+                头像
+            </span>
+            <span>
+                链接
+
+            </span>
+            <span>
+                时间：
+                <span></span>
+            </span>
+            <span>
+                阅读数：
+            </span>
+            <span>
+                标签：
+                <span class="label label-danger">Danger</span>
+            </span>
+        </div>
+        <div>
+            <span>正文</span>
+            <pre>
+
+            </pre>
+            <br>
+            <span>正文</span>
+            <pre>
+
+            </pre>
+            <br>
+            <span>正文</span>
+            <pre>
+
+            </pre>
+            <br>
+            <span>正文</span>
+            <pre>
+
+            </pre>
+            <br>
+        </div>
+        <div>
+            <textarea class="form-control" rows="3" placeholder="是不是得说点啥"></textarea>
+            <a class="btn btn-default" href="#" role="button" >链接</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
