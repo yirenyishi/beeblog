@@ -10,9 +10,26 @@
 .login-root .input-container{
     position: fixed;
     left: 65%;
+    top: 33px;
     background: url("/static/img/loginbg.png") no-repeat center top;
 }
 .login-root .input-container .input-root{
     width: 370px;
     height: 500px;
 }
+.login-root .input-container .input-root p {
+    font-size: 21px;
+    text-align: center;
+    padding-top: 195px;
+}
+.login-root .input-container .input-root .inputs-class{
+    padding: 0 50px;
+}
+.login-root .input-container .input-root .inputs-class .input-class{
+    height: 35px;
+    margin: 18px 0
+}
+.login-root .input-container .input-root .inputs-class .input-class input{
+    height: 35px !important;
+}
+
