@@ -31,18 +31,22 @@ func FindBlogs() ([]*models.Blog, error) {
 
 func SaveBlog(blog *models.Blog, strs []string) error {
 	o := orm.NewOrm()
+	o.Begin()
 	id, eror := o.Insert(blog)
 	if eror != nil {
+		o.Rollback()
 		return eror
 	} else {
 		blog.Id = id
 		if strs != nil && len(strs) > 0 {
-			nlabels := make([]*models.NLabel,len(strs))
-			//var nlabels [len(*strs)]*models.NLabel
+			nlabels := make([]*models.NLabel, len(strs))
 			for i := 0; i < len(strs); i++ {
-				nlabels[i] = &models.NLabel{Title:strs[i]}
+				nlabels[i] = &models.NLabel{Title: strs[i], BlogId: id, UserId: blog.UserId}
 			}
-			o.InsertMulti(len(nlabels),nlabels)
+			if _, err := o.InsertMulti(len(nlabels), nlabels); err != nil {
+				o.Rollback()
+				return err
+			}
 		}
 		o.Commit()
 	}

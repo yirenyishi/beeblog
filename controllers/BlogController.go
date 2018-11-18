@@ -5,7 +5,6 @@ import (
 	"beeblog/models"
 	"beeblog/service"
 	"strconv"
-	"fmt"
 )
 
 type BlogController struct {
@@ -18,9 +17,8 @@ func (this *BlogController) Save() {
 	catory := this.GetString("catory")
 	catoryId, _ := strconv.ParseInt(catory, 10, 64)
 	labels := this.GetStrings("labels[]")
-	fmt.Println(title,blogHtml,catoryId,labels,labels[0])
-	blog := &models.Blog{Title: title,BlogHtml:blogHtml,CategoryId:catoryId}
-	err := service.SaveBlog(blog,labels)
+	blog := &models.Blog{Title: title, BlogHtml: blogHtml, CategoryId: catoryId, UserId: 1}
+	err := service.SaveBlog(blog, labels)
 	if (err == nil) {
 		this.Data["json"] = blog
 	} else {
@@ -36,7 +34,6 @@ func (this *BlogController) Get() {
 	if (err == nil) {
 		this.Data["Blog"] = blog
 	}
-	//this.Data["IsHome"] = true
 	this.TplName = "blog.html"
 }
 

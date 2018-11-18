@@ -1,0 +1,18 @@
+.login-root {
+    background: #f0e7db url("/static/img/login.png") no-repeat;
+    padding-top: 50px;
+    position: absolute;
+    min-height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.login-root .input-container{
+    position: fixed;
+    left: 65%;
+    background: url("/static/img/loginbg.png") no-repeat center top;
+}
+.login-root .input-container .input-root{
+    width: 370px;
+    height: 500px;
+}

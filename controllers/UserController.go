@@ -25,7 +25,8 @@ func (u *UserController) LoginPage() {
 	//num, err = o.Delete(&u)
 	//fmt.Printf("NUM: %d, ERR: %v\n", num, err)
 
-	u.Ctx.WriteString("login page")
+	//u.Ctx.WriteString("login page")
+	u.TplName = "login.html"
 }
 
 func (this *UserController) Login() {
