@@ -60,8 +60,7 @@ func (this *UserController) Login() {
 		if userpwd == user.UserPwd {
 			this.Data["json"] = models.ReurnSuccess("")
 			this.SetSession("userid", user.Id)
-			tt := this.GetSession("userid").(int64)
-			fmt.Println(tt > 0)
+			fmt.Println(this.CruSession)
 		} else {
 			this.Data["json"] = models.ReurnError("用户名或密码错误")
 		}

@@ -47,10 +47,10 @@
                                              style="width: 25px;height: 25px;"> </span></label>
         <nav>
             <a href="/" target="_blank">首页</a>
-            <a href="http://sc.chinaz.com/">个人中心</a>
             <a href="javascript:void(0)" id="newNote">新增笔记</a>
-            <a href="javascript:void(0)">Blog</a>
-            <a href="javascript:void(0)">Portfolio</a>
+            <a href="javascript:void(0)" id="newNoteColl">新增文件夹</a>
+            <a href="javascript:void(0)">删除笔记</a>
+            <a href="javascript:void(0)">个人中心</a>
             <a href="javascript:void(0)">Shortcodes</a>
         </nav>
     </nav>
@@ -76,21 +76,8 @@
                 <li><a href="javascript:void(0)">Product 4</a></li>
                 <li><a href="javascript:void(0)">Product 5</a></li>
             </ul>
-        </li> <!-- item-has-children -->
-    </ul> <!-- cd-navigation -->
-
-    <ul class="cd-navigation cd-single-item-wrapper">
-        <li><a href="javascript:void(0)">新增文章</a></li>
-    </ul> <!-- cd-single-item-wrapper -->
-
-    <!-- cd-single-item-wrapper -->
-
-{{/*    <div class="cd-navigation socials">
-        <a class="cd-twitter cd-img-replace" href="javascript:void(0)">Twitter</a>
-        <a class="cd-github cd-img-replace" href="javascript:void(0)">Git Hub</a>
-        <a class="cd-facebook cd-img-replace" href="javascript:void(0)">Facebook</a>
-        <a class="cd-google cd-img-replace" href="javascript:void(0)">Google Plus</a>
-    </div>*/}}
+        </li>
+    </ul>
 </nav>
 
 <script src="/static/js/menu.js"></script> <!-- Resource jQuery -->
@@ -107,17 +94,29 @@
     document.onkeydown = keyDown;
 
     function keyDown(e) {
-        e.preventDefault();
+        // e.preventDefault();
         var currKey = 0, e = e || event || window.event;
         currKey = e.keyCode || e.which || e.charCode;
         if (currKey == 83 && (e.ctrlKey || e.metaKey)) {
             layer.msg("ctrl+s")
             return false;
         }
+
     }
 
     function noteClick(id) {
         layer.msg(id)
+    }
+
+    function addNoteCallback(obj) {
+        var subMenu = $(".sub-menu")
+        $.each(subMenu, function (index, el) {
+            if ($(this).attr("value") == obj.Pid) {
+                var child = '<li><a href="javascript:void(0)" ' + obj.Id + '>' + obj.Title + '</a></li>'
+                $(".sub-menu").append(child)
+                return
+            }
+        })
     }
 
     $(function () {
@@ -127,7 +126,7 @@
         layer.tips('文章列表点我', '#slide-container', {
             tips: [3, '#78BA32']
         });
-        
+
         $("#newNote").click(function () {
             layer.open({
                 type: 2,
@@ -136,6 +135,31 @@
                 shade: 0.8,
                 area: ['360px', '280px'],
                 content: '/iframe/note.html' //iframe的url
+            });
+        })
+        $("#newNoteColl").click(function () {
+            layer.prompt({title: '请输入文件夹名称'}, function (val, index) {
+                if (val.trim().length < 3) {
+                    layer.msg('文件夹名称最低三个字哦', function () {
+                    });
+                    layer.close(index);
+                    return
+                }
+                $.post('/notecoll/save', {
+                            title: val.trim()
+                        },
+                        function (data) {
+                            debugger
+                            if (!data.Status) {
+                                parent.layer.msg("保存成功", {icon: 6});
+                                var child = '<li class="item-has-children">\n' +
+                                        '            <a href="javascript:void(0)">' + data.Titled + '</a>\n' +
+                                        '            <ul class="sub-menu" value="' + data.Id + '"></ul>\n' +
+                                        '        </li> '
+                                $(".cd-navigation").append(child)
+                                layer.close(index);
+                            }
+                        }, 'json')
             });
         })
     })

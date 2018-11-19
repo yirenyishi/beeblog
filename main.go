@@ -16,7 +16,7 @@ func init() {
 func main() {
 	orm.Debug = true
 	orm.RunSyncdb("default",false,true)
-
+	beego.BConfig.WebConfig.Session.SessionOn = true
 	beego.Run()
 }
 

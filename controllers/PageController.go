@@ -15,9 +15,3 @@ func (this *PageController) Blog() {
 func (this *PageController) IframeNote() {
 	this.TplName = "iframe/note.html"
 }
-
-// @router /note [get]
-func (this *PageController) Note() {
-	this.Data["IsNote"] = true
-	this.TplName = "note.html"
-}

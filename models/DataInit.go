@@ -19,7 +19,7 @@ func RegistDB()  {
 		os.Create(_DB_NAME)
 	}
 	//orm.RegisterModel(new(Attachment),new(Topic))
-	orm.RegisterModel(new(Attachment),new(User),new(Blog),new(NLabel),new(Note))
+	orm.RegisterModel(new(Attachment),new(User),new(Blog),new(NLabel),new(Note),new(NoteColl))
 	orm.RegisterDriver(_SQLITE3_DRIVER,orm.DRSqlite)
 	orm.RegisterDataBase("default",_SQLITE3_DRIVER,_DB_NAME,10)
 }

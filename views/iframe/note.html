@@ -68,6 +68,7 @@
                     function (data) {
                         debugger
                         if (!data.Status) {
+                            parent.addNoteCallback(data)
                             parent.layer.msg("保存成功", {icon: 6});
                             var index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
