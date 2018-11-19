@@ -88,9 +88,8 @@ header {
   position: absolute;
   top: 0;
   right: 0;
-  height: 20px;
-  width: 20px;
-  background: #4e6361;
+  height: 39px;
+  width: 40px;
   z-index: 3;
   /* Force Hardware Acceleration in WebKit */
   -webkit-transform: translateZ(0);
@@ -115,7 +114,7 @@ header.is-fixed {
 }
 @media only screen and (min-width: 768px) {
   header {
-    height: 20px;
+    height: 39px;
   }
 }
 
@@ -138,7 +137,7 @@ header.is-fixed {
   right: 0;
   top: 0;
   height: 100%;
-  width: 50px;
+  width: 40px;
   background-color: #64807d;
 }
 #cd-menu-trigger .cd-menu-text {
@@ -207,7 +206,7 @@ header.is-fixed {
 }
 @media only screen and (min-width: 768px) {
   #cd-menu-trigger {
-    width: 110px;
+    width: 40px;
     padding-left: 1.25em;
   }
   #cd-menu-trigger .cd-menu-text {
@@ -215,7 +214,7 @@ header.is-fixed {
     line-height: 70px;
   }
   #cd-menu-trigger .cd-menu-icon {
-    left: auto;
+    left: 30%;
     right: 1.25em;
     -webkit-transform: translateX(0);
     -moz-transform: translateX(0);
@@ -263,6 +262,7 @@ header.is-fixed {
   line-height: 2em;
   padding: 0 16px 0 32px;
   color: #aab5b7;
+  text-decoration:none;
 }
 #cd-lateral-nav a.current {
   background-color: #3a4a4d;

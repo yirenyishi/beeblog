@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="个人随笔是一个面向IT技术人员,提供个人平时工作总结和在线记录学习笔记,个人技术博客,在线云笔记,码农笔录,最新的技术博客,www.aiprose.com">
+    <meta name="keywords"
+          content="个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,www.aiprose.com,aiprose.com,aiprose">
+    <link rel="stylesheet" href="//g.alicdn.com/sui/sui3/0.0.18/css/sui.min.css">
+    <script type="text/javascript" src="//g.alicdn.com/sj/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="//g.alicdn.com/sui/sui3/0.0.18/js/sui.min.js"></script>
+    <script type="text/javascript" src="/static/js/layer.js"></script>
+    <title>首页 - 个人随笔</title>
+    <style>
+        .common {
+            margin: 15px 0;
+            display: flex;
+            height: 32px;
+            line-height: 32px;
+        }
+
+    </style>
+</head>
+<body>
+<div style="margin: 20px 35px;">
+    <div class="common">
+        <span>所属文件夹:</span>
+        <span style="flex: 1">
+            <select class="form-control " style="display: inline-block;height: 32px" id="catory">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </span>
+    </div>
+    <div class="common">
+        <span>新笔记名称:</span>
+        <input type="text" placeholder="输入标签" class="input-xfat" style="height: 32px;flex: 1" id="lable">
+    </div>
+    <div class="common" style="text-align: center">
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="saveBtn">保存</button>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        // if (parent.tobj.catory) {
+        //     $("#catory").val(parent.tobj.catory)
+        // }
+        // if (parent.tobj.labels) {
+        //     for (var i = 0; i < parent.tobj.labels.length; i++) {
+        //         var child = "<label class='tag tag-primary'>" + parent.tobj.labels[i] + "<a name='remove'><i class=\"iconfont icon-close\"></i></a> "
+        //                 + "<input type='checkbox' class='simple-tag' name='simple-tag-1' value='" + parent.tobj.labels[i] + "' checked='checked'/></label>"
+        //         $("#labels").append(child)
+        //     }
+        // }
+
+
+        $("#saveBtn").click(function () {
+            var pid = $("#catory").val()
+            var title = $("#lable").val()
+            $.post('/note/save', {
+                        pid: pid,
+                        title: title
+                    },
+                    function (data) {
+                        debugger
+                        if (!data.Status) {
+                            parent.layer.msg("保存成功", {icon: 6});
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        }
+                    }, 'json')
+        })
+    })
+</script>
+</html>
