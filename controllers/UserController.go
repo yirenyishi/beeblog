@@ -39,18 +39,22 @@ func (this *UserController) Login() {
 	if username == "" {
 		this.Data["json"] = models.ReurnError(1,"用户名为空")
 		this.ServeJSON()
+		return
 	}
 	if len(username) < 4 {
 		this.Data["json"] = models.ReurnError(1,"用户名最低4位")
 		this.ServeJSON()
+		return
 	}
 	if userpwd == "" {
 		this.Data["json"] = models.ReurnError(1,"密码为空")
 		this.ServeJSON()
+		return
 	}
 	if len(userpwd) < 6 {
 		this.Data["json"] = models.ReurnError(1,"密码最低6位")
 		this.ServeJSON()
+		return
 	}
 	user, error := service.FindByUserName(username)
 	if error == nil && user != nil {
@@ -68,6 +72,7 @@ func (this *UserController) Login() {
 		this.Data["json"] = models.ReurnError(1,"用户名不存在")
 	}
 	this.ServeJSON()
+	return
 }
 
 func (this *UserController) Regist() {
@@ -78,23 +83,28 @@ func (this *UserController) Regist() {
 	if username == "" {
 		this.Data["json"] = models.ReurnError(1,"用户名为空")
 		this.ServeJSON()
+		return
 	}
 	if len(username) < 4 {
 		this.Data["json"] = models.ReurnError(1,"用户名最低4位")
 		this.ServeJSON()
+		return
 	}
 	if userpwd == "" {
 		this.Data["json"] = models.ReurnError(1,"密码为空")
 		this.ServeJSON()
+		return
 	}
 	if len(userpwd) < 6 {
 		this.Data["json"] = models.ReurnError(1,"密码最低6位")
 		this.ServeJSON()
+		return
 	}
 	user, _ := service.FindByUserName(username)
 	if user != nil {
 		this.Data["json"] = models.ReurnError(1,"用户已经存在")
 		this.ServeJSON()
+		return
 	}
 	h := md5.New()
 	h.Write([]byte(strconv.FormatInt(time.Now().Unix(), 10) + beego.AppConfig.String("host")))
@@ -110,4 +120,5 @@ func (this *UserController) Regist() {
 		this.Data["json"] = models.ReurnError(1,"注册失败")
 	}
 	this.ServeJSON()
+	return
 }

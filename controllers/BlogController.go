@@ -25,6 +25,7 @@ func (this *BlogController) Save() {
 		this.Data["json"] = models.ReurnError(500,"保存失败")
 	}
 	this.ServeJSON()
+	return
 }
 
 func (this *BlogController) Get() {

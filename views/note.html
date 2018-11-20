@@ -51,7 +51,6 @@
             <a href="javascript:void(0)" id="newNoteColl">管理文件夹</a>
             <a href="javascript:void(0)" id="delNote">删除笔记</a>
             <a href="javascript:void(0)">个人中心</a>
-            <a href="javascript:void(0)">Shortcodes</a>
         </nav>
     </nav>
 </div> <!-- cd-main-content -->
@@ -70,6 +69,11 @@
             </ul>
         </li>
     {{end}}
+    {{/*{{if len .NoteColls 0}}*/}}
+        {{/*<ul class="cd-navigation cd-single-item-wrapper">*/}}
+            {{/*<li><a href="javascript:void(0)">新增文件夹</a></li>*/}}
+        {{/*</ul>*/}}
+    {{/*{{end}}*/}}
     </ul>
 </nav>
 
@@ -190,7 +194,6 @@
             }, function () {
                 $.post('/note/del/' + note.Id,
                         function (data) {
-                            debugger
                             if (data.Status == 0) {
                                 var subMenu = $(".sub-menu li a")
                                 $.each(subMenu, function (index, el) {

@@ -59,7 +59,7 @@
                             parent.layer.msg("保存成功", {icon: 6});
                             var index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
-                        } else if (data.Status = 401) {
+                        } else if (data.Status == 401) {
                             parent.location.href = "/login"
                             parent.layer.close(index);
                         } else {
