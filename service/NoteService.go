@@ -27,9 +27,8 @@ func GetNoteByPid(pid int64) ([]*models.Note, error) {
 	o := orm.NewOrm()
 	qs := o.QueryTable(models.Note{})
 	_, err := qs.Filter("Pid", pid).All(&notes)
-	return notes,err
+	return notes, err
 }
-
 
 func SaveNoteColl(note *models.NoteColl) error {
 	o := orm.NewOrm()
@@ -45,5 +44,5 @@ func GetNoteColl(uid int64) ([]*models.NoteColl, error) {
 	o := orm.NewOrm()
 	qs := o.QueryTable(models.NoteColl{})
 	_, err := qs.Filter("UserId", uid).All(&notes)
-	return notes,err
+	return notes, err
 }

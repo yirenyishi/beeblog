@@ -37,19 +37,19 @@ func (this *UserController) Login() {
 	username := this.GetString("username")
 	userpwd := this.GetString("userpwd")
 	if username == "" {
-		this.Data["json"] = models.ReurnError("用户名为空")
+		this.Data["json"] = models.ReurnError(1,"用户名为空")
 		this.ServeJSON()
 	}
 	if len(username) < 4 {
-		this.Data["json"] = models.ReurnError("用户名最低4位")
+		this.Data["json"] = models.ReurnError(1,"用户名最低4位")
 		this.ServeJSON()
 	}
 	if userpwd == "" {
-		this.Data["json"] = models.ReurnError("密码为空")
+		this.Data["json"] = models.ReurnError(1,"密码为空")
 		this.ServeJSON()
 	}
 	if len(userpwd) < 6 {
-		this.Data["json"] = models.ReurnError("密码最低6位")
+		this.Data["json"] = models.ReurnError(1,"密码最低6位")
 		this.ServeJSON()
 	}
 	user, error := service.FindByUserName(username)
@@ -62,10 +62,10 @@ func (this *UserController) Login() {
 			this.SetSession("userid", user.Id)
 			fmt.Println(this.CruSession)
 		} else {
-			this.Data["json"] = models.ReurnError("用户名或密码错误")
+			this.Data["json"] = models.ReurnError(1,"用户名或密码错误")
 		}
 	} else {
-		this.Data["json"] = models.ReurnError("用户名不存在")
+		this.Data["json"] = models.ReurnError(1,"用户名不存在")
 	}
 	this.ServeJSON()
 }
@@ -76,24 +76,24 @@ func (this *UserController) Regist() {
 	username = strings.Replace(username, " ", "", -1)
 	userpwd = strings.Replace(userpwd, " ", "", -1)
 	if username == "" {
-		this.Data["json"] = models.ReurnError("用户名为空")
+		this.Data["json"] = models.ReurnError(1,"用户名为空")
 		this.ServeJSON()
 	}
 	if len(username) < 4 {
-		this.Data["json"] = models.ReurnError("用户名最低4位")
+		this.Data["json"] = models.ReurnError(1,"用户名最低4位")
 		this.ServeJSON()
 	}
 	if userpwd == "" {
-		this.Data["json"] = models.ReurnError("密码为空")
+		this.Data["json"] = models.ReurnError(1,"密码为空")
 		this.ServeJSON()
 	}
 	if len(userpwd) < 6 {
-		this.Data["json"] = models.ReurnError("密码最低6位")
+		this.Data["json"] = models.ReurnError(1,"密码最低6位")
 		this.ServeJSON()
 	}
 	user, _ := service.FindByUserName(username)
 	if user != nil {
-		this.Data["json"] = models.ReurnError("用户已经存在")
+		this.Data["json"] = models.ReurnError(1,"用户已经存在")
 		this.ServeJSON()
 	}
 	h := md5.New()
@@ -107,7 +107,7 @@ func (this *UserController) Regist() {
 	if err == nil {
 		this.Data["json"] = models.ReurnSuccess("")
 	} else {
-		this.Data["json"] = models.ReurnError("注册失败")
+		this.Data["json"] = models.ReurnError(1,"注册失败")
 	}
 	this.ServeJSON()
 }

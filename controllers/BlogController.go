@@ -22,7 +22,7 @@ func (this *BlogController) Save() {
 	if err == nil {
 		this.Data["json"] = blog
 	} else {
-		this.Data["json"] = models.ReurnError("保存失败")
+		this.Data["json"] = models.ReurnError(500,"保存失败")
 	}
 	this.ServeJSON()
 }

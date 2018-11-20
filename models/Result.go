@@ -5,8 +5,11 @@ type Error struct {
 	Msg    string
 }
 
-func ReurnError(msg string) *Error {
-	return &Error{Status: byte(1), Msg: msg}
+func ReurnError(status int,msg string) *Error {
+	if msg == "" {
+		msg = "error"
+	}
+	return &Error{Status: byte(status), Msg: msg}
 }
 
 type Success struct {

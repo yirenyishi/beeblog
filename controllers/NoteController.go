@@ -23,7 +23,30 @@ func (this *NoteController) Save() {
 	if err == nil {
 		this.Data["json"] = note
 	} else {
-		this.Data["json"] = models.ReurnError("保存失败")
+		this.Data["json"] = models.ReurnError(500,"保存失败")
+	}
+	this.ServeJSON()
+}
+func (this *NoteController) Edit() {
+	idStr := this.Ctx.Input.Param(":id")
+	noteHtml := this.GetString("noteHtml")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	uid := this.GetSession("userid").(int64)
+	note := &models.Note{Id:id}
+	err1 := service.GetNote(note)
+	if err1 != nil {
+		fmt.Print(err1)
+		this.Data["json"] = models.ReurnError(500,"保存失败")
+	}
+	if uid != note.UserId {
+		this.Data["json"] = models.ReurnError(403,"保存失败")
+	}
+	note.NoteHtml = noteHtml
+	err := service.SaveNote(note)
+	if err == nil {
+		this.Data["json"] = note
+	} else {
+		this.Data["json"] = models.ReurnError(500,"保存失败")
 	}
 	this.ServeJSON()
 }
@@ -37,7 +60,7 @@ func (this *NoteController) SaveNoteColl() {
 	if err == nil {
 		this.Data["json"] = note
 	} else {
-		this.Data["json"] = models.ReurnError("保存失败")
+		this.Data["json"] = models.ReurnError(500,"保存失败")
 	}
 	this.ServeJSON()
 }
@@ -60,11 +83,11 @@ func (this *NoteController) Note() {
 		this.Redirect("/login", 302)
 	}
 	noteColls, err := service.GetNoteColl(uid.(int64))
-	if err != nil {
+	if err == nil {
 		if len(noteColls) > 0 {
 			for i := 0; i < len(noteColls); i++ {
 				notes, err1 := service.GetNoteByPid(noteColls[i].Id)
-				if err1 != nil {
+				if err1 == nil {
 					noteColls[i].Notes = notes
 				}
 			}
@@ -73,6 +96,7 @@ func (this *NoteController) Note() {
 		noteColls = make([]*models.NoteColl, 0)
 	}
 	fmt.Println(noteColls)
+	fmt.Println(len(noteColls))
 	this.Data["NoteColls"] = noteColls
 	this.TplName = "note.html"
 }
