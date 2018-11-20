@@ -5,7 +5,6 @@ import (
 	"strconv"
 	"beeblog/models"
 	"beeblog/service"
-	"fmt"
 )
 
 type NoteController struct {
@@ -17,12 +16,10 @@ func (this *NoteController) Save() {
 	title := this.GetString("title")
 	uid := this.GetSession("userid")
 	if uid == nil {
-		fmt.Println("ueseid nil",uid)
 		this.Data["json"] = models.ReurnError(401,"保存失败")
 		this.ServeJSON()
 		return
 	}
-	fmt.Println("ueseid:",uid)
 	note := &models.Note{Title: title, Pid: pid, UserId: uid.(int64)}
 	err := service.SaveNote(note)
 	if err == nil {
