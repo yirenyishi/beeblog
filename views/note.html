@@ -48,8 +48,8 @@
         <nav>
             <a href="/" target="_blank">首页</a>
             <a href="javascript:void(0)" id="newNote">新增笔记</a>
-            <a href="javascript:void(0)" id="newNoteColl">新增文件夹</a>
-            <a href="javascript:void(0)">删除笔记</a>
+            <a href="javascript:void(0)" id="newNoteColl">管理文件夹</a>
+            <a href="javascript:void(0)" id="delNote">删除笔记</a>
             <a href="javascript:void(0)">个人中心</a>
             <a href="javascript:void(0)">Shortcodes</a>
         </nav>
@@ -63,7 +63,9 @@
             <a href="javascript:void(0)">{{.Title}}</a>
             <ul class="sub-menu" value="{{.Id}}">
             {{range .Notes}}
-                <li><a href="javascript:void(0)" onclick="noteClick({{.Id}})">{{.Id}}-{{.Title}}</a></li>
+                <li>
+                    <a href="javascript:void(0)" onclick="noteClick({{.Id}})" value="{{.Id}}">{{.Id}}-{{.Title}}</a>
+                </li>
             {{end}}
             </ul>
         </li>
@@ -98,21 +100,47 @@
     }
 
     function saveNote() {
-        $.post('/note/save',
+        if (!note || !note.Id) {
+            layer.msg('请在右边菜单中选择笔记', function () {
+            });
+            return
+        }
+        var noteHtml = editor.txt.html()
+        if (editor.txt.text() && editor.txt.text().trim().length != 0) {
+            layer.msg('保存内容为空', function () {
+            });
+            return
+        }
+        $.post('/note/edit/' + note.Id, {
+                    noteHtml: noteHtml
+                },
                 function (data) {
-                    if (!data.Status) {
-                        editor.txt.html(data.NoteHtml);
-                        note = data
+                    if (data.Status == 0) {
+                        layer.msg("保存成功", {icon: 6});
+                    } else if (data.Status == 401) {
+                        window.location.href = "/login"
+                    } else {
+                        layer.msg("服务器异常", {icon: 5});
                     }
                 }, 'json')
     }
 
     function noteClick(id) {
-        $.get('/note/'+id,
+        $.get('/note/' + id,
                 function (data) {
                     if (!data.Status) {
-                        editor.txt.html(data.NoteHtml);
+                        if (data.NoteHtml && data.NoteHtml.trim().length != 0) {
+                            editor.txt.html(data.NoteHtml);
+                        } else if (note) {
+                            editor.txt.html("");
+                        }
                         note = data
+                    } else if (data.Status == 401) {
+                        window.location.href = "/login"
+                    } else if (data.Status == 403) {
+                        layer.msg("暂无权限", {icon: 5});
+                    } else {
+                        layer.msg("服务器异常", {icon: 5});
                     }
                 }, 'json')
 
@@ -121,9 +149,12 @@
     function addNoteCallback(obj) {
         var subMenu = $(".sub-menu")
         $.each(subMenu, function (index, el) {
-            if ($(this).attr("value") == obj.Pid) {
-                var child = '<li><a href="javascript:void(0)" ' + obj.Id + '>' + obj.Title + '</a></li>'
-                $(".sub-menu").append(child)
+            if ($(el).attr("value") == obj.Pid) {
+                var child = '<li><a href="javascript:void(0)" onclick="noteClick(' + obj.Id + ')" value="' + obj.Id + '" >' + obj.Title + '</a></li>'
+                $(el).append(child)
+                if (!note || !note.Id) {
+                    note = obj
+                }
                 return
             }
         })
@@ -147,6 +178,42 @@
                 content: '/iframe/note.html' //iframe的url
             });
         })
+
+        $("#delNote").click(function () {
+            if (!note || !note.Id) {
+                layer.msg('请在右边菜单中选择笔记', function () {
+                });
+                return
+            }
+            layer.confirm('删除确认', {
+                btn: ['确认', '手滑了'] //按钮
+            }, function () {
+                $.post('/note/del/' + note.Id,
+                        function (data) {
+                            debugger
+                            if (data.Status == 0) {
+                                var subMenu = $(".sub-menu li a")
+                                $.each(subMenu, function (index, el) {
+                                    if ($(el).attr("value") == note.Id) {
+                                        $(el).remove()
+                                        return
+                                    }
+                                })
+                                note = null
+                                layer.msg("删除成功", {icon: 6});
+                            } else if (data.Status == 401) {
+                                window.location.href = "/login"
+                            } else if (data.Status == 403) {
+                                layer.msg("暂无权限", {icon: 5});
+                            } else {
+                                layer.msg("服务器异常", {icon: 5});
+                            }
+                        }, 'json')
+            }, function () {
+
+            });
+        })
+
         $("#newNoteColl").click(function () {
             layer.prompt({title: '请输入文件夹名称'}, function (val, index) {
                 if (val.trim().length < 3) {

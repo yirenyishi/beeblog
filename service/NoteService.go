@@ -8,6 +8,15 @@ import (
 type NoteService struct {
 }
 
+func EditNote(note *models.Note) error {
+	o := orm.NewOrm()
+	id, err := o.Update(note)
+	if err == nil {
+		note.Id = id
+	}
+	return err
+}
+
 func SaveNote(note *models.Note) error {
 	o := orm.NewOrm()
 	id, err := o.Insert(note)
@@ -20,6 +29,12 @@ func SaveNote(note *models.Note) error {
 func GetNote(note *models.Note) error {
 	o := orm.NewOrm()
 	return o.Read(note)
+}
+
+func DelNote(note *models.Note) error {
+	o := orm.NewOrm()
+	_,err := o.Delete(note)
+	return err
 }
 
 func GetNoteByPid(pid int64) ([]*models.Note, error) {

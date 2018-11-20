@@ -14,11 +14,13 @@ type NoteController struct {
 
 func (this *NoteController) Save() {
 	pid, _ := this.GetInt64("pid")
-	fmt.Println("pid", pid)
 	title := this.GetString("title")
-	uid := this.GetSession("userid").(int64)
-
-	note := &models.Note{Title: title, Pid: pid, UserId: uid}
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Data["json"] = models.ReurnError(401,"保存失败")
+		this.ServeJSON()
+	}
+	note := &models.Note{Title: title, Pid: pid, UserId: uid.(int64)}
 	err := service.SaveNote(note)
 	if err == nil {
 		this.Data["json"] = note
@@ -31,20 +33,26 @@ func (this *NoteController) Edit() {
 	idStr := this.Ctx.Input.Param(":id")
 	noteHtml := this.GetString("noteHtml")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
-	uid := this.GetSession("userid").(int64)
+	uid := this.GetSession("userid")
+	if uid == nil{
+		this.Data["json"] = models.ReurnError(401, "")
+		this.ServeJSON()
+	}
 	note := &models.Note{Id:id}
 	err1 := service.GetNote(note)
 	if err1 != nil {
 		fmt.Print(err1)
 		this.Data["json"] = models.ReurnError(500,"保存失败")
+		this.ServeJSON()
 	}
 	if uid != note.UserId {
-		this.Data["json"] = models.ReurnError(403,"保存失败")
+		this.Data["json"] = models.ReurnError(403,"")
+		this.ServeJSON()
 	}
 	note.NoteHtml = noteHtml
-	err := service.SaveNote(note)
+	err := service.EditNote(note)
 	if err == nil {
-		this.Data["json"] = note
+		this.Data["json"] = models.ReurnSuccess("")
 	} else {
 		this.Data["json"] = models.ReurnError(500,"保存失败")
 	}
@@ -53,9 +61,12 @@ func (this *NoteController) Edit() {
 
 func (this *NoteController) SaveNoteColl() {
 	title := this.GetString("title")
-	uid := this.GetSession("userid").(int64)
-
-	note := &models.NoteColl{Title: title, UserId: uid}
+	uid := this.GetSession("userid")
+	if uid == nil{
+		this.Data["json"] = models.ReurnError(401, "")
+		this.ServeJSON()
+	}
+	note := &models.NoteColl{Title: title, UserId: uid.(int64)}
 	err := service.SaveNoteColl(note)
 	if err == nil {
 		this.Data["json"] = note
@@ -66,6 +77,11 @@ func (this *NoteController) SaveNoteColl() {
 }
 
 func (this *NoteController) Get() {
+	uid := this.GetSession("userid")
+	if uid == nil{
+		this.Data["json"] = models.ReurnError(401, "")
+		this.ServeJSON()
+	}
 	idStr := this.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	note := &models.Note{Id: id}
@@ -73,6 +89,36 @@ func (this *NoteController) Get() {
 	if err == nil {
 		this.Data["json"] = note
 	}
+	if note.UserId != uid.(int64) {
+		this.Data["json"] = models.ReurnError(403, "")
+		this.ServeJSON()
+	}
+	this.ServeJSON()
+}
+func (this *NoteController) Delete() {
+	uid := this.GetSession("userid")
+	if uid == nil{
+		this.Data["json"] = models.ReurnError(401, "")
+		this.ServeJSON()
+	}
+	idStr := this.Ctx.Input.Param(":id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	note := &models.Note{Id: id}
+	err := service.GetNote(note)
+	if err != nil {
+		this.Data["json"] = models.ReurnError(500,"")
+		this.ServeJSON()
+	}
+	if note.UserId != uid.(int64) {
+		this.Data["json"] = models.ReurnError(403, "")
+		this.ServeJSON()
+	}
+	err = service.DelNote(note)
+	if err != nil {
+		this.Data["json"] = models.ReurnError(500,"")
+		this.ServeJSON()
+	}
+	this.Data["json"] = models.ReurnSuccess("")
 	this.ServeJSON()
 }
 
@@ -95,8 +141,6 @@ func (this *NoteController) Note() {
 	} else {
 		noteColls = make([]*models.NoteColl, 0)
 	}
-	fmt.Println(noteColls)
-	fmt.Println(len(noteColls))
 	this.Data["NoteColls"] = noteColls
 	this.TplName = "note.html"
 }

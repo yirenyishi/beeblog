@@ -46,18 +46,6 @@
 </body>
 <script>
     $(function () {
-        // if (parent.tobj.catory) {
-        //     $("#catory").val(parent.tobj.catory)
-        // }
-        // if (parent.tobj.labels) {
-        //     for (var i = 0; i < parent.tobj.labels.length; i++) {
-        //         var child = "<label class='tag tag-primary'>" + parent.tobj.labels[i] + "<a name='remove'><i class=\"iconfont icon-close\"></i></a> "
-        //                 + "<input type='checkbox' class='simple-tag' name='simple-tag-1' value='" + parent.tobj.labels[i] + "' checked='checked'/></label>"
-        //         $("#labels").append(child)
-        //     }
-        // }
-
-
         $("#saveBtn").click(function () {
             var pid = $("#catory").val()
             var title = $("#lable").val()
@@ -66,12 +54,16 @@
                         title: title
                     },
                     function (data) {
-                        debugger
                         if (!data.Status) {
                             parent.addNoteCallback(data)
                             parent.layer.msg("保存成功", {icon: 6});
                             var index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
+                        } else if (data.Status = 401) {
+                            parent.location.href = "/login"
+                            parent.layer.close(index);
+                        } else {
+                            layer.msg("服务器异常", {icon: 5});
                         }
                     }, 'json')
         })
