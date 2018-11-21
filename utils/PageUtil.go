@@ -22,9 +22,14 @@ func PageUtil(count64 int64, pageNo int, pageSize int) *Page {
 	if count%pageSize > 0 {
 		tp += 1
 	}
-	fmt.Println("tp:",tp,"num",pageNo)
+	fmt.Println("tp:", tp, "num", pageNo)
 	if tp < pageNo {
 		pageNo = tp
 	}
+	if pageNo == 0 {
+		pageNo = 1
+		tp = 1
+	}
+	fmt.Println("tp:", tp, "num", pageNo)
 	return &Page{PageNo: pageNo, PageSize: pageSize, TotalPage: tp, TotalCount: count, FirstPage: pageNo == 1, LastPage: pageNo == tp}
 }

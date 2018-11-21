@@ -51,7 +51,7 @@ func FindBlogs(num int, size int, cat int64, flag int) (*utils.Page, error) {
 		qs = qs.OrderBy("-Browses")
 	}
 
-	qs = qs.Limit(size,page.PageNo)
+	qs = qs.Limit(size,page.PageNo-1)
 	_, err = qs.All(&blogs)
 	if err != nil {
 		return nil, err
