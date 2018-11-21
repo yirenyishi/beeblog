@@ -15,8 +15,11 @@ func init() {
 }
 func main() {
 	orm.Debug = true
-	orm.RunSyncdb("default",false,true)
-	beego.BConfig.WebConfig.Session.SessionOn = true
+	orm.RunSyncdb("default", false, true)
+	beego.AddFuncMap("NAdd",NAdd)
 	beego.Run()
 }
 
+func NAdd(n1 int, n2 int) int{
+	return n1 + n2
+}

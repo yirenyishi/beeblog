@@ -42,7 +42,7 @@
             </div>
             <hr style="height:1px;border:none;border-top:1px solid lightgray;"/>
         </div>
-    {{range .Blogs}}
+    {{range .Page.List}}
         <div>
             <div class="home-content">
                 <div class="home-content-title cursor">
@@ -65,17 +65,19 @@
             <nav>
                 <div class="pagination pagination-lg">
                     <ul>
+                    {{if .Page.FirstPage}}
+                            {{else}}
                         <li class="prev">
-                            <a href="#">&laquo;</a>
+                            <a href="/blogs?num={{ .Page.PageNo | NAdd -1}}&flag={{.Flag}}&cat={{.Cat}}">&laquo;</a>
                         </li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li class="active"><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
+                    {{end}}
+                        <li class="active"><a href="javascript:void(0)">{{.Page.PageNo}}</a></li>
+                    {{if .Page.LastPage}}
+                            {{else}}
                         <li class="next">
-                            <a href="#">&raquo;</a>
+                            <a href="/blogs?num={{ .Page.PageNo | NAdd +1}}&flag={{.Flag}}&cat={{.Cat}}">&raquo;</a>
                         </li>
+                    {{end}}
                     </ul>
                 </div>
             </nav>

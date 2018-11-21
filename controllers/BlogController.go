@@ -5,6 +5,7 @@ import (
 	"beeblog/service"
 	"github.com/astaxie/beego"
 	"strconv"
+	"fmt"
 )
 
 type BlogController struct {
@@ -22,7 +23,7 @@ func (this *BlogController) Save() {
 	if err == nil {
 		this.Data["json"] = blog
 	} else {
-		this.Data["json"] = models.ReurnError(500,"保存失败")
+		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
 	return
@@ -46,8 +47,28 @@ func (this *BlogController) Blog1() {
 }
 
 func (this *BlogController) BlogsPage() {
-	blogs,_ := service.FindBlogs()
-	this.Data["Blogs"] = blogs
+	num, _ := this.GetInt("num")
+	size, _ := this.GetInt("size")
+	cat, _ := this.GetInt64("cat")
+	flag, _ := this.GetInt("flag")
+	if num <= 0 {
+		num = 1
+	}
+	if size < 5 {
+		size = 5
+	}
+	if cat <= 0 {
+		cat = -1
+	}
+	fmt.Println("nelson page", num, size, cat)
+	pages, err := service.FindBlogs(num, size, cat, flag)
+	if err != nil {
+		this.Redirect("500.html", 302)
+		return
+	}
+	this.Data["Page"] = pages
+	this.Data["Cat"] = cat
+	this.Data["Flag"] = flag
 	this.Data["IsBlog"] = true
 	this.TplName = "blogs.html"
 

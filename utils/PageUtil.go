@@ -1,5 +1,10 @@
 package utils
 
+import (
+	"strconv"
+	"fmt"
+)
+
 type Page struct {
 	PageNo     int
 	PageSize   int
@@ -10,10 +15,16 @@ type Page struct {
 	List       interface{}
 }
 
-func PageUtil(count int, pageNo int, pageSize int, list interface{}) Page {
+func PageUtil(count64 int64, pageNo int, pageSize int) *Page {
+	string := strconv.FormatInt(count64, 10)
+	count, _ := strconv.Atoi(string)
 	tp := count / pageSize
-	if count % pageSize > 0 {
-		tp = count / pageSize + 1
+	if count%pageSize > 0 {
+		tp += 1
 	}
-	return Page{PageNo: pageNo, PageSize: pageSize, TotalPage: tp, TotalCount: count, FirstPage: pageNo == 1, LastPage: pageNo == tp, List: list}
+	fmt.Println("tp:",tp,"num",pageNo)
+	if tp < pageNo {
+		pageNo = tp
+	}
+	return &Page{PageNo: pageNo, PageSize: pageSize, TotalPage: tp, TotalCount: count, FirstPage: pageNo == 1, LastPage: pageNo == tp}
 }

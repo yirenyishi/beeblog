@@ -3,9 +3,24 @@ package service
 import (
 	"github.com/astaxie/beego/orm"
 	"beeblog/models"
+	"beeblog/utils"
 )
 
 type BlogService struct {
+}
+
+func count(num int, size int, cat int64) (*utils.Page, error) {
+	o := orm.NewOrm()
+	qs := o.QueryTable(&models.Blog{})
+	qs.Filter("Delflag", 0)
+	if cat != -1 {
+		qs = qs.Filter("CategoryId", cat)
+	}
+	totalCount, err := qs.Count()
+	if err != nil {
+		return nil, err
+	}
+	return utils.PageUtil(totalCount, num, size), nil
 }
 
 func GetBlog(id int64) (*models.Blog, error) {
@@ -18,15 +33,31 @@ func GetBlog(id int64) (*models.Blog, error) {
 	return blog, nil
 }
 
-func FindBlogs() ([]*models.Blog, error) {
-	o := orm.NewOrm()
-	qs := o.QueryTable(&models.Blog{})
-	var blogs []*models.Blog
-	_, err := qs.Filter("Delflag", 0).All(&blogs)
+func FindBlogs(num int, size int, cat int64, flag int) (*utils.Page, error) {
+	page, err := count(num, size, cat)
 	if err != nil {
 		return nil, err
 	}
-	return blogs, nil
+	var blogs []*models.Blog
+	o := orm.NewOrm()
+	qs := o.QueryTable(&models.Blog{})
+	qs = qs.Filter("Delflag", 0)
+	if cat != -1 {
+		qs = qs.Filter("CategoryId", cat)
+	}
+	if flag == 0 {
+		qs = qs.OrderBy("-Ctime")
+	} else {
+		qs = qs.OrderBy("-Browses")
+	}
+
+	qs = qs.Limit(size,page.PageNo)
+	_, err = qs.All(&blogs)
+	if err != nil {
+		return nil, err
+	}
+	page.List = blogs
+	return page, nil
 }
 
 func SaveBlog(blog *models.Blog, strs []string) error {
