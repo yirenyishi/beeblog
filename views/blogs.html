@@ -22,7 +22,9 @@
                     <button type="button" class="btn btn-default btn-xl">最热</button>
                 </div>
             </div>
-            <button type="button"  onclick="window.open('/blog/new')" class="btn btn-danger" style="border-radius: 12px">写文章</button>
+            <button type="button" onclick="window.open('/blog/new')" class="btn btn-danger" style="border-radius: 12px">
+                写文章
+            </button>
         </div>
         <div>
             <div class="home-content" style="min-height: 40px;line-height: 40px;color: #888">
@@ -40,7 +42,7 @@
             </div>
             <hr style="height:1px;border:none;border-top:1px solid lightgray;"/>
         </div>
-        {{range .Blogs}}
+    {{range .Blogs}}
         <div>
             <div class="home-content">
                 <div class="home-content-title cursor">
@@ -57,17 +59,28 @@
             </div>
             <hr style="height:1px;border:none;border-top:1px solid #EEE;"/>
         </div>
-        {{end}}
+    {{end}}
 
-        <div>
-
+        <div style="text-align: center">
+            <nav>
+                <div class="pagination pagination-lg">
+                    <ul>
+                        <li class="prev">
+                            <a href="#">&laquo;</a>
+                        </li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li class="active"><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li class="next">
+                            <a href="#">&raquo;</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
+    </div>
+</div>
 </body>
-        <script>
-            // $(function () {
-            //     $("#").click(function () {
-            //         window.open("")
-            //     })
-            // })
-        </script>
 </html>
