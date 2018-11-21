@@ -44,3 +44,11 @@ func (this *BlogController) New() {
 func (this *BlogController) Blog1() {
 	this.TplName = "blog1.html"
 }
+
+func (this *BlogController) BlogsPage() {
+	blogs,_ := service.FindBlogs()
+	this.Data["Blogs"] = blogs
+	this.Data["IsBlog"] = true
+	this.TplName = "blogs.html"
+
+}

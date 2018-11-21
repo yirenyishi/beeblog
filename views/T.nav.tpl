@@ -7,13 +7,16 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="/" target="_blank">首页 </a>
+                    <li {{if .IsHome}} class="active" {{end}}>
+                        <a href="/">首页 </a>
+                    </li>
+                    <li {{if .IsBlog}} class="active" {{end}}>
+                        <a href="/blogs" target="_blank">博客 </a>
                     </li>
                     <li>
                         <a href="/note" target="_blank">笔记</a>
                     </li>
-                    <li>
+                    <li {{if .IsMap}} class="active" {{end}}>
                         <a href="/map" target="_blank">地图</a>
                     </li>
                 </ul>
