@@ -88,8 +88,7 @@
             });
             parent.tobj.labels = tarr
             console.log(tarr)
-            parent.saveBlog(function (flag) {
-                debugger
+            parent.saveBlogCallback(function (flag) {
                 if (flag) {
                     var index = parent.layer.getFrameIndex(window.name);
                     parent.layer.close(index);

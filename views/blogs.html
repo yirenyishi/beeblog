@@ -10,11 +10,9 @@
             <div style="flex: 1">
                 <span>
                     <select class="form-control input-lg" style="width: 150px;display: inline-block;height: 32px">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                    {{range .Cats}}
+                        <option value="{{.Id}}">{{.Title}}</option>
+                    {{end}}
                     </select>
                 </span>
                 <div class="btn-group" role="group" style="display: inline-block;margin-top: -3px">

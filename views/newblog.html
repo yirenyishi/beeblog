@@ -30,47 +30,78 @@
 </div>
 </body>
 <script>
+    var storage=window.localStorage
     var E = window.wangEditor
     var editor = new E('#editor')
     editor.customConfig.uploadImgServer = '/upload'
     // 或者 var editor = new E( document.getElementById('editor') )
     editor.create()
+    document.onkeydown = keyDown;
+
+    function keyDown(e) {
+        var currKey = 0, e = e || event || window.event;
+        currKey = e.keyCode || e.which || e.charCode;
+        if (currKey == 83 && (e.ctrlKey || e.metaKey)) {
+            layer.msg("ctrl+s")
+            saveBlog()
+            return
+        }
+
+    }
+    function saveBlog() {
+        var title = $("#blog-title").val();
+        if (title.trim().length < 3) {
+            layer.msg('文章标题最少三个字', function () {
+            });
+            return
+        }
+        tobj.title = $("#blog-title").val();
+        if (editor.txt.text().trim().length == 0) {
+            layer.msg('文章内容不能为空哦', function () {
+            });
+            return
+        }
+        tobj.blogHtml = editor.txt.html();
+        storage.setItem("blogHtml",tobj.blogHtml);
+        storage.setItem("blogTitle",tobj.title);
+        layer.open({
+            type: 2,
+            title: '发布文章',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['420px', '280px'],
+            content: '/iframe/blog.html/' //iframe的url
+        });
+    }
     var tobj = {}
     $(function () {
+        var oldVal = storage.getItem("blogHtml");
+        editor.txt.html(oldVal);
+        var oldTitle = storage.getItem("blogTitle");
+        $("#blog-title").val(oldTitle);
         var height = document.documentElement.clientHeight
         $(".w-e-text-container").height(height - 50 - 40 - 1);
         $("#newBtn").click(function () {
-            var title = $("#blog-title").val();
-            if (title.trim().length < 3) {
-                layer.msg('文章标题最少三个字', function () {
-                });
-                return
-            }
-            tobj.title = $("#blog-title").val();
-            if (editor.txt.text().trim().length == 0) {
-                layer.msg('文章内容不能为空哦', function () {
-                });
-                return
-            }
-            tobj.blogHtml = editor.txt.html();
-            layer.open({
-                type: 2,
-                title: '发布文章',
-                shadeClose: true,
-                shade: 0.8,
-                area: ['420px', '280px'],
-                content: '/iframe/blog.html/' //iframe的url
-            });
+            saveBlog()
         })
     })
 
-    function saveBlog(callback) {
-        $.post('/blog/new',tobj,
+    function saveBlogCallback(callback) {
+        $.post('/blog/new', tobj,
                 function (data) {
-                    console.log(data)
-                    debugger
-                    callback(true)
-                },'json')
+                    if (data.Status == 0) {
+                        storage.removeItem("blogHtml");
+                        storage.removeItem("blogTitle");
+                        layer.msg("保存成功", {icon: 6});
+                        callback(true)
+                    } else if (data.Status == 401) {
+                        window.location.href = "login"
+                    } else if (data.Status == 500) {
+                        layer.msg("保存失败", {icon: 6});
+                        callback(false)
+                    }
+
+                }, 'json')
     }
 </script>
 </html>

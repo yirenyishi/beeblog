@@ -13,6 +13,12 @@ type BlogController struct {
 }
 
 func (this *BlogController) Save() {
+	uid := this.GetSession("userid")
+	if uid == nil{
+		this.Data["json"] = models.ReurnError(401, "")
+		this.ServeJSON()
+		return
+	}
 	title := this.GetString("title")
 	blogHtml := this.GetString("blogHtml")
 	catory := this.GetString("catory")
@@ -21,7 +27,7 @@ func (this *BlogController) Save() {
 	blog := &models.Blog{Title: title, BlogHtml: blogHtml, CategoryId: catoryId, UserId: 1}
 	err := service.SaveBlog(blog, labels)
 	if err == nil {
-		this.Data["json"] = blog
+		this.Data["json"] = models.ReurnSuccess("")
 	} else {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
@@ -40,6 +46,11 @@ func (this *BlogController) Get() {
 }
 
 func (this *BlogController) New() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Redirect("/login.html",302)
+		return
+	}
 	this.TplName = "newblog.html"
 }
 func (this *BlogController) Blog1() {
@@ -47,6 +58,11 @@ func (this *BlogController) Blog1() {
 }
 
 func (this *BlogController) BlogsPage() {
+	cats,errcat := service.GetCats()
+	if errcat != nil {
+		this.Redirect("500.html", 302)
+		return
+	}
 	num, _ := this.GetInt("num")
 	size, _ := this.GetInt("size")
 	cat, _ := this.GetInt64("cat")
@@ -67,6 +83,7 @@ func (this *BlogController) BlogsPage() {
 		return
 	}
 	this.Data["Page"] = pages
+	this.Data["Cats"] = cats
 	this.Data["Cat"] = cat
 	this.Data["Flag"] = flag
 	this.Data["IsBlog"] = true
