@@ -5,10 +5,38 @@
 <body>
 <div class="root-container">
 {{template "nav" .}}
+    <div class="blog-user">
+        <div style="height: 50px;line-height: 50px">
+            <a href=""><img src="/static/img/2.png" alt="头像" class="img-circle"></a>
+            <a href="" style="margin-left: 15px;font-size: 18px;text-decoration: none">{{.Blog.User.NickName}}</a>
+        </div>
+        <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
+        <div style="display: flex;height: 30px;line-height: 30px;">
+            <div style="display: inline-block;width: 100px">
+                <span>文章: </span>
+                <span>{{.Blog.User.BlogCount}}</span>
+            </div>
+            <div style="display: inline-block;flex: 1">
+                <span>访问: </span>
+                <span>{{.Blog.User.BlogBrowes}}</span>
+            </div>
+        </div>
+        <div style="display: flex;height: 30px;line-height: 30px;">
+            <div style="display: inline-block;width: 100px">
+                <span>评论: </span>
+                <span>{{.Blog.User.BlogComment}}</span>
+            </div>
+            <div style="display: inline-block;flex: 1">
+                <span>喜欢: </span>
+                <span>{{.Blog.User.BlogLike}}</span>
+            </div>
+        </div>
+        <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
+    </div>
     <div class="blog-root">
         <h1 style="text-align: center">{{.Blog.Title}}</h1>
         <div class="blog-info">
-            <span><a href="">{{.Blog.UserName}}</a></span>
+            <span><a href="">{{.Blog.User.NickName}}</a></span>
             <span><em>时间:</em>{{.Blog.Ctime.Format "2006-01-02"}}</span>
             <span><em>阅读数:</em>{{.Blog.Browses}}</span>
             <div class="tag-group" style="display: inline-block">
@@ -21,6 +49,7 @@
         {{str2html .Blog.BlogHtml}}
         </div>
     </div>
+
 </div>
 </body>
 </html>

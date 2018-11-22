@@ -1,8 +1,7 @@
 .blog-root{
     height: 100%;
-    margin: 50px 4% 0 4%;
+    margin: 50px 4% 0 300px;
 }
-
 
 .blog-info{
     text-align: center;
@@ -10,4 +9,13 @@
 
 .blog-info em{
     padding: 0 8px !important;
+}
+
+.blog-user{
+    position: fixed;
+    top: 60px;
+    left: 20px;
+    width: 260px;
+    height: 100%;
+    background-color: #f9f9f9;
 }

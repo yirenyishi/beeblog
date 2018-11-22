@@ -17,4 +17,9 @@ type User struct {
 	Sex      int
 	DescInfo string
 	Ctime    time.Time `orm:"auto_now_add;type(datetime)"`
+
+	BlogCount   int
+	BlogBrowes  int
+	BlogComment int
+	BlogLike    int
 }

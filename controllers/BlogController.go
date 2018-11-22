@@ -42,6 +42,8 @@ func (this *BlogController) Get() {
 	if err == nil {
 		this.Data["Blog"] = blog
 	}
+	this.Data["NickName"] = this.GetSession("nickname")
+	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.TplName = "blog.html"
 }
 
@@ -83,9 +85,7 @@ func (this *BlogController) BlogsPage() {
 		return
 	}
 
-	NickName:= this.GetSession("nickname")
-	fmt.Print("current user ",NickName)
-	this.Data["NickName"] = NickName
+	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.Data["Page"] = pages
 	this.Data["Cats"] = cats

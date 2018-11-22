@@ -33,8 +33,7 @@ func GetBlog(id int64) (*models.Blog, error) {
 	user := &models.User{Id: blog.UserId}
 	err = o.Read(user)
 	if err == nil {
-		blog.UserName = user.UserName
-		blog.HeadImg = user.Headimg
+		blog.User = user
 	}
 	var labels []*models.NLabel
 	qs := o.QueryTable(&models.NLabel{})

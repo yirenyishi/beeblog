@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Blog struct {
 	Id         int64
@@ -18,6 +20,7 @@ type Blog struct {
 	Delflag    int       `orm:"default(0)"`
 	CategoryId int64
 
+	User     *User     `orm:"-"`
 	UserName string    `orm:"-"`
 	HeadImg  string    `orm:"-"`
 	CateName string    `orm:"-"`
