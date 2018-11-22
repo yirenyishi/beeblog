@@ -9,15 +9,21 @@
         <div class="home-hearder">
             <div style="flex: 1">
                 <span>
-                    <select class="form-control input-lg" style="width: 150px;display: inline-block;height: 32px">
+                    <select class="form-control input-lg" style="width: 150px;display: inline-block;height: 32px"
+                            id="selCat">
                     {{range .Cats}}
+                        <option value="-1">选择语言</option>
                         <option value="{{.Id}}">{{.Title}}</option>
                     {{end}}
                     </select>
                 </span>
                 <div class="btn-group" role="group" style="display: inline-block;margin-top: -3px">
-                    <button type="button" class="btn btn-default btn-xl">最新</button>
-                    <button type="button" class="btn btn-default btn-xl">最热</button>
+                    <button type="button " class="btn btn-default btn-xl {{if eq 0 .Flag}}active{{end}}">
+                        <a href="/blogs?num=1&flag=0&cat={{.Cat}}" style="color: #555;text-decoration: none;">最新</a>
+                    </button>
+                    <button type="button active" class="btn btn-default btn-xl {{if eq 1 .Flag}}active{{end}}">
+                        <a href="/blogs?num=1&flag=1&cat={{.Cat}}" style="color: #555;text-decoration: none;">最热</a>
+                    </button>
                 </div>
             </div>
             <button type="button" onclick="window.open('/blog/new')" class="btn btn-danger" style="border-radius: 12px">
@@ -86,4 +92,12 @@
     </div>
 </div>
 </body>
+<script>
+    $(function () {
+        $("#selCat").val({{.Cat}})
+        $("#selCat").change(function () {
+            window.location.href = "/blogs?num=1&flag={{.Flag}}&cat=" + $("#selCat").val()
+        })
+    })
+</script>
 </html>
