@@ -14,7 +14,7 @@ type BlogController struct {
 
 func (this *BlogController) Save() {
 	uid := this.GetSession("userid")
-	if uid == nil{
+	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
 		this.ServeJSON()
 		return
@@ -48,7 +48,7 @@ func (this *BlogController) Get() {
 func (this *BlogController) New() {
 	uid := this.GetSession("userid")
 	if uid == nil {
-		this.Redirect("/login.html",302)
+		this.Redirect("/login.html", 302)
 		return
 	}
 	this.TplName = "newblog.html"
@@ -58,7 +58,7 @@ func (this *BlogController) Blog1() {
 }
 
 func (this *BlogController) BlogsPage() {
-	cats,errcat := service.GetCats()
+	cats, errcat := service.GetCats()
 	if errcat != nil {
 		this.Redirect("500.html", 302)
 		return
@@ -82,6 +82,11 @@ func (this *BlogController) BlogsPage() {
 		this.Redirect("500.html", 302)
 		return
 	}
+
+	NickName:= this.GetSession("nickname")
+	fmt.Print("current user ",NickName)
+	this.Data["NickName"] = NickName
+	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.Data["Page"] = pages
 	this.Data["Cats"] = cats
 	this.Data["Cat"] = cat

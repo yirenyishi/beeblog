@@ -1,11 +1,26 @@
-.root-container{
+body {
+    /*background: #f5f7f9 url("/static/img/bg.jpg") repeat;*/
+    background: #f5f7f9;
+}
+
+.navbar-default{
+    border-color: #f8d9ea !important;
+}
+
+.img-circle{
+    width: 36px;
+    height: 36px;
+    margin-top: 2px;
+}
+
+.root-container {
     position: absolute;
     height: 100%;
     width: 100%;
     max-width: 100%;
 }
 
-.nav-container{
+.nav-container {
     max-height: 40px;
     position: fixed;
     width: 100%;
@@ -14,7 +29,7 @@
     top: 0;
 }
 
-.nav-container .sui-navbar .navbar-inner{
+.nav-container .sui-navbar .navbar-inner {
     padding: 0 50px;
 }
 
@@ -28,6 +43,6 @@
     -webkit-border-radius: 6px;
 }
 
-.cursor{
+.cursor {
     cursor: pointer
 }

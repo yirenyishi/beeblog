@@ -18,6 +18,8 @@ type Blog struct {
 	Delflag    int       `orm:"default(0)"`
 	CategoryId int64
 
-	UserName string `orm:"-"`
-	CateName string `orm:"-"`
+	UserName string    `orm:"-"`
+	HeadImg  string    `orm:"-"`
+	CateName string    `orm:"-"`
+	Lables   []*NLabel `orm:"-"`
 }

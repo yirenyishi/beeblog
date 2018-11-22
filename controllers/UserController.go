@@ -17,16 +17,6 @@ type UserController struct {
 }
 
 func (u *UserController) LoginPage() {
-
-	//
-	//for i:=0; i<len(tests) ; i++ {
-	//	fmt.Println(tests[i].Title,tests[i].Id)
-	//}
-	//fmt.Println(len(tests))
-	//num, err = o.Delete(&u)
-	//fmt.Printf("NUM: %d, ERR: %v\n", num, err)
-
-	//u.Ctx.WriteString("login page")
 	u.TplName = "login.html"
 }
 func (u *UserController) RegistPage() {
@@ -64,6 +54,7 @@ func (this *UserController) Login() {
 		if userpwd == user.UserPwd {
 			this.Data["json"] = models.ReurnSuccess("")
 			this.SetSession("userid", user.Id)
+			this.SetSession("nickname", user.NickName)
 			fmt.Println(this.CruSession)
 		} else {
 			this.Data["json"] = models.ReurnError(1,"用户名或密码错误")
@@ -112,7 +103,7 @@ func (this *UserController) Regist() {
 	h = md5.New()
 	h.Write([]byte(userpwd + salt))
 	userpwd = hex.EncodeToString(h.Sum(nil))
-	user = &models.User{UserName: username, UserPwd: userpwd, Salt: salt}
+	user = &models.User{UserName: username,NickName:username, UserPwd: userpwd, Salt: salt}
 	err := service.SaveUser(user)
 	if err == nil {
 		this.Data["json"] = models.ReurnSuccess("")
@@ -120,5 +111,12 @@ func (this *UserController) Regist() {
 		this.Data["json"] = models.ReurnError(1,"注册失败")
 	}
 	this.ServeJSON()
+	return
+}
+
+func (this *UserController) Logout() {
+	this.DelSession("userid")
+	this.DelSession("nickname")
+	this.Redirect("/",302)
 	return
 }

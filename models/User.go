@@ -5,6 +5,7 @@ import "time"
 type User struct {
 	Id       int64
 	UserName string    `orm:"unique"`
+	NickName string
 	UserPwd  string
 	Salt     string
 	Headimg  string

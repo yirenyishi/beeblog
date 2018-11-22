@@ -30,6 +30,18 @@ func GetBlog(id int64) (*models.Blog, error) {
 	if err != nil {
 		return nil, err
 	}
+	user := &models.User{Id: blog.UserId}
+	err = o.Read(user)
+	if err == nil {
+		blog.UserName = user.UserName
+		blog.HeadImg = user.Headimg
+	}
+	var labels []*models.NLabel
+	qs := o.QueryTable(&models.NLabel{})
+	_,err = qs.Filter("BlogId",id).All(&labels)
+	if err == nil {
+		blog.Lables = labels
+	}
 	return blog, nil
 }
 
@@ -51,10 +63,25 @@ func FindBlogs(num int, size int, cat int64, flag int) (*utils.Page, error) {
 		qs = qs.OrderBy("-Browses")
 	}
 
-	qs = qs.Limit(size, (page.PageNo-1) * size)
+	qs = qs.Limit(size, (page.PageNo-1)*size)
 	_, err = qs.All(&blogs)
 	if err != nil {
 		return nil, err
+	}
+	if len(blogs) > 0 {
+		for i := 0; i < len(blogs); i++ {
+			user := &models.User{Id: blogs[i].UserId}
+			err = o.Read(user)
+			if err == nil {
+				blogs[i].UserName = user.UserName
+				blogs[i].HeadImg = user.Headimg
+			}
+			category := &models.Category{Id: blogs[i].CategoryId}
+			err = o.Read(category)
+			if err == nil {
+				blogs[i].CateName = category.Title
+			}
+		}
 	}
 	page.List = blogs
 	return page, nil

@@ -6,8 +6,20 @@
 <div class="root-container">
 {{template "nav" .}}
     <div class="blog-root">
-        <h1>{{.Blog.Title}}</h1>
-
+        <h1 style="text-align: center">{{.Blog.Title}}</h1>
+        <div class="blog-info">
+            <span><a href="">{{.Blog.UserName}}</a></span>
+            <span><em>时间:</em>{{.Blog.Ctime.Format "2006-01-02"}}</span>
+            <span><em>阅读数:</em>{{.Blog.Browses}}</span>
+            <div class="tag-group" style="display: inline-block">
+            {{range .Blog.Lables}}
+                <label class='tag tag-info disabled'>{{.Title}}</label>
+            {{end}}
+            </div>
+        </div>
+        <div style="width: 100%">
+        {{str2html .Blog.BlogHtml}}
+        </div>
     </div>
 </div>
 </body>

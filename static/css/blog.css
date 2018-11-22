@@ -1,5 +1,13 @@
 .blog-root{
-    width: 100%;
     height: 100%;
     margin: 50px 4% 0 4%;
+}
+
+
+.blog-info{
+    text-align: center;
+}
+
+.blog-info em{
+    padding: 0 8px !important;
 }
