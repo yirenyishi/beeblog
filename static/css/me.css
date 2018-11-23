@@ -9,9 +9,16 @@
 
 .me-blog-root{
     height: 100%;
-    margin: 50px 4% 0 4%;
+    margin: 50px 4% 0 0;
 }
 
 .me-blog-list{
     margin-left: 300px;
+}
+
+.me-blog-list p{
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+    font-size: 15px;
 }

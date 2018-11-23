@@ -8,34 +8,63 @@
     <div class="me-menu">
         <div style="height: 50px;line-height: 50px">
             <a href=""><img src="/static/img/2.png" alt="头像" class="img-circle"></a>
-            <a href="" style="margin-left: 15px;font-size: 18px;text-decoration: none">{{.Blog.User.NickName}}</a>
+            <a href="" style="margin-left: 15px;font-size: 18px;text-decoration: none">{{.User.NickName}}</a>
         </div>
         <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
         <div style="display: flex;height: 30px;line-height: 30px;">
             <div style="display: inline-block;width: 100px">
                 <span>文章: </span>
-                <span>{{.Blog.User.BlogCount}}</span>
+                <span>{{.User.BlogCount}}</span>
             </div>
             <div style="display: inline-block;flex: 1">
                 <span>访问: </span>
-                <span>{{.Blog.User.BlogBrowes}}</span>
+                <span>{{.User.BlogBrowes}}</span>
             </div>
         </div>
         <div style="display: flex;height: 30px;line-height: 30px;">
             <div style="display: inline-block;width: 100px">
                 <span>评论: </span>
-                <span>{{.Blog.User.BlogComment}}</span>
+                <span>{{.User.BlogComment}}</span>
             </div>
             <div style="display: inline-block;flex: 1">
                 <span>喜欢: </span>
-                <span>{{.Blog.User.BlogLike}}</span>
+                <span>{{.User.BlogLike}}</span>
             </div>
         </div>
         <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
     </div>
     <div class="me-blog-root">
         <div class="me-blog-list">
-            <p>vue webpack方式调用amap高德地图及其UI组件</p>
+        {{range .Page.List}}
+            <p><a href="/blog/{{.Id}}">{{.Title}}</a></p>
+            <div>
+                <em>发布时间：{{.Ctime.Format "2006/01/02"}}</em>
+                <em>浏览量：{{.Browses}}</em>
+                <span style="width: 35px;margin-left: 30px"><a href="">删除</a></span>
+            </div>
+            <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
+        {{end}}
+            <div style="text-align: center">
+                <nav>
+                    <div class="pagination pagination-lg">
+                        <ul>
+                        {{if .Page.FirstPage}}
+                            {{else}}
+                            <li class="prev">
+                                <a href="/me/blog?num={{ .Page.PageNo | NAdd -1}}&flag={{.Flag}}">&laquo;</a>
+                            </li>
+                        {{end}}
+                            <li class="active"><a href="javascript:void(0)">{{.Page.PageNo}}</a></li>
+                        {{if .Page.LastPage}}
+                            {{else}}
+                            <li class="next">
+                                <a href="/me/blog?num={{ .Page.PageNo | NAdd +1}}&flag={{.Flag}}">&raquo;</a>
+                            </li>
+                        {{end}}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
         </div>
     {{template "footer"}}
     </div>

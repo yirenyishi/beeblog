@@ -13,7 +13,7 @@ type PageController struct {
 func (this *PageController) Blog() {
 	cats, err := service.GetCats()
 	if err != nil {
-		this.Redirect("500.html", 302)
+		this.Redirect("/500", 302)
 		return
 	}
 	this.Data["Cats"] = cats

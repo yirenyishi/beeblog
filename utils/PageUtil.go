@@ -16,6 +16,7 @@ type Page struct {
 }
 
 func PageUtil(count64 int64, pageNo int, pageSize int) *Page {
+	fmt.Println("count",count64,"paheNo",pageNo,"pageSize",pageSize)
 	string := strconv.FormatInt(count64, 10)
 	count, _ := strconv.Atoi(string)
 	tp := count / pageSize

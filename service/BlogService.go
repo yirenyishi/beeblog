@@ -23,6 +23,16 @@ func count(num int, size int, cat int64) (*utils.Page, error) {
 	return utils.PageUtil(totalCount, num, size), nil
 }
 
+func countByUser(num int, size int, uid int64) (*utils.Page, error) {
+	o := orm.NewOrm()
+	qs := o.QueryTable(&models.Blog{})
+	totalCount, err := qs.Filter("Delflag", 0).Filter("UserId", uid).Count()
+	if err != nil {
+		return nil, err
+	}
+	return utils.PageUtil(totalCount, num, size), nil
+}
+
 func EditBlogBrows(id int64) {
 	o := orm.NewOrm()
 	blog := &models.Blog{Id: id}
@@ -47,7 +57,7 @@ func GetBlog(id int64) (*models.Blog, error) {
 	}
 	var labels []*models.NLabel
 	qs := o.QueryTable(&models.NLabel{})
-	_,err = qs.Filter("BlogId",id).All(&labels)
+	_, err = qs.Filter("BlogId", id).All(&labels)
 	if err == nil {
 		blog.Lables = labels
 	}
@@ -118,4 +128,28 @@ func SaveBlog(blog *models.Blog, strs []string) error {
 		o.Commit()
 	}
 	return nil
+}
+
+func MeBlogs(num int, size int, flag int, uid int64) (*utils.Page, error) {
+	page, err := countByUser(num, size, uid)
+	if err != nil {
+		return nil, err
+	}
+	var blogs []*models.Blog
+	o := orm.NewOrm()
+	qs := o.QueryTable(&models.Blog{})
+	qs = qs.Filter("Delflag", 0)
+	qs = qs.Filter("UserId", uid)
+	if flag == 0 {
+		qs = qs.OrderBy("-Ctime")
+	} else {
+		qs = qs.OrderBy("-Browses")
+	}
+	qs = qs.Limit(size, (page.PageNo-1)*size)
+	_, err = qs.All(&blogs)
+	if err != nil {
+		return nil, err
+	}
+	page.List = blogs
+	return page, nil
 }

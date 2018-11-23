@@ -41,7 +41,7 @@ func (this *BlogController) Get() {
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	blog, err := service.GetBlog(id)
 	if err != nil {
-		this.Redirect("/500.html",302)
+		this.Redirect("/500",302)
 		return
 	}
 	this.Data["Blog"] = blog
@@ -56,7 +56,7 @@ func (this *BlogController) Get() {
 func (this *BlogController) New() {
 	uid := this.GetSession("userid")
 	if uid == nil {
-		this.Redirect("/login.html", 302)
+		this.Redirect("login.html", 302)
 		return
 	}
 	this.TplName = "newblog.html"
@@ -68,7 +68,7 @@ func (this *BlogController) Blog1() {
 func (this *BlogController) BlogsPage() {
 	cats, errcat := service.GetCats()
 	if errcat != nil {
-		this.Redirect("500.html", 302)
+		this.Redirect("/500", 302)
 		return
 	}
 	num, _ := this.GetInt("num")
@@ -87,7 +87,7 @@ func (this *BlogController) BlogsPage() {
 	fmt.Println("nelson page", num, size, cat)
 	pages, err := service.FindBlogs(num, size, cat, flag)
 	if err != nil {
-		this.Redirect("500.html", 302)
+		this.Redirect("/500", 302)
 		return
 	}
 

@@ -28,8 +28,7 @@
                 {{/*</form>*/}}
                 <ul class="nav navbar-nav navbar-right">
                 {{if .IsLogin }}
-                    {{/*<li><a href="#">个人中心</a></li>*/}}
-                    <li><a href="/" style="padding: 0;"><img src="/static/img/2.png" alt="头像" class="img-circle"></a></li>
+                    <li><a href="/me/blog" style="padding: 0;"><img src="/static/img/2.png" alt="头像" class="img-circle"></a></li>
                 {{else}}
                     <li><a href="/login">登录</a></li>
                     <li><a href="/regist">注册</a></li>

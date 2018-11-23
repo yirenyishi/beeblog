@@ -8,6 +8,13 @@ import (
 type UserService struct {
 }
 
+func GetUser(id int64) (*models.User,error) {
+	o := orm.NewOrm()
+	user := &models.User{Id:id}
+	err := o.Read(user)
+	return user,err
+}
+
 func FindByUserName(username string) (*models.User, error) {
 	o := orm.NewOrm()
 	qs := o.QueryTable(&models.User{})
