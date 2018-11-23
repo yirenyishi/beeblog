@@ -1,0 +1,17 @@
+.me-menu{
+    position: fixed;
+    top: 60px;
+    left: 20px;
+    width: 260px;
+    height: 100%;
+    background-color: #f9f9f9;
+}
+
+.me-blog-root{
+    height: 100%;
+    margin: 50px 4% 0 4%;
+}
+
+.me-blog-list{
+    margin-left: 300px;
+}

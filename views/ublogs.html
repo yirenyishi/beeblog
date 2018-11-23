@@ -1,11 +1,11 @@
 {{template "header"}}
 <title>博客 - 个人随笔</title>
-<link type="text/css" rel="styleSheet" href="/static/css/blog.css"/>
+<link type="text/css" rel="styleSheet" href="/static/css/me.css"/>
 </head>
 <body>
 <div class="root-container">
 {{template "nav" .}}
-    <div class="blog-user">
+    <div class="me-menu">
         <div style="height: 50px;line-height: 50px">
             <a href=""><img src="/static/img/2.png" alt="头像" class="img-circle"></a>
             <a href="" style="margin-left: 15px;font-size: 18px;text-decoration: none">{{.Blog.User.NickName}}</a>
@@ -33,20 +33,9 @@
         </div>
         <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
     </div>
-    <div class="blog-root">
-        <h1 style="text-align: center">{{.Blog.Title}}</h1>
-        <div class="blog-info">
-            <span><a href="">{{.Blog.User.NickName}}</a></span>
-            <span><em>时间:</em>{{.Blog.Ctime.Format "2006-01-02"}}</span>
-            <span><em>阅读数:</em>{{.Blog.Browses}}</span>
-            <div class="tag-group" style="display: inline-block">
-            {{range .Blog.Lables}}
-                <label class='tag tag-info disabled'>{{.Title}}</label>
-            {{end}}
-            </div>
-        </div>
-        <div style="width: 100%">
-        {{str2html .Blog.BlogHtml}}
+    <div class="me-blog-root">
+        <div class="me-blog-list">
+            <p>vue webpack方式调用amap高德地图及其UI组件</p>
         </div>
     {{template "footer"}}
     </div>

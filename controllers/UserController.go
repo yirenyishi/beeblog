@@ -23,6 +23,10 @@ func (u *UserController) RegistPage() {
 	u.TplName = "regist.html"
 }
 
+func (u *UserController) PersonBlog() {
+	u.TplName = "ublogs.html"
+}
+
 func (this *UserController) Login() {
 	username := this.GetString("username")
 	userpwd := this.GetString("userpwd")
