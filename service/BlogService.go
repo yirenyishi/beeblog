@@ -23,6 +23,16 @@ func count(num int, size int, cat int64) (*utils.Page, error) {
 	return utils.PageUtil(totalCount, num, size), nil
 }
 
+func EditBlogBrows(id int64) {
+	o := orm.NewOrm()
+	blog := &models.Blog{Id: id}
+	err := o.Read(blog)
+	if err == nil {
+		blog.Browses += 1
+		o.Update(blog, "Browses")
+	}
+}
+
 func GetBlog(id int64) (*models.Blog, error) {
 	o := orm.NewOrm()
 	blog := &models.Blog{Id: id}

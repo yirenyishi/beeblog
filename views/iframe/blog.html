@@ -28,11 +28,9 @@
         <span>开发语言:</span>
         <span>
             <select class="form-control " style="width: 150px;display: inline-block;height: 32px" id="catory">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+            {{range .Cats}}
+                <option value="{{.Id}}">{{.Title}}</option>
+            {{end}}
             </select>
         </span>
     </div>
@@ -48,8 +46,8 @@
         <button type="button" class="btn btn-primary" style="height: 26px;margin-top: -5px;" id="addBtn">添加</button>
     </div>
     <div class="common" style="text-align: center">
-        <button type="button" class="btn btn-primary" id="saveBtn">首要</button>
-        <button type="button" class="btn btn-warning" id="cacelBtn">取消</button>
+        <button type="button" class="btn btn-primary btn-xl" id="saveBtn">保存</button>
+        <button type="button" class="btn btn-warning btn-xl" id="cacelBtn">取消</button>
     </div>
 </div>
 </body>

@@ -33,3 +33,32 @@ func SaveUser(user *models.User) error {
 	}
 	return nil
 }
+
+func CountBlog(uid int64) {
+	o := orm.NewOrm()
+	totalItem := 0
+	err := o.Raw("SELECT count(*) FROM blog where delflag = 0 and user_id =? ", uid).QueryRow(&totalItem) //获取总条数
+	if err != nil {
+		return
+	}
+	user := &models.User{Id: uid}
+	err = o.Read(user)
+	if err != nil {
+		return
+	}
+	user.BlogCount = totalItem
+	o.Update(user, "BlogCount")
+	return
+}
+func CountBrows(uid int64){
+	o := orm.NewOrm()
+	browses := 0
+	o.Raw("UPDATE `user` SET `blog_browes` = (select  SUM(browses) browses from blog where user_id = ?1) WHERE `id` = ?2 ", uid,uid).QueryRow(&browses) //获取总条数
+	return
+}
+func CountComments(uid int64) {
+
+}
+func CountLike(uid int64) {
+
+}

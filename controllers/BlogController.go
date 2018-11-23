@@ -24,7 +24,7 @@ func (this *BlogController) Save() {
 	catory := this.GetString("catory")
 	catoryId, _ := strconv.ParseInt(catory, 10, 64)
 	labels := this.GetStrings("labels[]")
-	blog := &models.Blog{Title: title, BlogHtml: blogHtml, CategoryId: catoryId, UserId: 1}
+	blog := &models.Blog{Title: title, BlogHtml: blogHtml, CategoryId: catoryId, UserId: uid.(int64)}
 	err := service.SaveBlog(blog, labels)
 	if err == nil {
 		this.Data["json"] = models.ReurnSuccess("")
@@ -32,6 +32,7 @@ func (this *BlogController) Save() {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
+	service.CountBlog(uid.(int64))
 	return
 }
 
@@ -39,12 +40,17 @@ func (this *BlogController) Get() {
 	idStr := this.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	blog, err := service.GetBlog(id)
-	if err == nil {
-		this.Data["Blog"] = blog
+	if err != nil {
+		this.Redirect("/500.html",302)
+		return
 	}
+	this.Data["Blog"] = blog
 	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.TplName = "blog.html"
+	service.CountBrows(blog.UserId)
+	service.EditBlogBrows(id)
+	return
 }
 
 func (this *BlogController) New() {
