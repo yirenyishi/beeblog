@@ -41,7 +41,7 @@ func (this *BlogController) Get() {
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	blog, err := service.GetBlog(id)
 	if err != nil {
-		this.Redirect("/500",302)
+		this.Redirect("/500", 302)
 		return
 	}
 	this.Data["Blog"] = blog
@@ -50,6 +50,39 @@ func (this *BlogController) Get() {
 	this.TplName = "blog.html"
 	service.CountBrows(blog.UserId)
 	service.EditBlogBrows(id)
+	return
+}
+
+func (this *BlogController) Del() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Data["json"] = models.ReurnError(401, "")
+		this.ServeJSON()
+		return
+	}
+	idStr := this.Ctx.Input.Param(":id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	blog, err := service.GetBlog(id)
+	if err != nil {
+		this.Data["json"] = models.ReurnError(500, "")
+		this.ServeJSON()
+		return
+	}
+	if blog.UserId != uid.(int64) {
+		this.Data["json"] = models.ReurnError(503, "")
+		this.ServeJSON()
+		return
+	}
+	blog.Delflag = 1
+	err = service.DelBlog(blog)
+	if err!=nil {
+		this.Data["json"] = models.ReurnError(500, "")
+		this.ServeJSON()
+		return
+	}
+	this.Data["json"] = models.ReurnSuccess("")
+	this.ServeJSON()
+	service.CountBlog(uid.(int64))
 	return
 }
 

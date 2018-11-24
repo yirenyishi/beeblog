@@ -48,7 +48,7 @@
         <nav>
             <a href="/" target="_blank">首页</a>
             <a href="javascript:void(0)" id="newNote">新增笔记</a>
-            <a href="javascript:void(0)" id="newNoteColl">管理文件夹</a>
+            <a href="/me/note" id="newNoteColl">管理文件夹</a>
             <a href="javascript:void(0)" id="delNote">删除笔记</a>
             <a href="javascript:void(0)">个人中心</a>
         </nav>
@@ -214,31 +214,6 @@
                         }, 'json')
             }, function () {
 
-            });
-        })
-
-        $("#newNoteColl").click(function () {
-            layer.prompt({title: '请输入文件夹名称'}, function (val, index) {
-                if (val.trim().length < 3) {
-                    layer.msg('文件夹名称最低三个字哦', function () {
-                    });
-                    layer.close(index);
-                    return
-                }
-                $.post('/notecoll/save', {
-                            title: val.trim()
-                        },
-                        function (data) {
-                            if (!data.Status) {
-                                parent.layer.msg("保存成功", {icon: 6});
-                                var child = '<li class="item-has-children">\n' +
-                                        '            <a href="javascript:void(0)">' + data.Titled + '</a>\n' +
-                                        '            <ul class="sub-menu" value="' + data.Id + '"></ul>\n' +
-                                        '        </li> '
-                                $(".cd-navigation").append(child)
-                                layer.close(index);
-                            }
-                        }, 'json')
             });
         })
     })

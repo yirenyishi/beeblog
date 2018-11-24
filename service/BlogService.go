@@ -64,6 +64,12 @@ func GetBlog(id int64) (*models.Blog, error) {
 	return blog, nil
 }
 
+func DelBlog(blog *models.Blog) error {
+	o := orm.NewOrm()
+	_, err := o.Update(blog, "Delflag")
+	return err
+}
+
 func FindBlogs(num int, size int, cat int64, flag int) (*utils.Page, error) {
 	page, err := count(num, size, cat)
 	if err != nil {

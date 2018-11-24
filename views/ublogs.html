@@ -15,12 +15,15 @@
                 <li class="active">管理博客</li>
             </ol>
         {{range .Page.List}}
-            <p><a href="/blog/{{.Id}}">{{.Title}}</a></p>
             <div>
-                <em>发布时间：{{.Ctime.Format "2006/01/02"}}</em>
-                <em>浏览量：{{.Browses}}</em>
-                <span style="width: 35px;margin-left: 30px;"><a href="" style="color: #F84822">删除</a></span>
-                <span style="width: 35px;margin-left: 10px;"><a href="" style="color: #F84822">编辑</a></span>
+                <p><a href="/blog/{{.Id}}">{{.Title}}</a></p>
+                <div>
+                    <em>发布时间：{{.Ctime.Format "2006/01/02"}}</em>
+                    <em>浏览量：{{.Browses}}</em>
+                    <span style="width: 35px;margin-left: 30px;"><a href="javascript:void(0)" style="color: #F84822"
+                                                                    onclick="del(this,{{.Id}})">删除</a></span>
+                    <span style="width: 35px;margin-left: 10px;"><a href="" style="color: #F84822">编辑</a></span>
+                </div>
             </div>
             <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
         {{end}}
@@ -51,4 +54,27 @@
 </div>
 </div>
 </body>
+<script>
+    function del(obj, id) {
+        layer.confirm('删除后将无法恢复', {
+            btn: ['确认', '手滑了'] //按钮
+        }, function () {
+            $.post('/blog/del/' + id,
+                    function (data) {
+                        if (data.Status == 0) {
+                            $(obj).parent().parent().parent().remove()
+                            layer.msg("删除成功", {icon: 6});
+                        } else if (data.Status == 401) {
+                            window.location.href = "/login"
+                        } else if (data.Status == 403) {
+                            layer.msg("暂无权限", {icon: 5});
+                        } else {
+                            layer.msg("服务器异常", {icon: 5});
+                        }
+                    }, 'json')
+        }, function () {
+
+        });
+    }
+</script>
 </html>

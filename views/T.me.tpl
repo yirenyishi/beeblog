@@ -27,7 +27,7 @@
     </div>
     <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
     <p {{if .IsMeBlog}}class="active"{{end}}><span></span><a href="/me/blog">我的博客</a></p>
-    <p {{if .IsMeNote}}class="active"{{end}}><span></span><a href="/me/note">我的笔记</a></p>
+    <p {{if .IsMeNote}}class="active"{{end}}><span></span><a href="/me/note">笔记文件夹</a></p>
     <p {{if .IsMeLike}}class="active"{{end}}><span></span><a href="/me/like">我的收藏</a></p>
     <p {{if .IsMeInfo}}class="active"{{end}}><span></span><a href="/me/info">我的资料</a></p>
 </div>

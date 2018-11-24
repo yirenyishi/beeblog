@@ -16,7 +16,7 @@ func (this *NoteController) Save() {
 	title := this.GetString("title")
 	uid := this.GetSession("userid")
 	if uid == nil {
-		this.Data["json"] = models.ReurnError(401,"保存失败")
+		this.Data["json"] = models.ReurnError(401, "保存失败")
 		this.ServeJSON()
 		return
 	}
@@ -25,7 +25,7 @@ func (this *NoteController) Save() {
 	if err == nil {
 		this.Data["json"] = note
 	} else {
-		this.Data["json"] = models.ReurnError(500,"保存失败")
+		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
 	return
@@ -35,20 +35,20 @@ func (this *NoteController) Edit() {
 	noteHtml := this.GetString("noteHtml")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	uid := this.GetSession("userid")
-	if uid == nil{
+	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
 		this.ServeJSON()
 		return
 	}
-	note := &models.Note{Id:id}
+	note := &models.Note{Id: id}
 	err1 := service.GetNote(note)
 	if err1 != nil {
-		this.Data["json"] = models.ReurnError(500,"保存失败")
+		this.Data["json"] = models.ReurnError(500, "保存失败")
 		this.ServeJSON()
 		return
 	}
 	if uid != note.UserId {
-		this.Data["json"] = models.ReurnError(403,"")
+		this.Data["json"] = models.ReurnError(403, "")
 		this.ServeJSON()
 		return
 	}
@@ -57,7 +57,7 @@ func (this *NoteController) Edit() {
 	if err == nil {
 		this.Data["json"] = models.ReurnSuccess("")
 	} else {
-		this.Data["json"] = models.ReurnError(500,"保存失败")
+		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
 	return
@@ -66,7 +66,7 @@ func (this *NoteController) Edit() {
 func (this *NoteController) SaveNoteColl() {
 	title := this.GetString("title")
 	uid := this.GetSession("userid")
-	if uid == nil{
+	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
 		this.ServeJSON()
 		return
@@ -74,9 +74,28 @@ func (this *NoteController) SaveNoteColl() {
 	note := &models.NoteColl{Title: title, UserId: uid.(int64)}
 	err := service.SaveNoteColl(note)
 	if err == nil {
-		this.Data["json"] = note
+		this.Data["json"] = models.ReurnSuccess("")
 	} else {
-		this.Data["json"] = models.ReurnError(500,"保存失败")
+		this.Data["json"] = models.ReurnError(500, "保存失败")
+	}
+	this.ServeJSON()
+	return
+}
+
+func (this *NoteController) EditNoteColl() {
+	title := this.GetString("title")
+	id, _ := this.GetInt64("id")
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Data["json"] = models.ReurnError(401, "")
+		this.ServeJSON()
+		return
+	}
+	err := service.EditNoteColl(title, id, uid.(int64))
+	if err == nil {
+		this.Data["json"] = models.ReurnSuccess("")
+	} else {
+		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
 	return
@@ -84,7 +103,7 @@ func (this *NoteController) SaveNoteColl() {
 
 func (this *NoteController) Get() {
 	uid := this.GetSession("userid")
-	if uid == nil{
+	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
 		this.ServeJSON()
 		return
@@ -104,9 +123,28 @@ func (this *NoteController) Get() {
 	this.ServeJSON()
 	return
 }
+func (this *NoteController) DelNoteColl() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Data["json"] = models.ReurnError(401, "")
+		this.ServeJSON()
+		return
+	}
+	idStr := this.Ctx.Input.Param(":id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	err := service.DelNoteColl(id, uid.(int64))
+	if err != nil {
+		this.Data["json"] = models.ReurnError(500, "")
+	} else {
+		this.Data["json"] = models.ReurnSuccess("")
+	}
+	this.ServeJSON()
+	return
+}
+
 func (this *NoteController) Delete() {
 	uid := this.GetSession("userid")
-	if uid == nil{
+	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
 		this.ServeJSON()
 		return
@@ -116,7 +154,7 @@ func (this *NoteController) Delete() {
 	note := &models.Note{Id: id}
 	err := service.GetNote(note)
 	if err != nil {
-		this.Data["json"] = models.ReurnError(500,"")
+		this.Data["json"] = models.ReurnError(500, "")
 		this.ServeJSON()
 		return
 	}
@@ -127,7 +165,7 @@ func (this *NoteController) Delete() {
 	}
 	err = service.DelNote(note)
 	if err != nil {
-		this.Data["json"] = models.ReurnError(500,"")
+		this.Data["json"] = models.ReurnError(500, "")
 		this.ServeJSON()
 		return
 	}

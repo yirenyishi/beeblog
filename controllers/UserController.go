@@ -48,6 +48,8 @@ func (this *UserController) PersonBlog() {
 			return
 		}
 	}
+	this.Data["NickName"] = this.GetSession("nickname")
+	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.Data["Page"] = page
 	this.Data["IsMeBlog"] = true
 	this.Data["Flag"] = 0
@@ -85,6 +87,8 @@ func (this *UserController) PersonNote() {
 			return
 		}
 	}
+	this.Data["NickName"] = this.GetSession("nickname")
+	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.Data["Note"] = notColl
 	this.Data["IsMeNote"] = true
 	this.Data["User"] = user

@@ -13,6 +13,7 @@
                 <li>个人中心</li>
                 <li>笔记文件夹</li>
                 <li class="active">管理文件夹</li>
+                <button type="button" class="btn btn-primary" style="margin-left: 30px" id="newBtn">新增</button>
             </ol>
         </div>
 
@@ -20,8 +21,10 @@
         <div class="me-blog-list">
             <div style="display: flex">
                 <p style="flex:1">{{.Title}}<span class="badge" style="margin-left: 3px">{{.Count}}</span></p>
-                <span style="width: 35px;"><a href="" style="color: #F84822">删除</a></span>
-                <span style="width: 35px;margin-left: 10px;"><a href="" style="color: #F84822">编辑</a></span>
+                <span style="width: 35px;"><a href="javascript:void(0)" style="color: #F84822"
+                                              onclick="del(this,{{.Id}})">删除</a></span>
+                <span style="width: 42px;margin-left: 10px;"><a href="javascript:void(0)" style="color: #F84822"
+                                                                onclick="rename(this,{{.Id}},{{.Title}})">重命名</a></span>
             </div>
             <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
         </div>
@@ -34,4 +37,78 @@
 </div>
 </div>
 </body>
+<script>
+    function rename(obj, id, name) {
+        layer.prompt({title: '请输入文件夹名称',value: name}, function (val, index) {
+            if (val.trim().length < 3) {
+                layer.msg('文件夹名称最低三个字哦', function () {
+                });
+                layer.close(index);
+                return
+            }
+            $.post('/notecoll/edit', {
+                        title: val.trim(),
+                        id: id
+                    },
+                    function (data) {
+                        if (data.Status == 0) {
+                            layer.close(index);
+                            layer.msg("修改成功", {icon: 6});
+                            window.location.href=window.location.href
+                        } else if (data.Status == 401) {
+                            window.location.href = "/login"
+                        } else if (data.Status == 403) {
+                            layer.msg("暂无权限", {icon: 5});
+                        } else {
+                            layer.msg("服务器异常", {icon: 5});
+                        }
+                    }, 'json')
+        });
+    }
+
+    function del(obj, id) {
+        layer.confirm('文件夹下的所有笔记都将会删除', {
+            btn: ['确认', '手滑了'] //按钮
+        }, function () {
+            $.post('/notecol/del/' + id,
+                    function (data) {
+                        if (data.Status == 0) {
+                            $(obj).parent().parent().remove()
+                            layer.msg("删除成功", {icon: 6});
+                        } else if (data.Status == 401) {
+                            window.location.href = "/login"
+                        } else if (data.Status == 403) {
+                            layer.msg("暂无权限", {icon: 5});
+                        } else {
+                            layer.msg("服务器异常", {icon: 5});
+                        }
+                    }, 'json')
+        }, function () {
+
+        });
+    }
+
+    $(function () {
+        $("#newBtn").click(function () {
+            layer.prompt({title: '请输入文件夹名称'}, function (val, index) {
+                if (val.trim().length < 3) {
+                    layer.msg('文件夹名称最低三个字哦', function () {
+                    });
+                    layer.close(index);
+                    return
+                }
+                $.post('/notecoll/save', {
+                            title: val.trim()
+                        },
+                        function (data) {
+                            if (data.Status == 0) {
+                                layer.close(index);
+                                parent.layer.msg("保存成功", {icon: 6});
+                                window.location.href=window.location.href
+                            }
+                        }, 'json')
+            });
+        })
+    })
+</script>
 </html>
