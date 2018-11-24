@@ -139,7 +139,7 @@ func (this *NoteController) Delete() {
 func (this *NoteController) Note() {
 	uid := this.GetSession("userid")
 	if uid == nil {
-		this.Redirect("/login.html", 302)
+		this.Redirect("/login", 302)
 	}
 	noteColls, err := service.GetNoteColl(uid.(int64))
 	if err == nil {

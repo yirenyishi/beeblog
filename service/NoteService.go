@@ -33,7 +33,7 @@ func GetNote(note *models.Note) error {
 
 func DelNote(note *models.Note) error {
 	o := orm.NewOrm()
-	_,err := o.Delete(note)
+	_, err := o.Delete(note)
 	return err
 }
 
@@ -43,6 +43,15 @@ func GetNoteByPid(pid int64) ([]*models.Note, error) {
 	qs := o.QueryTable(models.Note{})
 	_, err := qs.Filter("Pid", pid).All(&notes)
 	return notes, err
+}
+
+func CountNote(pid int64) (int64, error) {
+	o := orm.NewOrm()
+	totalCount, err := o.QueryTable(&models.Note{}).Filter("Pid", pid).Count()
+	if err != nil {
+		return 0,err
+	}
+	return totalCount, nil
 }
 
 func SaveNoteColl(note *models.NoteColl) error {

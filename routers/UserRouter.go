@@ -15,5 +15,6 @@ func init() {
 
 
 	beego.Router("/me/blog", &controllers.UserController{}, "get:PersonBlog")
+	beego.Router("/me/note", &controllers.UserController{}, "get:PersonNote")
 
 }

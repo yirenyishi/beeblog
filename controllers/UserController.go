@@ -49,6 +49,76 @@ func (this *UserController) PersonBlog() {
 		}
 	}
 	this.Data["Page"] = page
+	this.Data["IsMeBlog"] = true
+	this.Data["Flag"] = 0
+	this.Data["User"] = user
+	this.TplName = "ublogs.html"
+}
+
+func (this *UserController) PersonNote() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Redirect("/login", 302)
+		return
+	}
+	notColl, err := service.GetNoteColl(uid.(int64))
+	if err == nil {
+		if len(notColl) > 0 {
+			for i := 0; i < len(notColl); i++ {
+				count, _ := service.CountNote(notColl[i].Id)
+				notColl[i].Count = count
+			}
+		}
+	} else {
+		notColl = make([]*models.NoteColl, 0)
+	}
+	if err != nil {
+		if uid == nil {
+			this.Redirect("/500", 302)
+			return
+		}
+	}
+	user, uerr := service.GetUser(uid.(int64))
+	if uerr != nil {
+		if uid == nil {
+			this.Redirect("/500", 302)
+			return
+		}
+	}
+	this.Data["Note"] = notColl
+	this.Data["IsMeNote"] = true
+	this.Data["User"] = user
+	this.TplName = "unote.html"
+}
+
+func (this *UserController) PersonLike() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Redirect("/login", 302)
+		return
+	}
+	size := 15
+	num, _ := this.GetInt("num")
+	if num <= 0 {
+		num = 1
+	}
+	flag, _ := this.GetInt("flag")
+	page, err := service.MeBlogs(num, size, flag, uid.(int64))
+	if err != nil {
+		if uid == nil {
+			this.Redirect("/500", 302)
+			return
+		}
+	}
+	user, uerr := service.GetUser(uid.(int64))
+	if uerr != nil {
+		if uid == nil {
+			this.Redirect("/500", 302)
+			return
+		}
+	}
+	this.Data["Page"] = page
+	this.Data["IsMeBlog"] = true
 	this.Data["Flag"] = 0
 	this.Data["User"] = user
 	this.TplName = "ublogs.html"

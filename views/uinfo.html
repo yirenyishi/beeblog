@@ -9,11 +9,6 @@
 
     <div class="me-blog-root">
         <div class="me-blog-list">
-            <ol class="breadcrumb">
-                <li>个人中心</li>
-                <li>博客列表</li>
-                <li class="active">管理博客</li>
-            </ol>
         {{range .Page.List}}
             <p><a href="/blog/{{.Id}}">{{.Title}}</a></p>
             <div>

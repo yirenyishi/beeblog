@@ -1,0 +1,37 @@
+{{template "header"}}
+<title>博客 - 个人随笔</title>
+<link type="text/css" rel="styleSheet" href="/static/css/me.css"/>
+</head>
+<body>
+<div class="root-container">
+{{template "nav" .}}
+{{template "memenu" .}}
+
+    <div class="me-blog-root">
+        <div class="me-blog-list">
+            <ol class="breadcrumb">
+                <li>个人中心</li>
+                <li>笔记文件夹</li>
+                <li class="active">管理文件夹</li>
+            </ol>
+        </div>
+
+    {{range .Note}}
+        <div class="me-blog-list">
+            <div style="display: flex">
+                <p style="flex:1">{{.Title}}<span class="badge" style="margin-left: 3px">{{.Count}}</span></p>
+                <span style="width: 35px;"><a href="" style="color: #F84822">删除</a></span>
+                <span style="width: 35px;margin-left: 10px;"><a href="" style="color: #F84822">编辑</a></span>
+            </div>
+            <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
+        </div>
+
+    {{end}}
+        <div class="me-footer">
+        {{template "footer"}}
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
