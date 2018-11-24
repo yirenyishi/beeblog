@@ -44,6 +44,15 @@ func (this *BlogController) Get() {
 		this.Redirect("/500", 302)
 		return
 	}
+	uid := this.GetSession("userid")
+	if uid != nil {
+		if blog.UserId == uid.(int64) {
+			this.Data["IsAuthor"] = true
+		}
+		if flag, err := service.IsLike(id, uid.(int64)); err == nil {
+			this.Data["IsLike"] = flag
+		}
+	}
 	this.Data["Blog"] = blog
 	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
@@ -75,7 +84,7 @@ func (this *BlogController) Del() {
 	}
 	blog.Delflag = 1
 	err = service.DelBlog(blog)
-	if err!=nil {
+	if err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
 		this.ServeJSON()
 		return
@@ -132,5 +141,4 @@ func (this *BlogController) BlogsPage() {
 	this.Data["Flag"] = flag
 	this.Data["IsBlog"] = true
 	this.TplName = "blogs.html"
-
 }

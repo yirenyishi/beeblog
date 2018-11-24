@@ -36,6 +36,11 @@
     <div class="blog-root">
         <h1 style="text-align: center">{{.Blog.Title}}</h1>
         <div class="blog-info">
+        {{if .IsLike}}
+            <span><img src="/static/img/liked.png" alt="" onclick="unlike({{.Blog.Id}})"></span>
+        {{else}}
+            <span><img src="/static/img/like.png" alt="" onclick="like({{.Blog.Id}})"></span>
+        {{end}}
             <span><a href="">{{.Blog.User.NickName}}</a></span>
             <span><em>时间:</em>{{.Blog.Ctime.Format "2006-01-02"}}</span>
             <span><em>阅读数:</em>{{.Blog.Browses}}</span>
@@ -53,4 +58,35 @@
 </div>
 </div>
 </body>
+<script>
+    function like(id) {
+        $.get('/like/' + id,
+                function (data) {
+                    if (data.Status == 0) {
+                        window.location.href = window.location.href
+                    } else if (data.Status == 401) {
+                        window.location.href = "/login"
+                    } else if (data.Status == 403) {
+                        layer.msg("暂无权限", {icon: 5});
+                    } else {
+                        layer.msg("服务器异常", {icon: 5});
+                    }
+                }, 'json')
+    }
+
+    function unlike(id) {
+        $.get('/unlike/' + id,
+                function (data) {
+                    if (data.Status == 0) {
+                        window.location.href = window.location.href
+                    } else if (data.Status == 401) {
+                        window.location.href = "/login"
+                    } else if (data.Status == 403) {
+                        layer.msg("暂无权限", {icon: 5});
+                    } else {
+                        layer.msg("服务器异常", {icon: 5});
+                    }
+                }, 'json')
+    }
+</script>
 </html>

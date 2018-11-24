@@ -6,8 +6,6 @@ import (
 	"beeblog/utils"
 )
 
-type BlogService struct {
-}
 
 func count(num int, size int, cat int64) (*utils.Page, error) {
 	o := orm.NewOrm()

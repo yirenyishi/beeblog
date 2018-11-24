@@ -8,11 +8,11 @@ import (
 type UserService struct {
 }
 
-func GetUser(id int64) (*models.User,error) {
+func GetUser(id int64) (*models.User, error) {
 	o := orm.NewOrm()
-	user := &models.User{Id:id}
+	user := &models.User{Id: id}
 	err := o.Read(user)
-	return user,err
+	return user, err
 }
 
 func FindByUserName(username string) (*models.User, error) {
@@ -43,29 +43,22 @@ func SaveUser(user *models.User) error {
 
 func CountBlog(uid int64) {
 	o := orm.NewOrm()
-	totalItem := 0
-	err := o.Raw("SELECT count(*) FROM blog where delflag = 0 and user_id =? ", uid).QueryRow(&totalItem) //获取总条数
-	if err != nil {
-		return
-	}
-	user := &models.User{Id: uid}
-	err = o.Read(user)
-	if err != nil {
-		return
-	}
-	user.BlogCount = totalItem
-	o.Update(user, "BlogCount")
+	browses := 0
+	o.Raw("UPDATE `user` SET `blog_count` = (SELECT count(id) FROM blog where delflag = 0 and user_id =?1 ) WHERE `id` = ?2 ", uid, uid).QueryRow(&browses)
 	return
 }
-func CountBrows(uid int64){
+func CountBrows(uid int64) {
 	o := orm.NewOrm()
 	browses := 0
-	o.Raw("UPDATE `user` SET `blog_browes` = (select  SUM(browses) browses from blog where user_id = ?1) WHERE `id` = ?2 ", uid,uid).QueryRow(&browses) //获取总条数
+	o.Raw("UPDATE `user` SET `blog_browes` = (select  SUM(browses) browses from blog where user_id = ?1) WHERE `id` = ?2 ", uid, uid).QueryRow(&browses) //获取总条数
 	return
 }
 func CountComments(uid int64) {
 
 }
 func CountLike(uid int64) {
-
+	o := orm.NewOrm()
+	browses := 0
+	o.Raw("UPDATE `user` SET `blog_like` = (select count(id) from like where user_id = ?1) WHERE `id` = ?2 ", uid, uid).QueryRow(&browses)
+	return
 }
