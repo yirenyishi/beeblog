@@ -8,5 +8,5 @@ type Like struct {
 	BlogId int64
 	Ltime  time.Time `orm:"auto_now_add;type(datetime)"`
 
-	Note Note `orm:"-"`
+	Blog *Blog `orm:"-"`
 }

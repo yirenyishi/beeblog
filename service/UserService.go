@@ -62,3 +62,7 @@ func CountLike(uid int64) {
 	o.Raw("UPDATE `user` SET `blog_like` = (select count(id) from like where user_id = ?1) WHERE `id` = ?2 ", uid, uid).QueryRow(&browses)
 	return
 }
+
+func EditUser(user *models.User) (int64, error){
+	return orm.NewOrm().Update(user)
+}

@@ -11,10 +11,13 @@ func init() {
 	beego.Router("/login", &controllers.UserController{}, "post:Login")
 	beego.Router("/regist", &controllers.UserController{}, "post:Regist")
 	beego.Router("/regist", &controllers.UserController{}, "get:RegistPage")
+	beego.Router("/user/edit", &controllers.UserController{}, "post:Edit")
 
 
 
 	beego.Router("/me/blog", &controllers.UserController{}, "get:PersonBlog")
 	beego.Router("/me/note", &controllers.UserController{}, "get:PersonNote")
+	beego.Router("/me/like", &controllers.UserController{}, "get:PersonLike")
+	beego.Router("/me/info", &controllers.UserController{}, "get:PersonInfo")
 
 }

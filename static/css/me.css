@@ -65,3 +65,9 @@
     height: 110px;
     padding: 0 4%;
 }
+.info-header{
+    flex: 1;
+}
+.info-header span{
+    margin-right: 6px;
+}

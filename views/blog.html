@@ -32,6 +32,12 @@
             </div>
         </div>
         <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
+
+    {{range .Top}}
+        <div>
+            <a href=""><p style="max-width:245px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{.Title}}</p></a>
+        </div>
+    {{end}}
     </div>
     <div class="blog-root">
         <h1 style="text-align: center">{{.Blog.Title}}</h1>

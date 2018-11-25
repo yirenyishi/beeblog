@@ -6,44 +6,70 @@
 <div class="root-container">
 {{template "nav" .}}
 {{template "memenu" .}}
-
     <div class="me-blog-root">
         <div class="me-blog-list">
-        {{range .Page.List}}
-            <p><a href="/blog/{{.Id}}">{{.Title}}</a></p>
-            <div>
-                <em>发布时间：{{.Ctime.Format "2006/01/02"}}</em>
-                <em>浏览量：{{.Browses}}</em>
-                <span style="width: 35px;margin-left: 30px;"><a href="" style="color: #F84822">删除</a></span>
-                <span style="width: 35px;margin-left: 10px;"><a href="" style="color: #F84822">编辑</a></span>
-            </div>
-            <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
-        {{end}}
-            <div style="text-align: center">
-                <nav>
-                    <div class="pagination pagination-lg">
-                        <ul>
-                        {{if .Page.FirstPage}}
-                            {{else}}
-                            <li class="prev">
-                                <a href="/me/blog?num={{ .Page.PageNo | NAdd -1}}&flag={{.Flag}}">&laquo;</a>
-                            </li>
-                        {{end}}
-                            <li class="active"><a href="javascript:void(0)">{{.Page.PageNo}}</a></li>
-                        {{if .Page.LastPage}}
-                            {{else}}
-                            <li class="next">
-                                <a href="/me/blog?num={{ .Page.PageNo | NAdd +1}}&flag={{.Flag}}">&raquo;</a>
-                            </li>
-                        {{end}}
-                        </ul>
+            <ol class="breadcrumb">
+                <li>个人中心</li>
+                <li>我的资料</li>
+                <li class="active">个人信息</li>
+            </ol>
+            <div style="display: flex">
+                <div style="width: 128px">
+                    <img src="/static/img/2.png" alt="头像" class="img-circle img-circle-large">
+                </div>
+                <div class="info-header">
+                    <div style="display: flex">
+                        <p style="flex: 1;color: #888">ID: {{.User.UserName}}</p>
+                        <p><a href="" style="text-decoration: none">个人主页 ></a></p>
                     </div>
-                </nav>
+                    <div>
+                        <span>博客 {{.User.BlogCount}}</span>
+                        <span>浏览量 {{.User.BlogBrowes}}</span>
+                        <span>博客 {{.User.BlogCount}}</span>
+                        <span>博客 {{.User.BlogCount}}</span>
+                    </div>
+                    <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 10px 0 5px 0;"/>
+                    <div>
+                        <div style="display: flex">
+                            <p style="flex: 1">昵称 ：{{.User.NickName}}</p>
+                            <p><a href="javascript:void(0)" style="text-decoration: none" id="editBtn">修改资料</a></p>
+                        </div>
+                        <p>生日 ：{{.User.Birthday.Format "2006-01-02"}}</p>
+                        <p>邮箱 ：{{.User.Email}}</p>
+                        <p>手机 ：{{.User.Mobile}}</p>
+                        <p>Q Q ：{{.User.QQ}}</p>
+                    {{if eq 0  .User.Sex}}
+                        <p>性别 ：女</p>
+                    {{else}}
+                        <p>性别 ：男</p>
+                    {{end}}
+                        <p>简介 ：{{.User.DescInfo}}</p>
+                    </div>
+                </div>
             </div>
         </div>
-    {{template "footer"}}
+        <div class="me-footer">
+        {{template "footer"}}
+        </div>
     </div>
 </div>
 </div>
 </body>
+<script>
+    function refresh() {
+        window.location.href = window.location.href
+    }
+    $(function () {
+        $("#editBtn").click(function () {
+            layer.open({
+                type: 2,
+                title: '修改个人资料',
+                shadeClose: true,
+                shade: 0.5,
+                area: ['450px', '415px'],
+                content: '/iframe/user.html' //iframe的url
+            });
+        })
+    })
+</script>
 </html>

@@ -36,17 +36,13 @@ func (this *UserController) PersonBlog() {
 	flag, _ := this.GetInt("flag")
 	page, err := service.MeBlogs(num, size, flag, uid.(int64))
 	if err != nil {
-		if uid == nil {
-			this.Redirect("/500", 302)
-			return
-		}
+		this.Redirect("/500", 302)
+		return
 	}
 	user, uerr := service.GetUser(uid.(int64))
 	if uerr != nil {
-		if uid == nil {
-			this.Redirect("/500", 302)
-			return
-		}
+		this.Redirect("/500", 302)
+		return
 	}
 	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
@@ -75,10 +71,8 @@ func (this *UserController) PersonNote() {
 		notColl = make([]*models.NoteColl, 0)
 	}
 	if err != nil {
-		if uid == nil {
-			this.Redirect("/500", 302)
-			return
-		}
+		this.Redirect("/500", 302)
+		return
 	}
 	user, uerr := service.GetUser(uid.(int64))
 	if uerr != nil {
@@ -106,13 +100,10 @@ func (this *UserController) PersonLike() {
 	if num <= 0 {
 		num = 1
 	}
-	flag, _ := this.GetInt("flag")
-	page, err := service.MeBlogs(num, size, flag, uid.(int64))
+	page, err := service.MeLikes(num, size, uid.(int64))
 	if err != nil {
-		if uid == nil {
-			this.Redirect("/500", 302)
-			return
-		}
+		this.Redirect("/500", 302)
+		return
 	}
 	user, uerr := service.GetUser(uid.(int64))
 	if uerr != nil {
@@ -121,11 +112,65 @@ func (this *UserController) PersonLike() {
 			return
 		}
 	}
+	this.Data["NickName"] = this.GetSession("nickname")
+	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.Data["Page"] = page
-	this.Data["IsMeBlog"] = true
-	this.Data["Flag"] = 0
+	this.Data["IsMeLike"] = true
 	this.Data["User"] = user
-	this.TplName = "ublogs.html"
+	this.TplName = "ulike.html"
+}
+
+func (this *UserController) PersonInfo() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Redirect("/login", 302)
+		return
+	}
+	user, err := service.GetUser(uid.(int64))
+	if err != nil {
+		this.Redirect("/500", 302)
+		return
+	}
+	this.Data["NickName"] = this.GetSession("nickname")
+	this.Data["IsLogin"] = this.GetSession("nickname") != nil
+	this.Data["IsMeInfo"] = true
+	this.Data["User"] = user
+	this.TplName = "uinfo.html"
+}
+
+func (this *UserController) Edit() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		models.ReurnError(401, "")
+		this.ServeJSON()
+		return
+	}
+	user, err := service.GetUser(uid.(int64))
+	if err != nil {
+		this.Data["json"] = models.ReurnError(500, "")
+		this.ServeJSON()
+		return
+	}
+	birthday := this.GetString("birthday")
+	if birthday != "" {
+		birthday += " 00:00:00"
+		if localTime, errt := time.ParseInLocation("2006-01-02 15:04:05", birthday, time.Local); errt == nil {
+			user.Birthday = localTime
+		}
+	}
+	user.NickName = this.GetString("nickName")
+	user.Email = this.GetString("email")
+	user.Mobile = this.GetString("mobile")
+	user.QQ = this.GetString("qqnum")
+	user.Sex, _ = this.GetInt("catory")
+	user.DescInfo = this.GetString("mdesc")
+	if _,err :=service.EditUser(user); err !=nil{
+		this.Data["json"] = models.ReurnError(500, "")
+	}else{
+		this.Data["json"] = models.ReurnSuccess("")
+	}
+	this.ServeJSON()
+	return
 }
 
 func (this *UserController) Login() {

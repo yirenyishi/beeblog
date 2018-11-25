@@ -9,17 +9,17 @@ type User struct {
 	UserPwd  string
 	Salt     string
 	Headimg  string
-	Birthday time.Time `orm:"null;type(date)"`
+	Birthday time.Time `orm:"auto_now_add;type(datetime)"`
 	Email    string
 	Mobile   string
 	QQ       string
 	HomeUrl  string
-	Sex      int
+	Sex      int       `orm:"default(1)"`
 	DescInfo string
 	Ctime    time.Time `orm:"auto_now_add;type(datetime)"`
 
-	BlogCount   int
-	BlogBrowes  int
-	BlogComment int
-	BlogLike    int
+	BlogCount   int `orm:"default(0)"`
+	BlogBrowes  int `orm:"default(0)"`
+	BlogComment int `orm:"default(0)"`
+	BlogLike    int `orm:"default(0)"`
 }

@@ -5,7 +5,6 @@ import (
 	"beeblog/service"
 	"github.com/astaxie/beego"
 	"strconv"
-	"fmt"
 )
 
 type BlogController struct {
@@ -44,14 +43,16 @@ func (this *BlogController) Get() {
 		this.Redirect("/500", 302)
 		return
 	}
-	uid := this.GetSession("userid")
-	if uid != nil {
+	if uid := this.GetSession("userid"); uid != nil {
 		if blog.UserId == uid.(int64) {
 			this.Data["IsAuthor"] = true
 		}
 		if flag, err := service.IsLike(id, uid.(int64)); err == nil {
 			this.Data["IsLike"] = flag
 		}
+	}
+	if blogs, err := service.TopBlogByUser(blog.UserId); err == nil {
+		this.Data["Top"] = blogs
 	}
 	this.Data["Blog"] = blog
 	this.Data["NickName"] = this.GetSession("nickname")
@@ -126,7 +127,6 @@ func (this *BlogController) BlogsPage() {
 	if cat <= 0 {
 		cat = -1
 	}
-	fmt.Println("nelson page", num, size, cat)
 	pages, err := service.FindBlogs(num, size, cat, flag)
 	if err != nil {
 		this.Redirect("/500", 302)

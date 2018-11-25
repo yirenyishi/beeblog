@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="个人随笔是一个面向IT技术人员,提供个人平时工作总结和在线记录学习笔记,个人技术博客,在线云笔记,码农笔录,最新的技术博客,www.aiprose.com">
+    <meta name="keywords"
+          content="个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,www.aiprose.com,aiprose.com,aiprose">
+    <link rel="stylesheet" href="//g.alicdn.com/sui/sui3/0.0.18/css/sui.min.css">
+    <script type="text/javascript" src="//g.alicdn.com/sj/lib/jquery/dist/jquery.min.js"></script>
+{{/*<script type="text/javascript" src="/static/js/aljquery.js"></script>*/}}
+    <script type="text/javascript" src="/static/js/sui.js"></script>
+    <script type="text/javascript" src="/static/js/layer.js"></script>
+    <title>首页 - 个人随笔</title>
+    <style>
+        .common {
+            margin: 0 0 3px 0;
+        }
+
+        .common label {
+            width: 42px;
+        }
+
+        .common input {
+            width: 150px;
+            height: 26px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+<div style="margin: 20px 35px;">
+    <div class="common">
+        <label>生日：</label>
+        <input type="text" id="birthday" class="form-control" style="display: inline-block" placeholder="输入日期"
+               data-toggle="datepicker" value='{{.User.Birthday.Format "2006-01-02"}}'
+               data-date-start-date='1969-12-12'/>
+    </div>
+    <div class="common">
+        <label>昵称：</label>
+        <input id="nickName" value="{{.User.NickName}}">
+    </div>
+    <div class="common">
+        <label>邮箱：</label>
+        <input type="email" id="email" value="{{.User.Email}}">
+    </div>
+    <div class="common">
+        <label>手机：</label>
+        <input type="number" id="mobile" value="{{.User.Mobile}}">
+    </div>
+    <div class="common">
+        <label>Q Q：</label>
+        <input type="number" id="qqnum" value="{{.User.QQ}}">
+    </div>
+    <div class="common">
+        <label>性别：</label>
+        <select class="form-control " style="width: 150px;display: inline-block;height: 26px" id="catory">
+            <option value="1">男</option>
+            <option value="0">女</option>
+        </select>
+    </div>
+    <div class="common">
+        <label>简介：</label>
+        <textarea class="form-control" id="mdesc" rows="3"></textarea>
+    </div>
+    <div class="common" style="text-align: end;margin-top: 20px">
+        <button type="button" class="btn  btn-xl" id="cancelBtn">取消</button>
+        <button type="button" class="btn btn-primary btn-xl" id="saveBtn">保存</button>
+    </div>
+
+</div>
+</body>
+<script>
+    $(function () {
+        $("#mdesc").val("{{.User.DescInfo}}")
+        if(!{{.IsLogin}}){
+            parent.location.href = "/login"
+        }
+        $("#saveBtn").click(function () {
+            var obj = {}
+            obj.birthday = $("#birthday").val()
+            obj.nickName = $("#nickName").val()
+            obj.email = $("#email").val()
+            if (obj.email && obj.email.trim().length != 0) {
+                reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+                if (!reg.test(obj.email)) {
+                    layer.msg('邮箱格式不正确', function () {
+                    });
+                    return
+                }
+            }
+            obj.mobile = $("#mobile").val()
+            if (obj.mobile && obj.mobile.trim() != "") {
+                if (obj.mobile.trim().length != 11) {
+                    layer.msg('手机号格式不对', function () {
+                    });
+                    return
+                }
+            }
+            obj.qqnum = $("#qqnum").val()
+            obj.catory = $("#catory").val()
+            obj.mdesc = $("#mdesc").val()
+            $.post('/user/edit', obj,
+                    function (data) {
+                        if (data.Status == 0) {
+                            parent.layer.msg("保存成功", {icon: 6});
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                            parent.refresh()
+                        } else if (data.Status == 401) {
+                            parent.location.href = "/login"
+                            parent.layer.close(index);
+                        } else {
+                            layer.msg("服务器异常", {icon: 5});
+                        }
+                    }, 'json')
+        })
+        $("#cancelBtn").click(function () {
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        })
+    })
+</script>
+</html>

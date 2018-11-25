@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"beeblog/service"
+	"beeblog/models"
 )
 
 type PageController struct {
@@ -18,6 +19,23 @@ func (this *PageController) Blog() {
 	}
 	this.Data["Cats"] = cats
 	this.TplName = "iframe/blog.html"
+}
+
+// @router /iframe/user [get]
+func (this *PageController) IframeUser() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Data["IsLogin"] = false
+	} else {
+		this.Data["IsLogin"] = true
+		if user, err := service.GetUser(uid.(int64)); err == nil {
+			this.Data["User"] = user
+		} else {
+			this.Data["User"] = &models.User{Id: uid.(int64)}
+		}
+	}
+	this.TplName = "iframe/user.html"
+	return
 }
 
 // @router /iframe/note [get]
