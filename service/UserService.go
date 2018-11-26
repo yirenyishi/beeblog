@@ -44,13 +44,13 @@ func SaveUser(user *models.User) error {
 func CountBlog(uid int64) {
 	o := orm.NewOrm()
 	browses := 0
-	o.Raw("UPDATE `user` SET `blog_count` = (SELECT count(id) FROM blog where delflag = 0 and user_id =?1 ) WHERE `id` = ?2 ", uid, uid).QueryRow(&browses)
+	o.Raw("UPDATE `auth_user` SET `blog_count` = (SELECT count(id) FROM blog where delflag = 0 and user_id =? ) WHERE `id` = ? ", uid, uid).QueryRow(&browses)
 	return
 }
 func CountBrows(uid int64) {
 	o := orm.NewOrm()
 	browses := 0
-	o.Raw("UPDATE `user` SET `blog_browes` = (select  SUM(browses) browses from blog where user_id = ?1) WHERE `id` = ?2 ", uid, uid).QueryRow(&browses) //获取总条数
+	o.Raw("UPDATE `auth_user` SET `blog_browes` = (select  SUM(browses) browses from blog where user_id = ?) WHERE `id` = ? ", uid, uid).QueryRow(&browses) //获取总条数
 	return
 }
 func CountComments(uid int64) {
@@ -59,7 +59,7 @@ func CountComments(uid int64) {
 func CountLike(uid int64) {
 	o := orm.NewOrm()
 	browses := 0
-	o.Raw("UPDATE `user` SET `blog_like` = (select count(id) from like where user_id = ?1) WHERE `id` = ?2 ", uid, uid).QueryRow(&browses)
+	o.Raw("UPDATE `auth_user` SET `blog_like` = (select count(id) from like where user_id = ?) WHERE `id` = ?", uid, uid).QueryRow(&browses)
 	return
 }
 

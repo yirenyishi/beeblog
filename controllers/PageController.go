@@ -52,3 +52,8 @@ func (this *PageController) PageNotFound() {
 func (this *PageController) ServerError() {
 	this.TplName = "500.html"
 }
+
+// @router /403 [get]
+func (this *PageController) ServerDemined() {
+	this.TplName = "403.html"
+}

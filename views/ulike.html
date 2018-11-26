@@ -9,6 +9,11 @@
 
     <div class="me-blog-root">
         <div class="me-blog-list">
+            <ol class="breadcrumb">
+                <li>个人中心</li>
+                <li>我的收藏</li>
+                <li class="active">收藏列表</li>
+            </ol>
         {{range .Page.List}}
             <div>
                 <p><a href="/blog/{{.BlogId}}">{{.Blog.Title}}</a></p>
@@ -43,7 +48,9 @@
                 </nav>
             </div>
         </div>
-    {{template "footer"}}
+        <div class="me-footer">
+        {{template "footer"}}
+        </div>
     </div>
 </div>
 </div>

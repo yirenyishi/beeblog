@@ -6,7 +6,7 @@
 <body>
 <div class="root-container">
     <div class="blog-title">
-        <input type="text" id="blog-title" placeholder="请输入文章标题">
+        <input type="text" id="blog-title" placeholder="请输入文章标题" value="{{.Blog.Title}}">
         <button type="button" id="newBtn" class="btn btn-danger" style="border-radius: 12px">发布文章</button>
     </div>
     <div id="editor" class="editor">
@@ -30,7 +30,8 @@
 </div>
 </body>
 <script>
-    var storage=window.localStorage
+    var tobj = {}
+    var storage = window.localStorage
     var E = window.wangEditor
     var editor = new E('#editor')
     editor.customConfig.uploadImgServer = '/upload'
@@ -48,6 +49,7 @@
         }
 
     }
+
     function saveBlog() {
         var title = $("#blog-title").val();
         if (title.trim().length < 3) {
@@ -62,23 +64,27 @@
             return
         }
         tobj.blogHtml = editor.txt.html();
-        storage.setItem("blogHtml",tobj.blogHtml);
-        storage.setItem("blogTitle",tobj.title);
+        storage.setItem("blogHtml", tobj.blogHtml);
+        storage.setItem("blogTitle", tobj.title);
         layer.open({
             type: 2,
             title: '发布文章',
             shadeClose: true,
             shade: 0.8,
             area: ['420px', '280px'],
-            content: '/iframe/blog.html/' //iframe的url
+            content: '/iframe/blog.html?id={{.Blog.Id}}' //iframe的url
         });
     }
-    var tobj = {}
+
     $(function () {
-        var oldVal = storage.getItem("blogHtml");
-        editor.txt.html(oldVal);
-        var oldTitle = storage.getItem("blogTitle");
-        $("#blog-title").val(oldTitle);
+        editor.txt.html({{.Blog.BlogHtml}});
+        tobj.id = {{.Blog.Id}};
+        tobj.catory = {{.Blog.CategoryId}};
+        tobj.labels = []
+        console.log({{.Blog.Lables}})
+    {{range .Blog.Lables}}
+        tobj.labels.push({{.Title}})
+    {{end}}
         var height = document.documentElement.clientHeight
         $(".w-e-text-container").height(height - 50 - 40 - 1);
         $("#newBtn").click(function () {
@@ -87,14 +93,14 @@
     })
 
     function saveBlogCallback(callback) {
-        $.post('/blog/new', tobj,
+        $.post('/blog/edit', tobj,
                 function (data) {
                     if (data.Status == 0) {
                         storage.removeItem("blogHtml");
                         storage.removeItem("blogTitle");
                         layer.msg("保存成功", {icon: 6});
                         callback(true)
-                        window.location.href = "/blog/"+ data.Data
+                        window.location.href = "/blog/{{.Blog.Id}}"
                     } else if (data.Status == 401) {
                         window.location.href = "login"
                     } else if (data.Status == 500) {

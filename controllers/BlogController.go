@@ -5,10 +5,32 @@ import (
 	"beeblog/service"
 	"github.com/astaxie/beego"
 	"strconv"
+	"time"
 )
 
 type BlogController struct {
 	beego.Controller
+}
+
+func (this *BlogController) EditPage() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Redirect("/login", 302)
+		return
+	}
+	idStr := this.Ctx.Input.Param(":id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	blog, err := service.GetBlog(id)
+	if err != nil {
+		this.Redirect("/500", 302)
+		return
+	}
+	if blog.UserId != uid.(int64) {
+		this.Redirect("/403", 302)
+		return
+	}
+	this.Data["Blog"] = blog
+	this.TplName = "editblog.html"
 }
 
 func (this *BlogController) Save() {
@@ -25,6 +47,40 @@ func (this *BlogController) Save() {
 	labels := this.GetStrings("labels[]")
 	blog := &models.Blog{Title: title, BlogHtml: blogHtml, CategoryId: catoryId, UserId: uid.(int64)}
 	err := service.SaveBlog(blog, labels)
+	if err == nil {
+		this.Data["json"] = models.ReurnData("",blog.Id)
+	} else {
+		this.Data["json"] = models.ReurnError(500, "保存失败")
+	}
+	this.ServeJSON()
+	service.CountBlog(uid.(int64))
+	return
+}
+
+func (this *BlogController) Edit() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Data["json"] = models.ReurnError(401, "")
+		this.ServeJSON()
+		return
+	}
+	id,_ := this.GetInt64("id")
+	title := this.GetString("title")
+	blogHtml := this.GetString("blogHtml")
+	catory := this.GetString("catory")
+	catoryId, _ := strconv.ParseInt(catory, 10, 64)
+	labels := this.GetStrings("labels[]")
+	blog,err :=service.GetBlog(id)
+	if err != nil {
+		this.Data["json"] = models.ReurnError(500, "保存失败")
+		this.ServeJSON()
+		return
+	}
+	blog.Title = title
+	blog.BlogHtml = blogHtml
+	blog.CategoryId = catoryId
+	blog.Utime = time.Now()
+	err = service.EditBlog(blog, labels)
 	if err == nil {
 		this.Data["json"] = models.ReurnSuccess("")
 	} else {

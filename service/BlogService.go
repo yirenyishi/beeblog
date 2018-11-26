@@ -6,7 +6,6 @@ import (
 	"beeblog/utils"
 )
 
-
 func count(num int, size int, cat int64) (*utils.Page, error) {
 	o := orm.NewOrm()
 	qs := o.QueryTable(&models.Blog{})
@@ -44,7 +43,7 @@ func EditBlogBrows(id int64) {
 func TopBlogByUser(uid int64) ([]*models.Blog, error) {
 	o := orm.NewOrm()
 	var blogs []*models.Blog
-	o.QueryTable(models.Blog{}).Filter("UserId",uid).Limit(12,0).OrderBy("-Browses").All(&blogs)
+	o.QueryTable(models.Blog{}).Filter("UserId", uid).Limit(12, 0).OrderBy("-Browses").All(&blogs)
 	return blogs, nil
 }
 
@@ -141,6 +140,30 @@ func SaveBlog(blog *models.Blog, strs []string) error {
 	return nil
 }
 
+func EditBlog(blog *models.Blog, strs []string) error {
+	o := orm.NewOrm()
+	o.Begin()
+	id, eror := o.Update(blog)
+	if eror != nil {
+		o.Rollback()
+		return eror
+	} else {
+		o.QueryTable(models.NLabel{}).Filter("BlogId",blog.Id).Delete()
+		if strs != nil && len(strs) > 0 {
+			nlabels := make([]*models.NLabel, len(strs))
+			for i := 0; i < len(strs); i++ {
+				nlabels[i] = &models.NLabel{Title: strs[i], BlogId: id, UserId: blog.UserId}
+			}
+			if _, err := o.InsertMulti(len(nlabels), nlabels); err != nil {
+				o.Rollback()
+				return err
+			}
+		}
+		o.Commit()
+	}
+	return nil
+}
+
 func MeBlogs(num int, size int, flag int, uid int64) (*utils.Page, error) {
 	page, err := countByUser(num, size, uid)
 	if err != nil {
@@ -163,4 +186,14 @@ func MeBlogs(num int, size int, flag int, uid int64) (*utils.Page, error) {
 	}
 	page.List = blogs
 	return page, nil
+}
+
+func GetNLabel(id int64) ([]*models.NLabel, error) {
+	var labels []*models.NLabel
+	o := orm.NewOrm()
+	_, err := o.QueryTable(&models.NLabel{}).Filter("BlogId", id).All(&labels)
+	if err != nil {
+		return labels, err
+	}
+	return labels, nil
 }
