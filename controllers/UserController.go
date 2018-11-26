@@ -22,6 +22,28 @@ func (u *UserController) RegistPage() {
 	u.TplName = "regist.html"
 }
 
+func (this *UserController) UserInfo() {
+	idStr := this.Ctx.Input.Param(":id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	user, err := service.GetUser(id)
+	if err != nil {
+		this.Redirect("/500", 302)
+		return
+	}
+	size := 15
+	num, _ := this.GetInt("num")
+	if num <= 0 {
+		num = 1
+	}
+	flag, _ := this.GetInt("flag")
+	if page, err := service.MeBlogs(num, size, flag, id); err == nil {
+		this.Data["Page"] = page
+	}
+	this.Data["User"] = user
+	this.TplName = "user.html"
+	return
+}
+
 func (this *UserController) PersonBlog() {
 	uid := this.GetSession("userid")
 	if uid == nil {
@@ -164,9 +186,9 @@ func (this *UserController) Edit() {
 	user.QQ = this.GetString("qqnum")
 	user.Sex, _ = this.GetInt("catory")
 	user.DescInfo = this.GetString("mdesc")
-	if _,err :=service.EditUser(user); err !=nil{
+	if _, err := service.EditUser(user); err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
-	}else{
+	} else {
 		this.Data["json"] = models.ReurnSuccess("")
 	}
 	this.ServeJSON()

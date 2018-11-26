@@ -12,6 +12,7 @@ func init() {
 	beego.Router("/regist", &controllers.UserController{}, "post:Regist")
 	beego.Router("/regist", &controllers.UserController{}, "get:RegistPage")
 	beego.Router("/user/edit", &controllers.UserController{}, "post:Edit")
+	beego.Router("/u/:id([0-9]+)", &controllers.UserController{}, "get:UserInfo")
 
 
 

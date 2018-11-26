@@ -1,0 +1,20 @@
+.uinfo {
+    color: #515a6e;
+    margin: 5px;
+}
+
+.udesc span {
+    margin-right: 8px;
+}
+
+.blog-list {
+    display: flex;
+    font-size: 16px;
+    min-height: 35px;
+    line-height: 35px;
+}
+
+a{
+    color: #515a6e;
+    text-decoration: none !important;
+}

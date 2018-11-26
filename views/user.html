@@ -1,0 +1,41 @@
+{{template "header"}}
+<title>【{{.User.NickName}}】个人主页 - 个人随笔</title>
+<link type="text/css" rel="styleSheet" href="/static/css/u.css"/>
+</head>
+<body>
+<div class="root-container">
+{{template "nav" .}}
+    <div style="height: 100%;margin: 50px 10% 0 10%;">
+        <div style="display: flex" class="uinfo">
+            <img src="/static/img/2.png" alt="头像" class="img-circle" style="width: 120px;height: 120px">
+            <div style="flex: 1;margin-left: 20px;">
+            {{/*<h1>{{.User.NickName}}</h1>*/}}
+                <h1 style="margin-top: 20px;margin-bottom: 0">码农笔录</h1>
+                <div style="height: 35px;line-height: 35px;font-size: 14px;">
+                {{.User.DescInfo}}
+                </div>
+                <div class="udesc">
+                    <span>加入 {{.User.Ctime.Format "2006-01-02"}}</span>
+                    <span>文章 {{.User.BlogCount}}</span>
+                    <span>访问 {{.User.BlogBrowes}}</span>
+                    <span>评论 {{.User.BlogComment}}</span>
+                    <span>收藏 {{.User.BlogLike}}</span>
+                </div>
+            </div>
+        </div>
+        <hr class="fhr" color=#ffeeeeee SIZE=0.1 style="margin: 0">
+        <div style="color: #515a6e;height: 30px;line-height: 30px;">
+            <span>排序: </span>
+            <span style="margin-left: 15px"><a href="" style="color: #515a6e;text-decoration: none">发布时间</a></span>
+            <span style="margin-left: 8px"><a href="" style="color: #515a6e;text-decoration: none">访问量</a></span>
+        </div>
+    {{range .Page.List}}
+        <div class="blog-list">
+            <p style="margin: 0;font-size: 16px"><a href="">{{.Title}}</a></p>
+        </div>
+        <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 0"/>
+    {{end}}
+    </div>
+</div>
+</body>
+</html>
