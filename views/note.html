@@ -70,9 +70,9 @@
         </li>
     {{end}}
     {{/*{{if len .NoteColls 0}}*/}}
-        {{/*<ul class="cd-navigation cd-single-item-wrapper">*/}}
-            {{/*<li><a href="javascript:void(0)">新增文件夹</a></li>*/}}
-        {{/*</ul>*/}}
+    {{/*<ul class="cd-navigation cd-single-item-wrapper">*/}}
+    {{/*<li><a href="javascript:void(0)">新增文件夹</a></li>*/}}
+    {{/*</ul>*/}}
     {{/*{{end}}*/}}
     </ul>
 </nav>
@@ -84,8 +84,15 @@
     var E = window.wangEditor
     var editor = new E('#editor')
     var note = null
-    editor.customConfig.uploadImgServer = '/upload'
+    editor.customConfig.uploadImgServer = '/file/upload'
     // 或者 var editor = new E( document.getElementById('editor') )
+    editor.customConfig.uploadImgHooks = {
+        customInsert: function (insertImg, result, editor) {
+            var url = result.Data.replace("static/upload", "https://airose.com/itstack");
+            insertImg(url);
+            debugger
+        }
+    }
     editor.create()
     editor.txt.html("<p>点击右上角菜单新建或者选择笔记</p>");
 

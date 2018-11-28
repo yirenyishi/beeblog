@@ -8,5 +8,6 @@ import (
 func init() {
 	beego.Router("/", &controllers.IndexController{})
 	beego.Router("/map", &controllers.MapController{})
+	beego.Router("/file/upload", &controllers.FileController{}, "post:Upload")
 	beego.Include(&controllers.PageController{})
 }
