@@ -47,6 +47,15 @@ func TopBlogByUser(uid int64) ([]*models.Blog, error) {
 	return blogs, nil
 }
 
+func ReadBlog(id int64) (*models.Blog, error) {
+	o := orm.NewOrm()
+	blog := &models.Blog{Id: id}
+	if err := o.Read(blog);err != nil {
+		return nil, err
+	}
+	return blog, nil
+}
+
 func GetBlog(id int64) (*models.Blog, error) {
 	o := orm.NewOrm()
 	blog := &models.Blog{Id: id}
@@ -64,6 +73,10 @@ func GetBlog(id int64) (*models.Blog, error) {
 	_, err = qs.Filter("BlogId", id).All(&labels)
 	if err == nil {
 		blog.Lables = labels
+	}
+	comms , berr:= FindCommentByBlog(id)
+	if berr == nil{
+		blog.Comms = comms
 	}
 	return blog, nil
 }

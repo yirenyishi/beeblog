@@ -7,8 +7,9 @@
 {{template "nav" .}}
     <div class="blog-user">
         <div style="height: 50px;line-height: 50px">
-            <a href=""><img src="/static/img/2.png" alt="头像" class="img-circle"></a>
-            <a href="" style="margin-left: 15px;font-size: 18px;text-decoration: none">{{.Blog.User.NickName}}</a>
+            <a href="/u/{{.Blog.User.Id}}"><img src="/static/img/2.png" alt="头像" class="img-circle"></a>
+            <a href="/u/{{.Blog.User.Id}}"
+               style="margin-left: 15px;font-size: 18px;text-decoration: none">{{.Blog.User.NickName}}</a>
         </div>
         <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
         <div style="display: flex;height: 30px;line-height: 30px;">
@@ -35,7 +36,9 @@
 
     {{range .Top}}
         <div>
-            <a href=""><p style="max-width:245px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{.Title}}</p></a>
+            <a href=""><p
+                    style="max-width:245px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{.Title}}</p>
+            </a>
         </div>
     {{end}}
     </div>
@@ -47,7 +50,7 @@
         {{else}}
             <span><img src="/static/img/like.png" alt="" onclick="like({{.Blog.Id}})"></span>
         {{end}}
-            <span><a href="">{{.Blog.User.NickName}}</a></span>
+            <span><a href="/u/{{.Blog.User.Id}}">{{.Blog.User.NickName}}</a></span>
             <span><em>时间:</em>{{.Blog.Ctime.Format "2006-01-02"}}</span>
             <span><em>阅读数:</em>{{.Blog.Browses}}</span>
             <div class="tag-group" style="display: inline-block">
@@ -59,12 +62,115 @@
         <div style="width: 100%">
         {{str2html .Blog.BlogHtml}}
         </div>
-    {{template "footer"}}
+    </div>
+    <div class="comms-root">
+        <textarea class="form-control" rows="3" id="commval"></textarea>
+        <div style="text-align: end">
+            <button type="button" class="btn btn-info btn-bordered" id="commBtn">发表评论</button>
+        </div>
+        <div class="comm-container">
+        {{range .Blog.Comms}}
+            <div style="font-size: 14px;margin-top: 10px" class="pcomm-{{.Id}}">
+                <span><a href="/u/{{.CUser.Id}}">{{.CUser.NickName}}</a>:</span>
+                <span>{{.ComVal}}</span>
+                <span onclick="recomm({{.Id}},0,this)" style="font-size: 10px"><a
+                        href="javascript:void(0)">回复</a></span>
+                <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 5px"/>
+                <div class="child-container">
+                {{range .Childs}}
+                    <div style="margin-left: 18px" class="ccomm-{{.Id}}">
+                    <span>
+                        <a href="/u/{{.CUser.Id}}">{{.CUser.NickName}}</a> 回复
+                        <a href="/u/{{.BUser.Id}}">{{.BUser.NickName}}</a>:
+                    </span>
+                        <span>{{.ComVal}}</span>
+                        <span onclick="recomm({{.Id}},1)" style="font-size: 10px"><a
+                                href="javascript:void(0)">回复</a></span>
+                    </div>
+
+                {{end}}
+                </div>
+            </div>
+        {{end}}
+        </div>
+
+        <div style="margin-top: 50px">
+        {{template "footer"}}
+        </div>
     </div>
 </div>
 </div>
 </body>
 <script>
+    $(function () {
+        $("#commBtn").click(function () {
+            var commval = $("#commval").val()
+            if (!commval || commval.trim().length < 3) {
+                layer.msg('评论最少三个字', function () {
+                });
+                return
+            }
+            $.post('/comms/save', {
+                        blog: {{.Blog.Id}},
+                        commval: commval
+                    },
+                    function (data) {
+                        if (data.Status == 0) {
+                            var res = ' <div style="font-size: 14px;margin-top: 10px"  class="pcomm-' + data.Data.Id + '">\n' +
+                                    '            <span><a href="/u/' + data.Data.CuserId + '">' + data.Data.CUser.NickName + '</a>:</span>\n' +
+                                    '            <span>' + commval + '</span>\n' +
+                                    '<span onclick="recomm(' + data.Data.Id + ',0)" style="font-size: 10px"><a href="javascript:void(0)">回复</a></span>' +
+                                    '            <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 5px"/>\n' +
+                                    '   <div class="child-container"></div>     </div>'
+                            $(".comm-container").append(res)
+                            $("#commval").val("")
+                            layer.msg("保存成功", {icon: 6});
+                        } else if (data.Status == 401) {
+                            window.location.href = "/login"
+                        } else {
+                            layer.msg("保存失败", {icon: 5});
+                            window.location.href = "/"
+                        }
+                    }, 'json')
+        })
+    })
+    function recomm(pid, flag) {
+        layer.prompt({title: '请输入评论内容', value: name, formType: 2}, function (val, index) {
+            if (val.trim().length < 3) {
+                layer.msg('评论最少三个字', function () {
+                });
+                layer.close(index);
+                return
+            }
+            $.post('/comms/save', {blog: {{.Blog.Id}},commval: val,pid: pid},
+                    function (data) {
+                        if (data.Status == 0) {
+                            var res = '<div style="margin-left: 18px" class="ccomm-' + data.Data.Id + '">\n' +
+                                    '    <span>\n' +
+                                    '       <a href="/u/' + data.Data.CUser.Id + '">' + data.Data.CUser.NickName + '</a> 回复\n' +
+                                    '       <a href="/u/' + data.Data.BUser.Id + '">' + data.Data.BUser.NickName + '</a>:\n' +
+                                    '    </span>\n' +
+                                    '    <span>' + val + '</span>\n' +
+                                    '    <span onclick="recomm(' + data.Data.Id + ',1)" style="font-size: 10px"><a href="javascript:void(0)">回复</a></span>\n' +
+                                    ' </div>'
+                            if (flag == 0) {
+                                $(".pcomm-" + pid + " .child-container").append(res)
+                            } else {
+                                $($(".ccomm-" + pid)[0]).parent().append(res)
+                            }
+                            $("#commval").val("")
+                            layer.close(index);
+                            layer.msg("保存成功", {icon: 6});
+                        } else if (data.Status == 401) {
+                            window.location.href = "/login"
+                        } else {
+                            layer.msg("保存失败", {icon: 5});
+                            window.location.href = "/"
+                        }
+                    }, 'json')
+        });
+    }
+
     function like(id) {
         $.get('/like/' + id,
                 function (data) {
@@ -72,8 +178,6 @@
                         window.location.href = window.location.href
                     } else if (data.Status == 401) {
                         window.location.href = "/login"
-                    } else if (data.Status == 403) {
-                        layer.msg("暂无权限", {icon: 5});
                     } else {
                         layer.msg("服务器异常", {icon: 5});
                     }

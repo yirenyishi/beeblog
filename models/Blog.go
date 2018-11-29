@@ -25,4 +25,5 @@ type Blog struct {
 	HeadImg  string    `orm:"-"`
 	CateName string    `orm:"-"`
 	Lables   []*NLabel `orm:"-"`
+	Comms   []*Comment `orm:"-"`
 }

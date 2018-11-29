@@ -15,6 +15,7 @@ type User struct {
 	QQ       string
 	HomeUrl  string
 	Sex      int       `orm:"default(1)"`
+	Status      int       `orm:"default(0)"`
 	DescInfo string
 	Ctime    time.Time `orm:"auto_now_add;type(datetime)"`
 

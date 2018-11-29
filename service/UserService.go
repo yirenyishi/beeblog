@@ -54,7 +54,10 @@ func CountBrows(uid int64) {
 	return
 }
 func CountComments(uid int64) {
-
+	o := orm.NewOrm()
+	browses := 0
+	o.Raw("UPDATE `auth_user` SET `blog_comment` = (select  count(id)  from comment where cuser_id = ?) WHERE `id` = ? ", uid, uid).QueryRow(&browses) //获取总条数
+	return
 }
 func CountLike(uid int64) {
 	o := orm.NewOrm()
@@ -63,6 +66,6 @@ func CountLike(uid int64) {
 	return
 }
 
-func EditUser(user *models.User) (int64, error){
+func EditUser(user *models.User) (int64, error) {
 	return orm.NewOrm().Update(user)
 }

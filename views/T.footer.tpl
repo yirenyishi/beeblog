@@ -1,5 +1,6 @@
 {{define "footer"}}
 <div class="footer-root">
+    <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 0"/>
     <div class="footer-friend" style="margin-top: 15px">
         <a href="https://blog.csdn.net/yp090416" target="_blank" style="padding: 0 5px">码农笔录-CSDN</a>
         <a href="https://www.jianshu.com/u/6baf4cdc7ce1" target="_blank" style="padding: 0 5px">码农笔录-简书</a>
