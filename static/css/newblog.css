@@ -4,6 +4,7 @@
     line-height: 50px;
 }
 .blog-title input{
+    padding-left: 12px;
     flex: 1;
     height: 44px;
     border: 0;

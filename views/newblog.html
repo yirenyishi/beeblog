@@ -61,7 +61,7 @@
             return
         }
         tobj.title = $("#blog-title").val();
-        if (editor.txt.text().trim().length == 0) {
+        if (editor.txt.html().trim().length == 0) {
             layer.msg('文章内容不能为空哦', function () {
             });
             return

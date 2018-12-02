@@ -116,7 +116,7 @@
             return
         }
         var noteHtml = editor.txt.html()
-        if (!editor.txt.text() && editor.txt.text().trim().length == 0) {
+        if (!editor.txt.html() && editor.txt.html().trim().length == 0) {
             layer.msg('保存内容为空', function () {
             });
             return
