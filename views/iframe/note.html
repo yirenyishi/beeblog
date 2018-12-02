@@ -28,11 +28,9 @@
         <span>所属文件夹:</span>
         <span style="flex: 1">
             <select class="form-control " style="display: inline-block;height: 32px" id="catory">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+            {{range .NoteColl}}
+                <option value="{{.Id}}">{{.Title}}</option>
+            {{end}}
             </select>
         </span>
     </div>
@@ -47,6 +45,9 @@
 </body>
 <script>
     $(function () {
+        if (!{{.IsLogin}}) {
+            parent.location.href = "/login"
+        }
         $("#saveBtn").click(function () {
             var pid = $("#catory").val()
             var title = $("#lable").val()

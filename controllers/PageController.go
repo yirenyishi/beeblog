@@ -40,6 +40,16 @@ func (this *PageController) IframeUser() {
 
 // @router /iframe/note [get]
 func (this *PageController) IframeNote() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Data["IsLogin"] =  false
+	}else {
+		this.Data["IsLogin"] = true
+		noteColls,err:=service.GetNoteColl(uid.(int64))
+		if err== nil {
+			this.Data["NoteColl"] = noteColls
+		}
+	}
 	this.TplName = "iframe/note.html"
 }
 
