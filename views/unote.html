@@ -89,6 +89,10 @@
     }
 
     $(function () {
+        if ({{.Note|len}} == 0){
+            layer.msg('请先添加文件夹', function () {
+            });
+        }
         $("#newBtn").click(function () {
             layer.prompt({title: '请输入文件夹名称'}, function (val, index) {
                 if (val.trim().length < 3) {

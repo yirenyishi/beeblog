@@ -48,6 +48,9 @@
         if (!{{.IsLogin}}) {
             parent.location.href = "/login"
         }
+        if ({{.NoteColl|len}} == 0) {
+            parent.location.href = "/me/note"
+        }
         $("#saveBtn").click(function () {
             var pid = $("#catory").val()
             var title = $("#lable").val()

@@ -36,7 +36,7 @@
                 {{end}}
                 {{if .IsLogin }}
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <a href="/me/blog" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         {{.NickName}}<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="/me/blog">个人中心</a></li>

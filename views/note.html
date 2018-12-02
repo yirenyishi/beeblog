@@ -56,6 +56,11 @@
 </div> <!-- cd-main-content -->
 
 <nav id="cd-lateral-nav">
+{{if eq 0 (.NoteColls|len)}}
+    <ul class="cd-navigation cd-single-item-wrapper">
+        <li><a href="/me/note">新增文件夹</a></li>
+    </ul>
+{{end}}
     <ul class="cd-navigation">
     {{range .NoteColls}}
         <li class="item-has-children">
@@ -69,11 +74,6 @@
             </ul>
         </li>
     {{end}}
-    {{/*{{if len .NoteColls 0}}*/}}
-    {{/*<ul class="cd-navigation cd-single-item-wrapper">*/}}
-    {{/*<li><a href="javascript:void(0)">新增文件夹</a></li>*/}}
-    {{/*</ul>*/}}
-    {{/*{{end}}*/}}
     </ul>
 </nav>
 
