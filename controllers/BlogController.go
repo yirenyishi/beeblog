@@ -158,7 +158,7 @@ func (this *BlogController) Del() {
 func (this *BlogController) New() {
 	uid := this.GetSession("userid")
 	if uid == nil {
-		this.Redirect("login.html", 302)
+		this.Redirect("/login", 302)
 		return
 	}
 	this.TplName = "newblog.html"
