@@ -43,7 +43,7 @@ func EditBlogBrows(id int64) {
 func TopBlogByUser(uid int64) ([]*models.Blog, error) {
 	o := orm.NewOrm()
 	var blogs []*models.Blog
-	o.QueryTable(models.Blog{}).Filter("UserId", uid).Limit(12, 0).OrderBy("-Browses").All(&blogs)
+	o.QueryTable(models.Blog{}).Filter("Delflag", 0).Filter("UserId", uid).Limit(12, 0).OrderBy("-Browses").All(&blogs)
 	return blogs, nil
 }
 

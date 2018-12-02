@@ -7,7 +7,7 @@
 {{template "nav" .}}
     <div class="blog-user">
         <div style="height: 50px;line-height: 50px">
-            <a href="/u/{{.Blog.User.Id}}"><img src="/static/img/2.png" alt="头像" class="img-circle"></a>
+            <a href="/u/{{.Blog.User.Id}}"><img src="{{.Blog.User.Headimg}}" alt="头像" class="img-circle"></a>
             <a href="/u/{{.Blog.User.Id}}"
                style="margin-left: 15px;font-size: 18px;text-decoration: none">{{.Blog.User.NickName}}</a>
         </div>

@@ -1,6 +1,7 @@
 {{template "header"}}
 <title>博客 - 个人随笔</title>
 <link type="text/css" rel="styleSheet" href="/static/css/me.css"/>
+<script type="text/javascript" src="/static/js/upload.js"></script>
 </head>
 <body>
 <div class="root-container">
@@ -15,7 +16,8 @@
             </ol>
             <div style="display: flex">
                 <div style="width: 128px">
-                    <img src="/static/img/2.png" alt="头像" class="img-circle img-circle-large">
+                    <img src="{{.HeadImg}}" alt="头像" class="img-circle img-circle-large">
+                    <div id="drop_area" style="margin-top: 15px"></div>
                 </div>
                 <div class="info-header">
                     <div style="display: flex">
@@ -56,6 +58,35 @@
 </div>
 </body>
 <script>
+    var dragImgUpload = new DragImgUpload("#drop_area",{
+        callback:function (files) {
+            //回调函数，可以传递给后台等等
+            var file = files[0];
+            console.log(file.name);
+            debugger
+            var formData = new FormData();
+            formData.append("imgfile",file );
+            if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name))
+            {
+                return false;
+            }else{
+                $.ajax({
+                    url: '/himg/upload',
+                    type:'POST',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success:function(data,textstatus){
+                        if (data.Status == 0){
+                            layer.msg("上传成功", {icon: 6});
+                        }else{
+                            layer.msg("上传失败", {icon: 5});
+                        }
+                    }
+                });
+            }
+        }
+    })
     function refresh() {
         window.location.href = window.location.href
     }

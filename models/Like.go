@@ -10,3 +10,7 @@ type Like struct {
 
 	Blog *Blog `orm:"-"`
 }
+
+func (u *Like) TableName() string {
+	return "tb_like"
+}

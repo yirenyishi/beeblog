@@ -1,7 +1,7 @@
 {{define "memenu"}}
 <div class="me-menu">
     <div style="height: 50px;line-height: 50px">
-        <a href="/u/{{.User.Id}}" target="_blank"><img src="/static/img/2.png" alt="头像" class="img-circle"></a>
+        <a href="/u/{{.User.Id}}" target="_blank"><img src="{{.HeadImg}}" alt="头像" class="img-circle"></a>
         <a href="/u/{{.User.Id}}" target="_blank" style="margin-left: 15px;font-size: 18px;text-decoration: none">{{.User.NickName}}</a>
     </div>
     <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>

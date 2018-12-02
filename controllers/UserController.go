@@ -40,6 +40,10 @@ func (this *UserController) UserInfo() {
 		this.Data["Page"] = page
 	}
 	this.Data["User"] = user
+	this.Data["UserId"] = this.GetSession("userid")
+	this.Data["HeadImg"] = this.GetSession("headimg")
+	this.Data["NickName"] = this.GetSession("nickname")
+	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.TplName = "user.html"
 	return
 }
@@ -66,6 +70,8 @@ func (this *UserController) PersonBlog() {
 		this.Redirect("/500", 302)
 		return
 	}
+	this.Data["UserId"] = this.GetSession("userid")
+	this.Data["HeadImg"] = this.GetSession("headimg")
 	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.Data["Page"] = page
@@ -103,6 +109,8 @@ func (this *UserController) PersonNote() {
 			return
 		}
 	}
+	this.Data["UserId"] = this.GetSession("userid")
+	this.Data["HeadImg"] = this.GetSession("headimg")
 	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.Data["Note"] = notColl
@@ -134,6 +142,8 @@ func (this *UserController) PersonLike() {
 			return
 		}
 	}
+	this.Data["UserId"] = this.GetSession("userid")
+	this.Data["HeadImg"] = this.GetSession("headimg")
 	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.Data["Page"] = page
@@ -153,8 +163,10 @@ func (this *UserController) PersonInfo() {
 		this.Redirect("/500", 302)
 		return
 	}
-	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
+	this.Data["UserId"] = this.GetSession("userid")
+	this.Data["HeadImg"] = this.GetSession("headimg")
+	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsMeInfo"] = true
 	this.Data["User"] = user
 	this.TplName = "uinfo.html"
@@ -227,6 +239,7 @@ func (this *UserController) Login() {
 			this.Data["json"] = models.ReurnSuccess("")
 			this.SetSession("userid", user.Id)
 			this.SetSession("nickname", user.NickName)
+			this.SetSession("headimg", user.Headimg)
 		} else {
 			this.Data["json"] = models.ReurnError(1, "用户名或密码错误")
 		}
@@ -275,6 +288,7 @@ func (this *UserController) Regist() {
 	h.Write([]byte(userpwd + salt))
 	userpwd = hex.EncodeToString(h.Sum(nil))
 	user = &models.User{UserName: username, NickName: username, UserPwd: userpwd, Salt: salt}
+	user.Headimg = "https://www.aiprose.com/foss/timg.jpg"
 	err := service.SaveUser(user)
 	if err == nil {
 		this.Data["json"] = models.ReurnSuccess("")

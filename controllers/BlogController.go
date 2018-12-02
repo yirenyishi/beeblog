@@ -111,7 +111,10 @@ func (this *BlogController) Get() {
 		this.Data["Top"] = blogs
 	}
 	this.Data["Blog"] = blog
+	this.Data["UserId"] = this.GetSession("userid")
+	this.Data["HeadImg"] = this.GetSession("headimg")
 	this.Data["NickName"] = this.GetSession("nickname")
+	this.Data["UserId"] = this.GetSession("userid")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.TplName = "blog.html"
 	service.CountBrows(blog.UserId)
@@ -188,7 +191,8 @@ func (this *BlogController) BlogsPage() {
 		this.Redirect("/500", 302)
 		return
 	}
-
+	this.Data["UserId"] = this.GetSession("userid")
+	this.Data["HeadImg"] = this.GetSession("headimg")
 	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.Data["Page"] = pages
