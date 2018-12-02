@@ -14,7 +14,7 @@ func init() {
 	beego.InsertFilter("/*", beego.FinishRouter, filter.FilterLoginInfo)
 }
 func main() {
-	orm.Debug = true
+	orm.Debug = false
 	orm.RunSyncdb("default", false, true)
 	beego.AddFuncMap("NAdd",NAdd)
 	beego.Run()
