@@ -11,12 +11,14 @@ import (
 func init() {
 	models.RegistDB()
 	beego.InsertFilter("/*", beego.BeforeRouter, filter.FilterAdmin)
-	beego.InsertFilter("/*", beego.FinishRouter, filter.FilterLoginInfo)
+	//beego.InsertFilter("/*", beego.FinishRouter, filter.FilterLoginInfo)
 }
 func main() {
 	orm.Debug = false
 	orm.RunSyncdb("default", false, true)
 	beego.AddFuncMap("NAdd",NAdd)
+	beego.SetLevel(beego.LevelInformational)
+	beego.SetLogger("file", `{"filename":"/opt/logs/aiprose.log"}`)
 	beego.Run()
 }
 

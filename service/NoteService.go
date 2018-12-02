@@ -4,7 +4,6 @@ import (
 	"beeblog/models"
 	"github.com/astaxie/beego/orm"
 	"errors"
-	"fmt"
 )
 
 type NoteService struct {
@@ -93,14 +92,12 @@ func DelNoteColl(id int64, uid int64) error {
 	noteColl := &models.NoteColl{Id: id}
 
 	if err := o.Read(noteColl); err != nil {
-		fmt.Println(err)
 		return err
 	}
 	if uid != noteColl.UserId {
 		return errors.New("403")
 	}
 	_, err := o.QueryTable(models.Note{}).Filter("Pid", id).Delete()
-	fmt.Println(err)
 	if err == nil {
 		_, err = o.Delete(noteColl)
 	}
