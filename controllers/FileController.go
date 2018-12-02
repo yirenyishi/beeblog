@@ -40,7 +40,8 @@ func (this *FileController) Upload() {
 		return
 	}
 	//创建目录
-	uploadDir := "static/upload/" + time.Now().Format("2006/01/02/")
+	urlDir := time.Now().Format("2006/01/02/")
+	uploadDir := "/opt/filetom/webapps/itstack/" + urlDir
 	err := os.MkdirAll(uploadDir, 777)
 	if err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
@@ -53,6 +54,7 @@ func (this *FileController) Upload() {
 	hashName := md5.Sum([]byte( time.Now().Format("2006_01_02_15_04_05_") + randNum ))
 	fileName := fmt.Sprintf("%x", hashName) + ext
 	fpath := uploadDir + fileName
+	urlDir += fileName
 	defer f.Close() //关闭上传的文件，不然的话会出现临时文件不能清除的情况
 	err = this.SaveToFile(filename, fpath)
 	if err != nil {
@@ -61,6 +63,7 @@ func (this *FileController) Upload() {
 		this.ServeJSON()
 		return
 	}
+	urlDir = "https://aiprose.com/foss/" + urlDir
 	this.Data["json"] = models.ReurnData("", fpath)
 	this.ServeJSON()
 	return
@@ -128,7 +131,6 @@ func (this *FileController) HeadImgUpload() {
 		this.ServeJSON()
 		return
 	}
-	this.SetSession("headimg", urlDir)
 	this.Data["json"] = models.ReurnData("", urlDir)
 	this.ServeJSON()
 	return

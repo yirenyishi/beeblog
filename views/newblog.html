@@ -33,8 +33,14 @@
     var storage=window.localStorage
     var E = window.wangEditor
     var editor = new E('#editor')
-    editor.customConfig.uploadImgServer = '/upload'
+    editor.customConfig.uploadImgServer = '/file/upload'
     // 或者 var editor = new E( document.getElementById('editor') )
+    editor.customConfig.uploadImgHooks = {
+        customInsert: function (insertImg, result, editor) {
+            insertImg(result.Data);
+            debugger
+        }
+    }
     editor.create()
     document.onkeydown = keyDown;
 
@@ -42,7 +48,6 @@
         var currKey = 0, e = e || event || window.event;
         currKey = e.keyCode || e.which || e.charCode;
         if (currKey == 83 && (e.ctrlKey || e.metaKey)) {
-            layer.msg("ctrl+s")
             saveBlog()
             return
         }

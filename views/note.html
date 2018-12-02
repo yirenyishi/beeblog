@@ -88,8 +88,7 @@
     // 或者 var editor = new E( document.getElementById('editor') )
     editor.customConfig.uploadImgHooks = {
         customInsert: function (insertImg, result, editor) {
-            var url = result.Data.replace("static/upload", "https://airose.com/itstack");
-            insertImg(url);
+            insertImg(result.Data);
             debugger
         }
     }
