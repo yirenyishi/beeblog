@@ -163,9 +163,6 @@ func (this *BlogController) New() {
 	}
 	this.TplName = "newblog.html"
 }
-func (this *BlogController) Blog1() {
-	this.TplName = "blog1.html"
-}
 
 func (this *BlogController) BlogsPage() {
 	cats, errcat := service.GetCats()

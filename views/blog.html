@@ -1,6 +1,7 @@
 {{template "header"}}
-<title>博客 - 个人随笔</title>
-<link type="text/css" rel="styleSheet" href="/static/css/blog.css"/>
+    <meta name="keywords" content="{{.Blog.Title}}">
+    <title>{{.Blog.Title}} - 个人随笔</title>
+    <link type="text/css" rel="styleSheet" href="/static/css/blog.css"/>
 </head>
 <body>
 <div class="root-container">
@@ -36,7 +37,7 @@
 
     {{range .Top}}
         <div>
-            <a href=""><p
+            <a href="/blog/{{.Id}}"><p
                     style="max-width:245px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{.Title}}</p>
             </a>
         </div>
