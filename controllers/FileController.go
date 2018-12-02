@@ -64,7 +64,7 @@ func (this *FileController) Upload() {
 		return
 	}
 	urlDir = "https://aiprose.com/foss/" + urlDir
-	this.Data["json"] = models.ReurnData("", fpath)
+	this.Data["json"] = models.ReurnData("", urlDir)
 	this.ServeJSON()
 	return
 }
