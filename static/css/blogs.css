@@ -1,0 +1,50 @@
+.home-container{
+    height: 100%;
+    margin: 50px 4% 0 4%;
+}
+.home-container hr{
+    margin: 0;
+}
+
+.home-hearder {
+    margin: 10px 0;
+    display: flex;
+    height: 30px;
+    line-height: 30px;
+}
+
+.nelson-btn{
+    color: #ec6149 !important;
+    border-radius: 15px;
+    border: 1px solid #bbb !important;
+}
+
+.nelson-btn:hover{
+    background: #fff !important;
+    color: #ec6149 !important;
+    border-radius: 15px;
+    border: 1px solid #ec6149 !important;
+}
+
+.home-content{
+    display: flex;
+    min-height: 50px;
+    line-height: 50px;
+}
+
+.home-content-title{
+    display: inline-block;
+    font-size: 16px;
+    /*width: 65%;*/
+    flex: 1;
+}
+
+.home-content-desc{
+    display: flex
+}
+
+.home-content-desc span{
+    display: inline-block;
+    text-align: center
+}
+

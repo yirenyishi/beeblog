@@ -50,7 +50,7 @@ func TopBlogByUser(uid int64) ([]*models.Blog, error) {
 func ReadBlog(id int64) (*models.Blog, error) {
 	o := orm.NewOrm()
 	blog := &models.Blog{Id: id}
-	if err := o.Read(blog);err != nil {
+	if err := o.Read(blog); err != nil {
 		return nil, err
 	}
 	return blog, nil
@@ -74,8 +74,8 @@ func GetBlog(id int64) (*models.Blog, error) {
 	if err == nil {
 		blog.Lables = labels
 	}
-	comms , berr:= FindCommentByBlog(id)
-	if berr == nil{
+	comms, berr := FindCommentByBlog(id)
+	if berr == nil {
 		blog.Comms = comms
 	}
 	return blog, nil
@@ -161,7 +161,7 @@ func EditBlog(blog *models.Blog, strs []string) error {
 		o.Rollback()
 		return eror
 	} else {
-		o.QueryTable(models.NLabel{}).Filter("BlogId",blog.Id).Delete()
+		o.QueryTable(models.NLabel{}).Filter("BlogId", blog.Id).Delete()
 		if strs != nil && len(strs) > 0 {
 			nlabels := make([]*models.NLabel, len(strs))
 			for i := 0; i < len(strs); i++ {
@@ -199,6 +199,26 @@ func MeBlogs(num int, size int, flag int, uid int64) (*utils.Page, error) {
 	}
 	page.List = blogs
 	return page, nil
+}
+
+func IndexBlogs(size int, flag int) ([]*models.Blog, error) {
+	var blogs []*models.Blog
+	o := orm.NewOrm()
+	qs := o.QueryTable(&models.Blog{})
+	qs = qs.Filter("Delflag", 0)
+	switch flag {
+	case 0:
+		qs = qs.OrderBy("-Ctime") //最新
+	case 1:
+		qs = qs.OrderBy("-Browses") //浏览量
+	case 2:
+		qs = qs.OrderBy("-Likes") // 收藏量
+	case 3:
+		qs = qs.OrderBy("-Comments") // 评论量
+	}
+	qs = qs.Limit(size, 0)
+	_, err := qs.All(&blogs)
+	return blogs, err
 }
 
 func GetNLabel(id int64) ([]*models.NLabel, error) {

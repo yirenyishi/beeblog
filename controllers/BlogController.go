@@ -199,3 +199,4 @@ func (this *BlogController) BlogsPage() {
 	this.Data["IsBlog"] = true
 	this.TplName = "blogs.html"
 }
+
