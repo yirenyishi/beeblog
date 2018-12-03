@@ -46,7 +46,7 @@ func (this *CommentController) Save() {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
-	service.CountComments(uid.(int64))
+	service.CountComments(uid.(int64),blogId)
 	return
 }
 
@@ -78,6 +78,6 @@ func (this *CommentController) Del() {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
-	service.CountComments(uid.(int64))
+	service.CountComments(uid.(int64),id)
 	return
 }

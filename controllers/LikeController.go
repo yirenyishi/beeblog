@@ -27,7 +27,7 @@ func (this *LikeController) Save() {
 		this.Data["json"] = models.ReurnSuccess("")
 	}
 	this.ServeJSON()
-	service.CountLike(uid.(int64))
+	service.CountLike(uid.(int64),id)
 	return
 }
 
@@ -47,6 +47,6 @@ func (this *LikeController) Delete() {
 		this.Data["json"] = models.ReurnSuccess("")
 	}
 	this.ServeJSON()
-	service.CountLike(uid.(int64))
+	service.CountLike(uid.(int64),id)
 	return
 }

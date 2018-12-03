@@ -6,6 +6,4 @@
 
 * go get github.com/go-sql-driver/mysql
 
-* go get github.com/mattn/go-sqlite3
-
-* go get github.com/Unknwon/com
+* go get github.com/olivere/elastic

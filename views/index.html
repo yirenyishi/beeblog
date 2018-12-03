@@ -15,13 +15,13 @@
         <div style="flex: 1">
             <h5>最新发布</h5>
         {{range .TimeBlog}}
-            <p><a href="/blog/{{.Id}}">{{.Title}}</a></p>
+            <p><a href="/blog/{{.Id}}" target="_blank">{{.Title}}</a></p>
         {{end}}
         </div>
         <div style="flex: 1">
             <h5>流量王者</h5>
         {{range .BrowsBlog}}
-            <p><a href="/blog/{{.Id}}">{{.Title}}</a></p>
+            <p><a href="/blog/{{.Id}}" target="_blank">{{.Title}}</a></p>
         {{end}}
         </div>
     </div>
@@ -29,13 +29,13 @@
         <div style="flex: 1">
             <h5>收藏排行</h5>
         {{range .LikeBlog}}
-            <p><a href="/blog/{{.Id}}">{{.Title}}</a></p>
+            <p><a href="/blog/{{.Id}}" target="_blank">{{.Title}}</a></p>
         {{end}}
         </div>
         <div style="flex: 1">
             <h5>人气最旺</h5>
         {{range .CommBlog}}
-            <p><a href="/blog/{{.Id}}">{{.Title}}</a></p>
+            <p><a href="/blog/{{.Id}}" target="_blank">{{.Title}}</a></p>
         {{end}}
         </div>
     </div>
