@@ -24,6 +24,5 @@ func RegistDB()  {
 	//orm.RegisterDataBase("default",_SQLITE3_DRIVER,_DB_NAME,10)
 
 	orm.RegisterModel(new(Attachment),new(User),new(Blog),new(NLabel),new(Note),new(NoteColl),new(Category),new(Like),new(Comment))
-	//orm.RegisterDataBase("default", "mysql", "root:booszy@tcp(127.0.0.1:3306)/beeblog?charset=utf8&loc=Local", 30)
-	orm.RegisterDataBase("default", "mysql", "root:booszy@tcp(47.98.109.5:3306)/beeblog?charset=utf8&loc=Local", 30)
+	orm.RegisterDataBase("default", "mysql", "root:booszy@tcp(127.0.0.1:3306)/beeblog?charset=utf8&loc=Local", 30)
 }
