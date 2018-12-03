@@ -19,6 +19,9 @@
                     <li {{if .IsMap}} class="active" {{end}}>
                         <a href="/map" target="_blank">地图</a>
                     </li>
+                    <li {{if .IsUs}} class="active" {{end}}>
+                        <a href="/us" target="_blank">关于我们</a>
+                    </li>
                 </ul>
             {{/*<form class="navbar-form navbar-left" role="search">*/}}
             {{/*<div class="form-group">*/}}

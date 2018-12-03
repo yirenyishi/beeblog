@@ -1,0 +1,40 @@
+{{template "header"}}
+<meta name="keywords" content="个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,www.aiprose.com,aiprose.com,aiprose">
+<title>关于我们 - 个人随笔</title>
+<link type="text/css" rel="styleSheet" href="/static/css/us.css"/>
+</head>
+<body>
+{{template "nav" .}}
+<div class="jumbotron" style="margin-top: 41px;padding-left: 50px;margin-bottom: 10px">
+    <h1>Hello, world!</h1>
+    <p>个人随笔2.0(golang)版本正式上线</p>
+</div>
+<div class="us-root">
+   <div style="width: 620px">
+       <p>·项目源码: <a href="https://git.coding.net/yirenyishi/beeblog.git" target="_blank">点击查看</a></p>
+       <p>·项目框架: </p>
+       <div style="margin-left: 15px">
+           <p><span>golang 1.11</span></p>
+           <p><span>beego:1.7.2 <a href="https://beego.me/" target="_blank">beego官网</a></span></p>
+           <p>阿里UI: <a href="http://sui3.taobao.org/" target="_blank">sui3官网</a></p>
+           <p>富文本编辑器: <a href="http://www.wangeditor.com/" target="_blank">wangeditor官网</a></p>
+           <p>数据库: mysql(5.5.60-MariaDB)</p>
+       </div>
+       <p>·项目搭建步骤: </p>
+       <div style="margin-left: 15px">
+           <p>1.安装配置golang 最新版本 (开发最好安装一下bee)</p>
+           <p>2.go get github.com/astaxie/beego</p>
+           <p>3.go get github.com/go-sql-driver/mysql</p>
+           <p>4.windows环境需要安装gcc <a href="http://tdm-gcc.tdragon.net/download">gcc下载地址</a></p>
+       </div>
+   </div>
+    <div style="flex: 1">
+        <img src="/static/img/alipay.png" alt="" width="350">
+        <img src="/static/img/weixin.png" alt="" width="350">
+    </div>
+</div>
+<div style="margin-top: 30px">
+{{template "footer"}}
+</div>
+</body>
+</html>

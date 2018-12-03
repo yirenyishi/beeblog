@@ -53,6 +53,12 @@ func (this *PageController) IframeNote() {
 	this.TplName = "iframe/note.html"
 }
 
+// @router /us
+func (this *PageController) UsPage() {
+	this.Data["IsUs"] = true
+	this.TplName = "us.html"
+}
+
 // @router /404 [get]
 func (this *PageController) PageNotFound() {
 	this.TplName = "404.html"
