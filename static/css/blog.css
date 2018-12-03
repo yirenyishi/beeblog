@@ -1,6 +1,6 @@
 .blog-root{
     height: 100%;
-    margin: 50px 10% 0 300px;
+    margin: 50px 10% 0 350px;
 }
 
 .blog-info{
@@ -25,4 +25,8 @@
 
 .comms-root a{
    text-decoration: none;
+}
+
+img {
+    max-width: 100% !important;
 }
