@@ -177,8 +177,8 @@ func (this *BlogController) BlogsPage() {
 	if num <= 0 {
 		num = 1
 	}
-	if size < 5 {
-		size = 5
+	if size < 15 {
+		size = 15
 	}
 	if cat <= 0 {
 		cat = -1

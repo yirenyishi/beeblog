@@ -14,7 +14,7 @@
         </div>
         <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
         <div style="display: flex;height: 30px;line-height: 30px;">
-            <div style="display: inline-block;width: 100px">
+            <div style="display: inline-block;width: 120px">
                 <span>文章: </span>
                 <span>{{.Blog.User.BlogCount}}</span>
             </div>
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div style="display: flex;height: 30px;line-height: 30px;">
-            <div style="display: inline-block;width: 100px">
+            <div style="display: inline-block;width: 120px">
                 <span>评论: </span>
                 <span>{{.Blog.User.BlogComment}}</span>
             </div>
@@ -38,7 +38,7 @@
     {{range .Top}}
         <div>
             <a href="/blog/{{.Id}}"><p
-                    style="max-width:245px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{.Title}}</p>
+                    style="max-width:290px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{.Title}}</p>
             </a>
         </div>
     {{end}}
