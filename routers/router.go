@@ -8,6 +8,7 @@ import (
 func init() {
 	beego.Router("/", &controllers.IndexController{})
 	beego.Router("/map", &controllers.MapController{})
+	beego.Router("/us", &controllers.PageController{},"get:UsPage")
 	beego.Router("/iframe/note", &controllers.PageController{},"get:IframeNote")
 	beego.Router("/iframe/user", &controllers.PageController{},"get:IframeUser")
 	beego.Router("/iframe/blog", &controllers.PageController{},"get:Blog")
