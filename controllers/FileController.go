@@ -131,6 +131,7 @@ func (this *FileController) HeadImgUpload() {
 		this.ServeJSON()
 		return
 	}
+	this.SetSession("headimg", urlDir)
 	this.Data["json"] = models.ReurnData("", urlDir)
 	this.ServeJSON()
 	return
