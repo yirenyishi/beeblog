@@ -47,6 +47,7 @@
         <label for="joacims-menu"><span><img src="/static/img/menu.png"
                                              style="width: 25px;height: 25px;"> </span></label>
         <nav>
+            <a href="javascript:void(0)" id="saveNote">保存笔记</a>
             <a href="/" target="_blank">首页</a>
             <a href="javascript:void(0)" id="newNote">新增笔记</a>
             <a href="/me/note" id="newNoteColl">管理文件夹</a>
@@ -94,7 +95,7 @@
         }
     }
     editor.create()
-    editor.txt.html("<p>点击右上角菜单新建或者选择笔记</p><p>点击左上角菜单进行新建笔记或者导航</p><span>一定要记得先新建笔记然后在编辑</span>");
+    editor.txt.html("<p>点击右上角菜单新建或者选择笔记</p><p>点击左上角菜单进行新建笔记或者导航</p><span>一定要记得先新建笔记然后在编辑,ctrl+s 快捷键可以快速保存哦</span>");
 
     document.onkeydown = keyDown;
 
@@ -178,6 +179,9 @@
         layer.tips('文章列表点我', '#slide-container', {
             tips: [3, '#78BA32']
         });
+        $("#saveNote").click(function () {
+            saveNote()
+        })
 
         $("#newNote").click(function () {
             layer.open({
