@@ -1,7 +1,7 @@
 .note-nav{
     position: fixed;
     left: 0;
-    top: 50%;
+    top: 0;
     z-index: 99999;
 }
 
@@ -12,9 +12,9 @@ input[id*="joacims-menu"] {
 
 input[id*="joacims-menu"] + label {
     display:block;
-    width:35px;
-    height:35px;
-    background:#222;
+    width:40px;
+    height:40px;
+    background:#64807d;
     cursor:pointer;
     font-size:30px;
     color:#fff;
@@ -24,7 +24,7 @@ input[id*="joacims-menu"] + label {
 input[id*="joacims-menu"] + label span {
     display:block;
     position:absolute;
-    top: 2px;
+    top: 8px;
     left: 5px;
     transition:.2s;
 }

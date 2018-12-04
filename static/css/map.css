@@ -11,3 +11,8 @@
     width: 100%;
     height: 100%;
 }
+
+.amap-logo,.amap-copyright {
+    display: none !important;
+    visibility: hidden !important;
+}
