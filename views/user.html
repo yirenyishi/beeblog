@@ -1,5 +1,6 @@
 {{template "header"}}
-<meta name="keywords" content="{{.User.NickName}},{{.User.NickName}}主页,个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,www.aiprose.com,aiprose.com,aiprose">
+<meta name="keywords"
+      content="{{.User.NickName}},{{.User.NickName}}主页,个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,aiprose">
 <title>【{{.User.NickName}}】个人主页 - 个人随笔</title>
 <link type="text/css" rel="styleSheet" href="/static/css/u.css"/>
 </head>
@@ -27,8 +28,10 @@
         <hr class="fhr" color=#ffeeeeee SIZE=0.1 style="margin: 0">
         <div style="color: #515a6e;height: 30px;line-height: 30px;">
             <span>排序: </span>
-            <span style="margin-left: 15px"><a href="/u/{{.User.Id}}?num=1&flag=0" style="color: #515a6e;text-decoration: none">发布时间</a></span>
-            <span style="margin-left: 8px"><a href="/u/{{.User.Id}}?num=1&flag=1" style="color: #515a6e;text-decoration: none">访问量</a></span>
+            <span style="margin-left: 15px"><a href="/u/{{.User.Id}}?num=1&flag=0"
+                                               style="color: #515a6e;text-decoration: none">发布时间</a></span>
+            <span style="margin-left: 8px"><a href="/u/{{.User.Id}}?num=1&flag=1"
+                                              style="color: #515a6e;text-decoration: none">访问量</a></span>
         </div>
     {{range .Page.List}}
         <div class="blog-list">
@@ -60,4 +63,31 @@
     </div>
 </div>
 </body>
+<script>
+    $(function () {
+        /*百度收录*/
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+
+        /*360收录*/
+        var qihuo = document.createElement('script');
+        if (curProtocol === 'https') {
+            qihuo.src = 'https://jspassport.ssl.qhimg.com/11.0.1.js?d33b14200fa89b7ecd3780341cd234c';
+        }
+        else {
+            qihuo.src = 'http://js.passport.qihucdn.com/11.0.1.js?d33b14200fa89b7ecd3780341cd234c4';
+        }
+        qihuo.id = "sozz"
+        var s = document.getElementsByTagName("script")[1];
+        s.parentNode.insertBefore(qihuo, s);
+    })
+</script>
 </html>
