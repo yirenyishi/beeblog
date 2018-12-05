@@ -7,8 +7,8 @@ import (
 
 func init() {
 	beego.Router("/", &controllers.IndexController{})
-	beego.Router("/500", &controllers.PageController{},"PageNotFound")
-	beego.Router("/404", &controllers.PageController{},"PageNotFound")
+	beego.Router("/500", &controllers.PageController{},"get:PageNotFound")
+	beego.Router("/404", &controllers.PageController{},"get:PageNotFound")
 	beego.Router("/map", &controllers.MapController{})
 	beego.Router("/us", &controllers.PageController{},"get:UsPage")
 	beego.Router("/iframe/note", &controllers.PageController{},"get:IframeNote")
