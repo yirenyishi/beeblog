@@ -4,8 +4,8 @@ import (
 	_ "beeblog/routers"
 	"github.com/astaxie/beego"
 	"beeblog/models"
-	"beeblog/filter"
 	"github.com/astaxie/beego/orm"
+	"beeblog/filter"
 )
 
 func init() {
