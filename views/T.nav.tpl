@@ -11,16 +11,16 @@
                         <a href="/">首页 </a>
                     </li>
                     <li {{if .IsBlog}} class="active" {{end}}>
-                        <a href="/blogs" target="_blank">博客 </a>
+                        <a href="/blogs">博客 </a>
                     </li>
                     <li>
                         <a href="/note" target="_blank">笔记</a>
                     </li>
                     <li {{if .IsMap}} class="active" {{end}}>
-                        <a href="/map" target="_blank">地图</a>
+                        <a href="/map">地图</a>
                     </li>
                     <li {{if .IsUs}} class="active" {{end}}>
-                        <a href="/us" target="_blank">关于我们</a>
+                        <a href="/us">关于我们</a>
                     </li>
                 </ul>
             {{/*<form class="navbar-form navbar-left" role="search">*/}}
@@ -44,7 +44,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="/me/blog">个人中心</a></li>
                             <li><a href="/note" target="_blank">我的笔记</a></li>
-                            <li><a href="/u/{{.UserId}}" target="_blank">我的首页</a></li>
+                            <li><a href="/u/{{.UserId}}">我的首页</a></li>
                             <li class="divider"></li>
                             <li><a href="/logout">安全退出</a></li>
                         </ul>

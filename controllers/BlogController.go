@@ -114,7 +114,6 @@ func (this *BlogController) Get() {
 	this.Data["UserId"] = this.GetSession("userid")
 	this.Data["HeadImg"] = this.GetSession("headimg")
 	this.Data["NickName"] = this.GetSession("nickname")
-	this.Data["UserId"] = this.GetSession("userid")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.TplName = "blog.html"
 	service.CountBrows(blog.UserId)
