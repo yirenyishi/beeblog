@@ -156,7 +156,7 @@ func SaveBlog(blog *models.Blog, strs []string) error {
 func EditBlog(blog *models.Blog, strs []string) error {
 	o := orm.NewOrm()
 	o.Begin()
-	id, eror := o.Update(blog)
+	_, eror := o.Update(blog)
 	if eror != nil {
 		o.Rollback()
 		return eror
@@ -165,7 +165,7 @@ func EditBlog(blog *models.Blog, strs []string) error {
 		if strs != nil && len(strs) > 0 {
 			nlabels := make([]*models.NLabel, len(strs))
 			for i := 0; i < len(strs); i++ {
-				nlabels[i] = &models.NLabel{Title: strs[i], BlogId: id, UserId: blog.UserId}
+				nlabels[i] = &models.NLabel{Title: strs[i], BlogId: blog.Id, UserId: blog.UserId}
 			}
 			if _, err := o.InsertMulti(len(nlabels), nlabels); err != nil {
 				o.Rollback()
