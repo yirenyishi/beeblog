@@ -6,8 +6,13 @@ import (
 )
 
 var FilterAdmin = func(ctx *context.Context) {
-	url := ctx.Input.URL()
+	url := ctx.Input.URI()
+	refer := ctx.Input.Refer()
+	site := ctx.Input.Site()
 	logs.Info(url)
+	if site+url == refer {
+		ctx.Input.SetData("refresh",true)
+	}
 	//beego.Informational(url)
 	//if  url != "/login"{
 	//	ctx.Redirect(302, "/login")
