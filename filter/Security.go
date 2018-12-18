@@ -8,11 +8,8 @@ import (
 var FilterAdmin = func(ctx *context.Context) {
 	url := ctx.Input.URI()
 	refer := ctx.Input.Refer()
-	site := ctx.Input.Site()
 	logs.Info(url)
-	logs.Info(site)
-	logs.Info(site + url)
-	if site+url == refer {
+	if "https://www.aiprose.com"+url == refer {
 		ctx.Input.SetData("refresh", true)
 	}
 	//beego.Informational(url)
