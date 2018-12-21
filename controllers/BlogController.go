@@ -115,6 +115,7 @@ func (this *BlogController) Get() {
 	this.Data["HeadImg"] = this.GetSession("headimg")
 	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
+	this.Data["IsDDesc"] = true
 	this.TplName = "blog.html"
 	if this.Ctx.Input.GetData("refresh") != true {
 		service.CountBrows(blog.UserId)
