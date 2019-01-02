@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            height: 100%;
+            background-size: cover;
+            background-position: center center;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body onload="draw();" style="background-image: url(https://jllsly.com/wallpapers/snow-night-wallpapers-high-quality-resolution-Is-Cool-Wallpapers-1.jpg);">
+</body>
+<script src="https://johnson2heng.github.io/three.js-demo/lib/three.js"></script>
+<script src="https://johnson2heng.github.io/three.js-demo/lib/js/controls/OrbitControls.js"></script>
+<script src="https://johnson2heng.github.io/three.js-demo/lib/js/libs/stats.min.js"></script>
+<script src="https://johnson2heng.github.io/three.js-demo/lib/js/libs/dat.gui.min.js"></script>
+<script src="https://cdn.bootcss.com/lodash.js/4.17.11/lodash.min.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/gsap/latest/TweenMax.min.js"></script>
+<script>
+
+    //https://www.overdriveonline.com/wp-content/uploads/sites/8/2013/01/Truck-at-night-in-snow.jpg
+    //https://ateachinglifedotcom.files.wordpress.com/2016/12/snow-at-night.jpg
+    //https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/H0MA-uKSipsekm5s/magical-winter-night-in-the-snow-covered-pine-forest-realistic-3d-animation_bcgk90me1g_thumbnail-full01.png
+    //https://i.pinimg.com/originals/18/03/c9/1803c9683d2a6acb5f827114015a51c8.jpg
+    //https://travelingorion.files.wordpress.com/2017/02/img_6666.jpg
+    //https://jllsly.com/wallpapers/snow-night-wallpaper-desktop-Is-Cool-Wallpapers-1.jpg
+    //https://juegosrev.com/wp-content/uploads/2017/06/Winter-Night-Wallpapers-Gallery-88-Plus-PIC-WPW504471.jpg
+    //https://jllsly.com/wallpapers/snow-night-wallpapers-high-quality-resolution-Is-Cool-Wallpapers-1.jpg
+    setInterval(function(){
+        if (location.hash.length > 2) {
+            document.body.style.backgroundImage = "url("+ location.hash.substr(1) + ")";
+        }
+    }, 1000)
+
+    var renderer, camera;
+    var swidth,sheight, swidth_2;
+
+    var rotateRatio = 0.04;
+
+    var wind = {x:0, z:0, y:0, ratio:0.45};
+
+    let windChangeStep = function(key){
+        TweenMax.to(
+            wind,
+            _.random(1.6, 2.5, true),
+            {
+                [key]:_.random(-1, 1, true) * wind.ratio,
+                ease: Power2.easeInOut,
+                onComplete:function(){
+                    windChangeStep(key)
+                }
+            }
+        )
+    }
+
+    windChangeStep("x");
+    windChangeStep("z");
+    windChangeStep("y");
+    var getVelocity = function(){
+        return {
+            y:_.random(-0.2, -0.05, true) * 1.4,
+            x:_.random(-0.1, 0.2, true) * 0.01,
+            z:_.random(-0.1, 0.2, true) * 0.01,
+            angle:_.random(-Math.PI/2, Math.PI/2, true)
+        }
+    }
+
+
+    function clacSize(){
+        swidth = window.innerWidth * 0.05;
+        sheight = window.innerHeight * 0.05;
+        swidth_2 = swidth * swidth;
+    }
+
+
+    $(window).on("resize", e=>{
+        _.throttle(e=>{
+            clacSize();
+        }, 300)
+    });
+    clacSize();
+
+    $(document).on("mousemove", e=>{
+        let {screenX, screenY} = e;
+        // wind.x = (screenX - innerWidth * 0.5)/innerWidth/2 * 1.2;
+        // wind.z = (screenY - innerHeight * 0.5)/innerHeight/2 * 1.2;
+    });
+
+
+    function initRender() {
+        renderer = new THREE.WebGLRenderer({antialias: true, alpha:true});
+        // renderer.setClearColor(new THREE.Color(0x222222)); //设置背景颜色
+        renderer.setClearColor(0x000000, 0.2); //设置背景颜色
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+    }
+
+
+    function initCamera() {
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 12, swidth * 2);
+        camera.position.set(0, 0, swidth * 0.75);
+        camera.lookAt(new THREE.Vector3(0, 30, 0));
+    }
+
+
+    function initScene() {
+        scene = new THREE.Scene();
+    }
+
+    var light;
+
+    function initLight() {
+        scene.add(new THREE.AmbientLight(0x404040));
+        light = new THREE.DirectionalLight(0xffffff);
+        light.position.set(1, 1, 1);
+        scene.add(light);
+    }
+
+
+    function initModel() {
+
+        //轴辅助 （每一个轴的长度）
+        var object = new THREE.AxesHelper(500);
+        // scene.add(object);
+    }
+
+    //初始化性能插件
+    var stats;
+
+    function initStats() {
+        stats = new Stats();
+        document.body.appendChild(stats.dom);
+    }
+
+    //用户交互插件 鼠标左键按住旋转，右键按住平移，滚轮缩放
+    var controls;
+
+    function initControls() {
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        // controls = new THREE.TrackballControls(camera, renderer.domElement);
+
+        // 如果使用animate方法时，将此函数删除
+        //controls.addEventListener( 'change', render );
+        // 使动画循环使用时阻尼或自转 意思是否有惯性
+        controls.enableDamping = true;
+        //动态阻尼系数 就是鼠标拖拽旋转灵敏度
+        //controls.dampingFactor = 0.25;
+        //是否可以缩放
+        controls.enableZoom = true;
+        //是否自动旋转
+        controls.autoRotate = false;
+        //设置相机距离原点的最远距离
+        controls.minDistance = 20;
+        //设置相机距离原点的最远距离
+        controls.maxDistance = 10000;
+        //是否开启右键拖拽
+        controls.enablePan = true;
+    }
+
+    //生成gui设置配置项
+    var gui;
+
+    var cloud;
+
+    function initGui() {
+        //声明一个保存需求修改的相关数据的对象
+        gui = {
+            "size": 0.9,
+            "transparent": true,
+            "opacity": 1,
+            "vertexColors": true,
+            "color": 0xffffff,
+            "sizeAttenuation": true,
+            "rotateSystem": false,
+            redraw: function () {
+                if (cloud) {
+                    scene.remove(cloud);
+                }
+                createParticles(gui.size, gui.transparent, gui.opacity, gui.vertexColors, gui.sizeAttenuation, gui.color);
+                //设置是否自动旋转
+                controls.autoRotate = gui.rotateSystem;
+            }
+        };
+        // var datGui = new dat.GUI();
+        // //将设置属性添加到gui当中，gui.add(对象，属性，最小值，最大值）gui.add(controls, 'size', 0, 10).onChange(controls.redraw);
+        // datGui.add(gui, 'size', 0.1, 10).onChange(gui.redraw);
+        // datGui.add(gui, 'transparent').onChange(gui.redraw);
+        // datGui.add(gui, 'opacity', 0, 1).onChange(gui.redraw);
+        // datGui.add(gui, 'vertexColors').onChange(gui.redraw);
+        // datGui.addColor(gui, 'color').onChange(gui.redraw);
+        // datGui.add(gui, 'sizeAttenuation').onChange(gui.redraw);
+        // datGui.add(gui, 'rotateSystem').onChange(gui.redraw);
+
+        gui.redraw();
+    }
+
+    //生成粒子的方法
+    function createParticles(size, transparent, opacity, vertexColors, sizeAttenuation, color) {
+        var texture = new THREE.TextureLoader().load("/static/img/snow.png");
+        //存放粒子数据的网格
+        var geom = new THREE.Geometry();
+
+        //样式化粒子的THREE.PointCloudMaterial材质
+        var material = new THREE.PointsMaterial({
+            size,
+            transparent,
+            opacity,
+            vertexColors,
+            sizeAttenuation,
+            color,
+            depthTest: false,  //设置解决透明度有问题的情况
+            map: texture,
+        });
+
+        for (var i = 0; i < 16000; i++) {
+            //添加顶点的坐标
+            var particle = new THREE.Vector3(0,0,0);
+
+            resetParticle(particle);
+
+            var v = getVelocity();
+
+            particle.velocityY = v.y;
+            particle.velocityX = v.x;
+            particle.velocityZ = v.z;
+            particle.ang =       v.angle;
+
+            geom.vertices.push(particle);
+            var color = new THREE.Color(0xffffff);
+            //.setHSL ( h, s, l ) h — 色调值在0.0和1.0之间 s — 饱和值在0.0和1.0之间 l — 亮度值在0.0和1.0之间。 使用HSL设置颜色。
+            //随机当前每个粒子的亮度
+            //color.setHSL(color.getHSL().h, color.getHSL().s, Math.random() * color.getHSL().l);
+            geom.colors.push(color);
+        }
+
+        //生成模型，添加到场景当中
+        cloud = new THREE.Points(geom, material);
+        cloud.verticesNeedUpdate = true;
+
+        scene.add(cloud);
+    }
+
+
+    function resetParticle(particle){
+        particle.y = _.random(-sheight, sheight, true);
+        particle.x = _.random(-swidth, swidth , true);
+        particle.z = _.random(-swidth, swidth , true);
+    }
+
+    function render() {
+        //产生雨滴动画效果
+        var vertices = cloud.geometry.vertices;
+
+        vertices.forEach(function (v, i) {
+            v.ang+=0.05;
+
+            let a = Math.atan(v.z/v.x);
+            if(v.x<0){
+                a = a + Math.PI;
+            }
+            let r = Math.pow(v.x*v.x + v.z*v.z, 0.5);
+            a = a + rotateRatio * Math.pow(1 - r/swidth, 3);
+
+            //漩涡
+            v.x = Math.cos(a) * r;
+            v.z = Math.sin(a) * r;
+
+            //速度
+            v.y = v.y + v.velocityY;
+            v.x = v.x + v.velocityX + Math.cos(v.ang) * 0.09 ;
+            v.z = v.z + v.velocityZ + Math.sin(v.ang) * 0.09 ;
+
+            //风
+            v.y = v.y + wind.y * 0.5;
+            v.x = v.x + wind.x;
+            v.z = v.z + wind.z;
+
+            if (v.y <= -sheight){
+                v.y = sheight;
+            }else if (v.x < -swidth) {
+                v.x = swidth
+            }else if (v.x > swidth) {
+                v.x = -swidth;
+            }else if (v.z < -swidth) {
+                v.z = swidth
+            }else if (v.z > swidth) {
+                v.z = -swidth;
+            }
+        });
+
+        //设置实时更新网格的顶点信息
+        cloud.geometry.verticesNeedUpdate = true;
+
+        renderer.render(scene, camera);
+    }
+
+    //窗口变动触发的函数
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        render();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+    }
+
+    function animate() {
+        //更新控制器
+        controls.update();
+        render();
+
+        //更新性能插件
+        stats.update();
+        requestAnimationFrame(animate);
+    }
+
+    function draw() {
+        initRender();
+        initScene();
+        initCamera();
+        initLight();
+        initModel();
+        initControls();
+        initStats();
+        initGui();
+        animate();
+        window.onresize = onWindowResize;
+    }
+</script>
+</html>
