@@ -1,14 +1,17 @@
-{{template "header"}}
-<meta name="keywords" content="个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,aiprose">
-<title>首页 - 个人随笔</title>
+{{template "header" .}}
+<meta name="keywords" content="云悦,个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,aiprose">
+<title>云悦· IT技术博客</title>
 <link type="text/css" rel="styleSheet" href="/static/css/index.css"/>
 </head>
 <body>
 {{template "nav" .}}
 <div class="jumbotron" style="margin-top: 41px;padding-left: 50px;margin-bottom: 10px">
     <h1>Hello, world!</h1>
-    <p>个人随笔2.0(golang)版本正式上线</p>
-    <p><a class="btn btn-primary btn-lg" href="/us" role="button">Learn more</a></p>
+    <p>云悦 2.0(golang)版本正式上线</p>
+    <p>
+        <a class="btn btn-primary btn-lg" href="/us" role="button">Learn more</a>
+        <a class="btn btn-primary btn-lg" href="/blog/new" target="_blank" role="button">写文章</a>
+    </p>
 </div>
 <div style="margin: 0 5%" class="blog-root">
     <div style="display: flex">

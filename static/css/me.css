@@ -65,6 +65,12 @@
     height: 110px;
     padding: 0 4%;
 }
+
+.me-blog-footer{
+    height: 110px;
+    padding: 0 4%;
+    margin-left: 290px;
+}
 .info-header{
     flex: 1;
 }

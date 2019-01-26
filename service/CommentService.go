@@ -9,7 +9,7 @@ import (
 func FindCommentByBlog(bid int64) ([]*models.Comment, error) {
 	var comms []*models.Comment
 	o := orm.NewOrm()
-	_, err := o.QueryTable(&models.Comment{}).Filter("Pid", 0).OrderBy("-Ctime").All(&comms)
+	_, err := o.QueryTable(&models.Comment{}).Filter("Pid", 0).Filter("BlogId",bid).OrderBy("-Ctime").All(&comms)
 	if err != nil {
 		return nil, err
 	}

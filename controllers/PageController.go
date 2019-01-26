@@ -56,6 +56,10 @@ func (this *PageController) IframeNote() {
 // @router /us
 func (this *PageController) UsPage() {
 	this.Data["IsUs"] = true
+	this.Data["UserId"] = this.GetSession("userid")
+	this.Data["HeadImg"] = this.GetSession("headimg")
+	this.Data["NickName"] = this.GetSession("nickname")
+	this.Data["IsLogin"] = this.GetSession("nickname") != nil
 	this.TplName = "us.html"
 }
 

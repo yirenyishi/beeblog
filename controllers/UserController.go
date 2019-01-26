@@ -44,6 +44,7 @@ func (this *UserController) UserInfo() {
 	this.Data["HeadImg"] = this.GetSession("headimg")
 	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
+	this.Data["IsDDesc"] = true
 	this.TplName = "user.html"
 	return
 }
