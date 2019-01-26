@@ -7,8 +7,8 @@ import (
 
 func init() {
 	beego.Router("/", &controllers.IndexController{})
-	beego.Router("/500", &controllers.PageController{},"get:PageNotFound")
 	beego.Router("/404", &controllers.PageController{},"get:PageNotFound")
+	beego.Router("/500", &controllers.PageController{},"get:ServerError")
 	beego.Router("/map", &controllers.MapController{})
 	beego.Router("/us", &controllers.PageController{},"get:UsPage")
 	beego.Router("/iframe/note", &controllers.PageController{},"get:IframeNote")
@@ -16,5 +16,5 @@ func init() {
 	beego.Router("/iframe/blog", &controllers.PageController{},"get:Blog")
 	beego.Router("/file/upload", &controllers.FileController{}, "post:Upload")
 	beego.Router("/himg/upload", &controllers.FileController{}, "post:HeadImgUpload")
-	beego.Include(&controllers.PageController{})
+	//beego.Include(&controllers.PageController{})
 }

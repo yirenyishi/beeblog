@@ -4,6 +4,9 @@ type Error struct {
 	Status int
 	Msg    string
 }
+func ReurnServerError(status int) *Error {
+	return &Error{Status: status, Msg: "服务器异常"}
+}
 
 func ReurnError(status int, msg string) *Error {
 	if msg == "" {

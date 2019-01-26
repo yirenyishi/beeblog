@@ -14,7 +14,7 @@ type PageController struct {
 func (this *PageController) Blog() {
 	cats, err := service.GetCats()
 	if err != nil {
-		this.Redirect("/500", 302)
+		this.Redirect("/404", 302)
 		return
 	}
 	this.Data["Cats"] = cats
@@ -64,7 +64,7 @@ func (this *PageController) PageNotFound() {
 	this.TplName = "404.html"
 }
 
-// @router /500 [get]
+// @router /404 [get]
 func (this *PageController) ServerError() {
 	this.TplName = "500.html"
 }

@@ -27,7 +27,7 @@ func (this *UserController) UserInfo() {
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	user, err := service.GetUser(id)
 	if err != nil {
-		this.Redirect("/500", 302)
+		this.Redirect("/404", 302)
 		return
 	}
 	size := 15
@@ -62,12 +62,12 @@ func (this *UserController) PersonBlog() {
 	flag, _ := this.GetInt("flag")
 	page, err := service.MeBlogs(num, size, flag, uid.(int64))
 	if err != nil {
-		this.Redirect("/500", 302)
+		this.Redirect("/404", 302)
 		return
 	}
 	user, uerr := service.GetUser(uid.(int64))
 	if uerr != nil {
-		this.Redirect("/500", 302)
+		this.Redirect("/404", 302)
 		return
 	}
 	this.Data["UserId"] = this.GetSession("userid")
@@ -99,13 +99,13 @@ func (this *UserController) PersonNote() {
 		notColl = make([]*models.NoteColl, 0)
 	}
 	if err != nil {
-		this.Redirect("/500", 302)
+		this.Redirect("/404", 302)
 		return
 	}
 	user, uerr := service.GetUser(uid.(int64))
 	if uerr != nil {
 		if uid == nil {
-			this.Redirect("/500", 302)
+			this.Redirect("/404", 302)
 			return
 		}
 	}
@@ -132,13 +132,13 @@ func (this *UserController) PersonLike() {
 	}
 	page, err := service.MeLikes(num, size, uid.(int64))
 	if err != nil {
-		this.Redirect("/500", 302)
+		this.Redirect("/404", 302)
 		return
 	}
 	user, uerr := service.GetUser(uid.(int64))
 	if uerr != nil {
 		if uid == nil {
-			this.Redirect("/500", 302)
+			this.Redirect("/404", 302)
 			return
 		}
 	}
@@ -160,7 +160,7 @@ func (this *UserController) PersonInfo() {
 	}
 	user, err := service.GetUser(uid.(int64))
 	if err != nil {
-		this.Redirect("/500", 302)
+		this.Redirect("/404", 302)
 		return
 	}
 	this.Data["IsLogin"] = this.GetSession("nickname") != nil
