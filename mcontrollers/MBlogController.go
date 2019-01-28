@@ -12,6 +12,35 @@ type MBlogController struct {
 	beego.Controller
 }
 
+
+func (this *MBlogController) Get() {
+	idStr := this.Ctx.Input.Param(":id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	blog, err := service.GetBlog(id)
+	if err != nil {
+		this.Data["json"] = models.ReurnServerError(500)
+		this.ServeJSON()
+		return
+	}
+	//if uid := this.GetSession("userid"); uid != nil {
+	//	if blog.UserId == uid.(int64) {
+	//		this.Data["IsAuthor"] = true
+	//	}
+	//	if flag, err := service.IsLike(id, uid.(int64)); err == nil {
+	//		this.Data["IsLike"] = flag
+	//	}
+	//}
+	//if blogs, err := service.TopBlogByUser(blog.UserId); err == nil {
+	//	this.Data["Top"] = blogs
+	//}
+	this.Data["json"] = models.ReurnData("",blog)
+	this.ServeJSON()
+	service.CountBrows(blog.UserId)
+	service.EditBlogBrows(id)
+	return
+}
+
+
 func (this *MBlogController) BlogsPage() {
 	num, _ := this.GetInt("num")
 	size, _ := this.GetInt("size")
@@ -117,37 +146,6 @@ func (this *MBlogController) Edit() {
 	return
 }
 
-func (this *MBlogController) Get() {
-	idStr := this.Ctx.Input.Param(":id")
-	id, _ := strconv.ParseInt(idStr, 10, 64)
-	blog, err := service.GetBlog(id)
-	if err != nil {
-		this.Redirect("/404", 302)
-		return
-	}
-	if uid := this.GetSession("userid"); uid != nil {
-		if blog.UserId == uid.(int64) {
-			this.Data["IsAuthor"] = true
-		}
-		if flag, err := service.IsLike(id, uid.(int64)); err == nil {
-			this.Data["IsLike"] = flag
-		}
-	}
-	if blogs, err := service.TopBlogByUser(blog.UserId); err == nil {
-		this.Data["Top"] = blogs
-	}
-	this.Data["Blog"] = blog
-	this.Data["UserId"] = this.GetSession("userid")
-	this.Data["HeadImg"] = this.GetSession("headimg")
-	this.Data["NickName"] = this.GetSession("nickname")
-	this.Data["UserId"] = this.GetSession("userid")
-	this.Data["IsLogin"] = this.GetSession("nickname") != nil
-	this.TplName = "blog.html"
-	service.CountBrows(blog.UserId)
-	service.EditBlogBrows(id)
-	return
-}
-
 func (this *MBlogController) Del() {
 	uid := this.GetSession("userid")
 	if uid == nil {
@@ -179,13 +177,4 @@ func (this *MBlogController) Del() {
 	this.ServeJSON()
 	service.CountBlog(uid.(int64))
 	return
-}
-
-func (this *MBlogController) New() {
-	uid := this.GetSession("userid")
-	if uid == nil {
-		this.Redirect("/login", 302)
-		return
-	}
-	this.TplName = "newblog.html"
 }

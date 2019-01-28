@@ -10,10 +10,9 @@
         <div class="home-hearder">
             <div style="flex: 1">
                 <span>
-                    <select class="form-control input-lg" style="width: 150px;display: inline-block;height: 32px"
-                            id="selCat">
-                    {{range .Cats}}
+                    <select class="form-control input-lg" style="width: 150px;display: inline-block;height: 32px" id="selCat">
                         <option value="-1">选择语言</option>
+                    {{range .Cats}}
                         <option value="{{.Id}}">{{.Title}}</option>
                     {{end}}
                     </select>
