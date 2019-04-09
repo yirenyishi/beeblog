@@ -9,7 +9,7 @@ import (
 type NoteService struct {
 }
 
-func EditNote(note *models.Note) error {
+func (this *NoteService) EditNote(note *models.Note) error {
 	o := orm.NewOrm()
 	id, err := o.Update(note)
 	if err == nil {
@@ -18,7 +18,7 @@ func EditNote(note *models.Note) error {
 	return err
 }
 
-func SaveNote(note *models.Note) error {
+func (this *NoteService) SaveNote(note *models.Note) error {
 	o := orm.NewOrm()
 	id, err := o.Insert(note)
 	if err == nil {
@@ -27,18 +27,18 @@ func SaveNote(note *models.Note) error {
 	return err
 }
 
-func GetNote(note *models.Note) error {
+func (this *NoteService) GetNote(note *models.Note) error {
 	o := orm.NewOrm()
 	return o.Read(note)
 }
 
-func DelNote(note *models.Note) error {
+func (this *NoteService) DelNote(note *models.Note) error {
 	o := orm.NewOrm()
 	_, err := o.Delete(note)
 	return err
 }
 
-func GetNoteByPid(pid int64) ([]*models.Note, error) {
+func (this *NoteService) GetNoteByPid(pid int64) ([]*models.Note, error) {
 	var notes []*models.Note
 	o := orm.NewOrm()
 	qs := o.QueryTable(models.Note{})
@@ -46,7 +46,7 @@ func GetNoteByPid(pid int64) ([]*models.Note, error) {
 	return notes, err
 }
 
-func CountNote(pid int64) (int64, error) {
+func (this *NoteService) CountNote(pid int64) (int64, error) {
 	o := orm.NewOrm()
 	totalCount, err := o.QueryTable(&models.Note{}).Filter("Pid", pid).Count()
 	if err != nil {
@@ -55,7 +55,7 @@ func CountNote(pid int64) (int64, error) {
 	return totalCount, nil
 }
 
-func SaveNoteColl(note *models.NoteColl) error {
+func (this *NoteService) SaveNoteColl(note *models.NoteColl) error {
 	o := orm.NewOrm()
 	id, err := o.Insert(note)
 	if err == nil {
@@ -64,7 +64,7 @@ func SaveNoteColl(note *models.NoteColl) error {
 	return err
 }
 
-func EditNoteColl(title string, id int64, uid int64) error {
+func (this *NoteService) EditNoteColl(title string, id int64, uid int64) error {
 	o := orm.NewOrm()
 	noteColl := &models.NoteColl{Id: id}
 
@@ -79,7 +79,7 @@ func EditNoteColl(title string, id int64, uid int64) error {
 	return err
 }
 
-func GetNoteColl(uid int64) ([]*models.NoteColl, error) {
+func (this *NoteService) GetNoteColl(uid int64) ([]*models.NoteColl, error) {
 	var notes []*models.NoteColl
 	o := orm.NewOrm()
 	qs := o.QueryTable(models.NoteColl{})
@@ -87,7 +87,7 @@ func GetNoteColl(uid int64) ([]*models.NoteColl, error) {
 	return notes, err
 }
 
-func DelNoteColl(id int64, uid int64) error {
+func (this *NoteService) DelNoteColl(id int64, uid int64) error {
 	o := orm.NewOrm()
 	noteColl := &models.NoteColl{Id: id}
 

@@ -41,7 +41,7 @@ func (this *FileController) Upload() {
 	}
 	//创建目录
 	urlDir := time.Now().Format("2006/01/02/")
-	uploadDir := "/opt/filetom/webapps/itstack/" + urlDir
+	uploadDir := beego.AppConfig.String("uploadDir")  + urlDir
 	err := os.MkdirAll(uploadDir, 777)
 	if err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
@@ -63,7 +63,7 @@ func (this *FileController) Upload() {
 		this.ServeJSON()
 		return
 	}
-	urlDir = "https://aiprose.com/foss/" + urlDir
+	urlDir = beego.AppConfig.String("imgUrlPrefix") + urlDir
 	this.Data["json"] = models.ReurnData("", urlDir)
 	this.ServeJSON()
 	return
@@ -102,7 +102,7 @@ func (this *FileController) HeadImgUpload() {
 	}
 	//创建目录
 	urlDir := time.Now().Format("2006/01/02/")
-	uploadDir := "/opt/filetom/webapps/itstack/" + urlDir
+	uploadDir := beego.AppConfig.String("uploadDir") + urlDir
 	err := os.MkdirAll(uploadDir, 777)
 	if err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
@@ -124,9 +124,10 @@ func (this *FileController) HeadImgUpload() {
 		this.ServeJSON()
 		return
 	}
-	urlDir = "https://aiprose.com/foss/" + urlDir
+	urlDir = beego.AppConfig.String("imgUrlPrefix") + urlDir
 	user := &models.User{Id: uid.(int64), Headimg: urlDir}
-	if _, err = service.EditHeadImg(user); err != nil {
+	userSerivce := service.UserService{}
+	if _, err = userSerivce.EditHeadImg(user); err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
 		this.ServeJSON()
 		return

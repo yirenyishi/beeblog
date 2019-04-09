@@ -12,6 +12,9 @@ type CommentController struct {
 }
 
 func (this *CommentController) Save() {
+	commentService := service.CommentService{}
+	blogService := service.BlogService{}
+	userService := service.UserService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
@@ -25,7 +28,7 @@ func (this *CommentController) Save() {
 		return
 	}
 	commVal := this.GetString("commval")
-	blog, err := service.ReadBlog(blogId)
+	blog, err := blogService.ReadBlog(blogId)
 	if err != nil {
 		this.Data["json"] = models.ReurnError(403, "")
 		this.ServeJSON()
@@ -34,23 +37,25 @@ func (this *CommentController) Save() {
 	comm := &models.Comment{BlogId: blogId, CuserId: uid.(int64), BuserId: blog.UserId, ComVal: commVal}
 	if pid, _ := this.GetInt64("pid"); pid != 0 {
 		parent := &models.Comment{Id: pid}
-		if err := service.ReadComment(parent); err == nil {
+		if err := commentService.ReadComment(parent); err == nil {
 			comm.BuserId = parent.CuserId
 		}
 		comm.Pid = pid
 	}
-	err = service.SaveComment(comm)
+	err = commentService.SaveComment(comm)
 	if err == nil {
 		this.Data["json"] = models.ReurnData("", comm)
 	} else {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
-	service.CountComments(uid.(int64),blogId)
+	userService.CountComments(uid.(int64),blogId)
 	return
 }
 
 func (this *CommentController) Del() {
+	commentService := service.CommentService{}
+	userService := service.UserService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
@@ -60,7 +65,7 @@ func (this *CommentController) Del() {
 	idStr := this.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	comm := &models.Comment{Id: id}
-	err := service.ReadComment(comm)
+	err := commentService.ReadComment(comm)
 	if err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
 		this.ServeJSON()
@@ -71,13 +76,13 @@ func (this *CommentController) Del() {
 		this.ServeJSON()
 		return
 	}
-	err = service.DelComment(id)
+	err = commentService.DelComment(id)
 	if err == nil {
 		this.Data["json"] = models.ReurnSuccess("")
 	} else {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
-	service.CountComments(uid.(int64),id)
+	userService.CountComments(uid.(int64),id)
 	return
 }

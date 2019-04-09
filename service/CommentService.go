@@ -6,7 +6,10 @@ import (
 	"fmt"
 )
 
-func FindCommentByBlog(bid int64) ([]*models.Comment, error) {
+type CommentService struct {
+}
+
+func (this *CommentService) FindCommentByBlog(bid int64) ([]*models.Comment, error) {
 	var comms []*models.Comment
 	o := orm.NewOrm()
 	_, err := o.QueryTable(&models.Comment{}).Filter("Pid", 0).Filter("BlogId",bid).OrderBy("-Ctime").All(&comms)
@@ -38,7 +41,7 @@ func FindCommentByBlog(bid int64) ([]*models.Comment, error) {
 	return comms, nil
 }
 
-func SaveComment(comment *models.Comment) error {
+func (this *CommentService) SaveComment(comment *models.Comment) error {
 	o := orm.NewOrm()
 	id, err := o.Insert(comment)
 	if err == nil {
@@ -56,11 +59,11 @@ func SaveComment(comment *models.Comment) error {
 	return err
 }
 
-func ReadComment(comment *models.Comment) error {
+func (this *CommentService) ReadComment(comment *models.Comment) error {
 	return orm.NewOrm().Read(comment)
 }
 
-func DelComment(id int64) error {
+func (this *CommentService) DelComment(id int64) error {
 	comm := &models.Comment{Id: id}
 	o := orm.NewOrm()
 	err := o.Read(comm)

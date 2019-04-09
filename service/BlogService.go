@@ -6,7 +6,10 @@ import (
 	"beeblog/utils"
 )
 
-func count(num int, size int, cat int64) (*utils.Page, error) {
+type BlogService struct {
+}
+
+func (this *BlogService) count(num int, size int, cat int64) (*utils.Page, error) {
 	o := orm.NewOrm()
 	qs := o.QueryTable(&models.Blog{})
 	qs.Filter("Delflag", 0)
@@ -20,7 +23,7 @@ func count(num int, size int, cat int64) (*utils.Page, error) {
 	return utils.PageUtil(totalCount, num, size), nil
 }
 
-func countByUser(num int, size int, uid int64) (*utils.Page, error) {
+func (this *BlogService) countByUser(num int, size int, uid int64) (*utils.Page, error) {
 	o := orm.NewOrm()
 	qs := o.QueryTable(&models.Blog{})
 	totalCount, err := qs.Filter("Delflag", 0).Filter("UserId", uid).Count()
@@ -30,7 +33,7 @@ func countByUser(num int, size int, uid int64) (*utils.Page, error) {
 	return utils.PageUtil(totalCount, num, size), nil
 }
 
-func EditBlogBrows(id int64) {
+func (this *BlogService) EditBlogBrows(id int64) {
 	o := orm.NewOrm()
 	blog := &models.Blog{Id: id}
 	err := o.Read(blog)
@@ -40,14 +43,14 @@ func EditBlogBrows(id int64) {
 	}
 }
 
-func TopBlogByUser(uid int64) ([]*models.Blog, error) {
+func (this *BlogService) TopBlogByUser(uid int64) ([]*models.Blog, error) {
 	o := orm.NewOrm()
 	var blogs []*models.Blog
 	o.QueryTable(models.Blog{}).Filter("Delflag", 0).Filter("UserId", uid).Limit(12, 0).OrderBy("-Browses").All(&blogs)
 	return blogs, nil
 }
 
-func ReadBlog(id int64) (*models.Blog, error) {
+func (this *BlogService) ReadBlog(id int64) (*models.Blog, error) {
 	o := orm.NewOrm()
 	blog := &models.Blog{Id: id}
 	if err := o.Read(blog); err != nil {
@@ -56,7 +59,8 @@ func ReadBlog(id int64) (*models.Blog, error) {
 	return blog, nil
 }
 
-func GetBlog(id int64) (*models.Blog, error) {
+func (this *BlogService) GetBlog(id int64) (*models.Blog, error) {
+	commentService := CommentService{}
 	o := orm.NewOrm()
 	blog := &models.Blog{Id: id}
 	err := o.Read(blog)
@@ -74,21 +78,21 @@ func GetBlog(id int64) (*models.Blog, error) {
 	if err == nil {
 		blog.Lables = labels
 	}
-	comms, berr := FindCommentByBlog(id)
+	comms, berr := commentService.FindCommentByBlog(id)
 	if berr == nil {
 		blog.Comms = comms
 	}
 	return blog, nil
 }
 
-func DelBlog(blog *models.Blog) error {
+func (this *BlogService) DelBlog(blog *models.Blog) error {
 	o := orm.NewOrm()
 	_, err := o.Update(blog, "Delflag")
 	return err
 }
 
-func FindBlogs(num int, size int, cat int64, flag int) (*utils.Page, error) {
-	page, err := count(num, size, cat)
+func (this *BlogService) FindBlogs(num int, size int, cat int64, flag int) (*utils.Page, error) {
+	page, err := this.count(num, size, cat)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +133,7 @@ func FindBlogs(num int, size int, cat int64, flag int) (*utils.Page, error) {
 	return page, nil
 }
 
-func SaveBlog(blog *models.Blog, strs []string) error {
+func (this *BlogService) SaveBlog(blog *models.Blog, strs []string) error {
 	o := orm.NewOrm()
 	o.Begin()
 	id, eror := o.Insert(blog)
@@ -153,7 +157,7 @@ func SaveBlog(blog *models.Blog, strs []string) error {
 	return nil
 }
 
-func EditBlog(blog *models.Blog, strs []string) error {
+func (this *BlogService) EditBlog(blog *models.Blog, strs []string) error {
 	o := orm.NewOrm()
 	o.Begin()
 	_, eror := o.Update(blog)
@@ -177,8 +181,8 @@ func EditBlog(blog *models.Blog, strs []string) error {
 	return nil
 }
 
-func MeBlogs(num int, size int, flag int, uid int64) (*utils.Page, error) {
-	page, err := countByUser(num, size, uid)
+func (this *BlogService) MeBlogs(num int, size int, flag int, uid int64) (*utils.Page, error) {
+	page, err := this.countByUser(num, size, uid)
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +205,7 @@ func MeBlogs(num int, size int, flag int, uid int64) (*utils.Page, error) {
 	return page, nil
 }
 
-func IndexBlogs(size int, flag int) ([]*models.Blog, error) {
+func (this *BlogService) IndexBlogs(size int, flag int) ([]*models.Blog, error) {
 	var blogs []*models.Blog
 	o := orm.NewOrm()
 	qs := o.QueryTable(&models.Blog{})
@@ -221,7 +225,7 @@ func IndexBlogs(size int, flag int) ([]*models.Blog, error) {
 	return blogs, err
 }
 
-func GetNLabel(id int64) ([]*models.NLabel, error) {
+func (this *BlogService) GetNLabel(id int64) ([]*models.NLabel, error) {
 	var labels []*models.NLabel
 	o := orm.NewOrm()
 	_, err := o.QueryTable(&models.NLabel{}).Filter("BlogId", id).All(&labels)

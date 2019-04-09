@@ -5,7 +5,10 @@ import (
 	"beeblog/models"
 )
 
-func GetCats() ([]*models.Category, error) {
+type CategoryService struct {
+}
+
+func (this *CategoryService) GetCats() ([]*models.Category, error) {
 	var notes []*models.Category
 	o := orm.NewOrm()
 	qs := o.QueryTable(models.Category{})

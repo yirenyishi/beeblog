@@ -23,9 +23,11 @@ func (u *UserController) RegistPage() {
 }
 
 func (this *UserController) UserInfo() {
+	userService := service.UserService{}
+	blogService := service.BlogService{}
 	idStr := this.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
-	user, err := service.GetUser(id)
+	user, err := userService.GetUser(id)
 	if err != nil {
 		this.Redirect("/404", 302)
 		return
@@ -36,7 +38,7 @@ func (this *UserController) UserInfo() {
 		num = 1
 	}
 	flag, _ := this.GetInt("flag")
-	if page, err := service.MeBlogs(num, size, flag, id); err == nil {
+	if page, err := blogService.MeBlogs(num, size, flag, id); err == nil {
 		this.Data["Page"] = page
 	}
 	this.Data["User"] = user
@@ -50,6 +52,8 @@ func (this *UserController) UserInfo() {
 }
 
 func (this *UserController) PersonBlog() {
+	userService := service.UserService{}
+	blogService := service.BlogService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Redirect("/login", 302)
@@ -61,12 +65,12 @@ func (this *UserController) PersonBlog() {
 		num = 1
 	}
 	flag, _ := this.GetInt("flag")
-	page, err := service.MeBlogs(num, size, flag, uid.(int64))
+	page, err := blogService.MeBlogs(num, size, flag, uid.(int64))
 	if err != nil {
 		this.Redirect("/404", 302)
 		return
 	}
-	user, uerr := service.GetUser(uid.(int64))
+	user, uerr := userService.GetUser(uid.(int64))
 	if uerr != nil {
 		this.Redirect("/404", 302)
 		return
@@ -83,16 +87,18 @@ func (this *UserController) PersonBlog() {
 }
 
 func (this *UserController) PersonNote() {
+	userService := service.UserService{}
+	noteService := service.NoteService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Redirect("/login", 302)
 		return
 	}
-	notColl, err := service.GetNoteColl(uid.(int64))
+	notColl, err := noteService.GetNoteColl(uid.(int64))
 	if err == nil {
 		if len(notColl) > 0 {
 			for i := 0; i < len(notColl); i++ {
-				count, _ := service.CountNote(notColl[i].Id)
+				count, _ := noteService.CountNote(notColl[i].Id)
 				notColl[i].Count = count
 			}
 		}
@@ -103,7 +109,7 @@ func (this *UserController) PersonNote() {
 		this.Redirect("/404", 302)
 		return
 	}
-	user, uerr := service.GetUser(uid.(int64))
+	user, uerr := userService.GetUser(uid.(int64))
 	if uerr != nil {
 		if uid == nil {
 			this.Redirect("/404", 302)
@@ -121,6 +127,8 @@ func (this *UserController) PersonNote() {
 }
 
 func (this *UserController) PersonLike() {
+	userService := service.UserService{}
+	likeService := service.LikeService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Redirect("/login", 302)
@@ -131,12 +139,12 @@ func (this *UserController) PersonLike() {
 	if num <= 0 {
 		num = 1
 	}
-	page, err := service.MeLikes(num, size, uid.(int64))
+	page, err := likeService.MeLikes(num, size, uid.(int64))
 	if err != nil {
 		this.Redirect("/404", 302)
 		return
 	}
-	user, uerr := service.GetUser(uid.(int64))
+	user, uerr := userService.GetUser(uid.(int64))
 	if uerr != nil {
 		if uid == nil {
 			this.Redirect("/404", 302)
@@ -154,12 +162,13 @@ func (this *UserController) PersonLike() {
 }
 
 func (this *UserController) PersonInfo() {
+	userService := service.UserService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Redirect("/login", 302)
 		return
 	}
-	user, err := service.GetUser(uid.(int64))
+	user, err := userService.GetUser(uid.(int64))
 	if err != nil {
 		this.Redirect("/404", 302)
 		return
@@ -174,13 +183,14 @@ func (this *UserController) PersonInfo() {
 }
 
 func (this *UserController) Edit() {
+	userService := service.UserService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		models.ReurnError(401, "")
 		this.ServeJSON()
 		return
 	}
-	user, err := service.GetUser(uid.(int64))
+	user, err := userService.GetUser(uid.(int64))
 	if err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
 		this.ServeJSON()
@@ -199,7 +209,7 @@ func (this *UserController) Edit() {
 	user.QQ = this.GetString("qqnum")
 	user.Sex, _ = this.GetInt("catory")
 	user.DescInfo = this.GetString("mdesc")
-	if _, err := service.EditUser(user); err != nil {
+	if _, err := userService.EditUser(user); err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
 	} else {
 		this.Data["json"] = models.ReurnSuccess("")
@@ -209,6 +219,7 @@ func (this *UserController) Edit() {
 }
 
 func (this *UserController) Login() {
+	userService := service.UserService{}
 	username := this.GetString("username")
 	userpwd := this.GetString("userpwd")
 	if username == "" {
@@ -231,7 +242,7 @@ func (this *UserController) Login() {
 		this.ServeJSON()
 		return
 	}
-	user, error := service.FindByUserName(username)
+	user, error := userService.FindByUserName(username)
 	if error == nil && user != nil {
 		h := md5.New()
 		h.Write([]byte(userpwd + user.Salt))
@@ -252,6 +263,7 @@ func (this *UserController) Login() {
 }
 
 func (this *UserController) Regist() {
+	userService := service.UserService{}
 	username := this.GetString("username")
 	userpwd := this.GetString("userpwd")
 	username = strings.Replace(username, " ", "", -1)
@@ -276,7 +288,7 @@ func (this *UserController) Regist() {
 		this.ServeJSON()
 		return
 	}
-	user, _ := service.FindByUserName(username)
+	user, _ := userService.FindByUserName(username)
 	if user != nil {
 		this.Data["json"] = models.ReurnError(1, "用户已经存在")
 		this.ServeJSON()
@@ -289,8 +301,8 @@ func (this *UserController) Regist() {
 	h.Write([]byte(userpwd + salt))
 	userpwd = hex.EncodeToString(h.Sum(nil))
 	user = &models.User{UserName: username, NickName: username, UserPwd: userpwd, Salt: salt}
-	user.Headimg = "https://www.aiprose.com/foss/timg.jpg"
-	err := service.SaveUser(user)
+	user.Headimg = "https://oss.aiprose.com/aiprose/timg.jpg"
+	err := userService.SaveUser(user)
 	if err == nil {
 		this.Data["json"] = models.ReurnSuccess("")
 	} else {

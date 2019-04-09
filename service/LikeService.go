@@ -7,14 +7,17 @@ import (
 	"beeblog/utils"
 )
 
-func SaveLike(like *models.Like) (int64, error) {
+type LikeService struct {
+}
+
+func (this *LikeService) SaveLike(like *models.Like) (int64, error) {
 	return orm.NewOrm().Insert(like)
 }
-func DelLike(like *models.Like) (int64, error) {
+func (this *LikeService) DelLike(like *models.Like) (int64, error) {
 	return orm.NewOrm().QueryTable(models.Like{}).Filter("BlogId", like.BlogId).Filter("UserId", like.UserId).Delete()
 }
 
-func IsLike(bid int64, uid int64) (bool, error) {
+func (this *LikeService) IsLike(bid int64, uid int64) (bool, error) {
 	totalCount, err := orm.NewOrm().QueryTable(&models.Like{}).Filter("BlogId", bid).Filter("UserId", uid).Count()
 	if err == nil {
 		fmt.Println(totalCount, "like count")
@@ -29,8 +32,8 @@ func IsLike(bid int64, uid int64) (bool, error) {
 	}
 }
 
-func MeLikes(num int, size int, uid int64) (*utils.Page, error) {
-	page, err := countLike(num, size, uid)
+func (this *LikeService) MeLikes(num int, size int, uid int64) (*utils.Page, error) {
+	page, err := this.countLike(num, size, uid)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +57,7 @@ func MeLikes(num int, size int, uid int64) (*utils.Page, error) {
 	return page, nil
 }
 
-func countLike(num int, size int, uid int64) (*utils.Page, error) {
+func (this *LikeService) countLike(num int, size int, uid int64) (*utils.Page, error) {
 	o := orm.NewOrm()
 	qs := o.QueryTable(&models.Like{})
 	totalCount, err := qs.Filter("UserId", uid).Count()

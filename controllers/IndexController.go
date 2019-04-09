@@ -10,13 +10,14 @@ type IndexController struct {
 }
 
 func (this *IndexController) Get() {
-	timeBlog, _ := service.IndexBlogs(12, 0)
+	blogService := service.BlogService{}
+	timeBlog, _ := blogService.IndexBlogs(12, 0)
 	this.Data["TimeBlog"] = timeBlog
-	browsBlog, _ := service.IndexBlogs(12, 1)
+	browsBlog, _ := blogService.IndexBlogs(12, 1)
 	this.Data["BrowsBlog"] = browsBlog
-	likeBlog, _ := service.IndexBlogs(12, 2)
+	likeBlog, _ := blogService.IndexBlogs(12, 2)
 	this.Data["LikeBlog"] = likeBlog
-	commentBlog, _ := service.IndexBlogs(12, 3)
+	commentBlog, _ := blogService.IndexBlogs(12, 3)
 	this.Data["CommBlog"] = commentBlog
 
 	this.Data["UserId"] = this.GetSession("userid")

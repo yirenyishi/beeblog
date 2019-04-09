@@ -12,6 +12,8 @@ type LikeController struct {
 }
 
 func (this *LikeController) Save() {
+	likeService := service.LikeService{}
+	userService := service.UserService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
@@ -21,17 +23,19 @@ func (this *LikeController) Save() {
 	idStr := this.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	like := &models.Like{BlogId: id, UserId: uid.(int64)}
-	if _, err := service.SaveLike(like); err != nil {
+	if _, err := likeService.SaveLike(like); err != nil {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}else{
 		this.Data["json"] = models.ReurnSuccess("")
 	}
 	this.ServeJSON()
-	service.CountLike(uid.(int64),id)
+	userService.CountLike(uid.(int64),id)
 	return
 }
 
 func (this *LikeController) Delete() {
+	likeService := service.LikeService{}
+	userService := service.UserService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
@@ -41,12 +45,12 @@ func (this *LikeController) Delete() {
 	idStr := this.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	like := &models.Like{BlogId: id, UserId: uid.(int64)}
-	if _, err := service.DelLike(like); err != nil {
+	if _, err := likeService.DelLike(like); err != nil {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}else{
 		this.Data["json"] = models.ReurnSuccess("")
 	}
 	this.ServeJSON()
-	service.CountLike(uid.(int64),id)
+	userService.CountLike(uid.(int64),id)
 	return
 }

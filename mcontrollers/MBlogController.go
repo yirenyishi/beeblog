@@ -14,34 +14,26 @@ type MBlogController struct {
 
 
 func (this *MBlogController) Get() {
+	blogService := service.BlogService{}
+	userService := service.UserService{}
 	idStr := this.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
-	blog, err := service.GetBlog(id)
+	blog, err := blogService.GetBlog(id)
 	if err != nil {
 		this.Data["json"] = models.ReurnServerError(500)
 		this.ServeJSON()
 		return
 	}
-	//if uid := this.GetSession("userid"); uid != nil {
-	//	if blog.UserId == uid.(int64) {
-	//		this.Data["IsAuthor"] = true
-	//	}
-	//	if flag, err := service.IsLike(id, uid.(int64)); err == nil {
-	//		this.Data["IsLike"] = flag
-	//	}
-	//}
-	//if blogs, err := service.TopBlogByUser(blog.UserId); err == nil {
-	//	this.Data["Top"] = blogs
-	//}
 	this.Data["json"] = models.ReurnData("",blog)
 	this.ServeJSON()
-	service.CountBrows(blog.UserId)
-	service.EditBlogBrows(id)
+	userService.CountBrows(blog.UserId)
+	blogService.EditBlogBrows(id)
 	return
 }
 
 
 func (this *MBlogController) BlogsPage() {
+	blogService := service.BlogService{}
 	num, _ := this.GetInt("num")
 	size, _ := this.GetInt("size")
 	cat, _ := this.GetInt64("cat")
@@ -55,7 +47,7 @@ func (this *MBlogController) BlogsPage() {
 	if cat <= 0 {
 		cat = -1
 	}
-	pages, err := service.FindBlogs(num, size, cat, flag)
+	pages, err := blogService.FindBlogs(num, size, cat, flag)
 	if err != nil {
 		this.Data["json"] = models.ReurnServerError(500)
 		this.ServeJSON()
@@ -68,6 +60,7 @@ func (this *MBlogController) BlogsPage() {
 
 
 func (this *MBlogController) EditPage() {
+	blogService := service.BlogService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Redirect("/login", 302)
@@ -75,7 +68,7 @@ func (this *MBlogController) EditPage() {
 	}
 	idStr := this.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
-	blog, err := service.GetBlog(id)
+	blog, err := blogService.GetBlog(id)
 	if err != nil {
 		this.Redirect("/404", 302)
 		return
@@ -89,6 +82,8 @@ func (this *MBlogController) EditPage() {
 }
 
 func (this *MBlogController) Save() {
+	blogService := service.BlogService{}
+	userService := service.UserService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
@@ -101,18 +96,20 @@ func (this *MBlogController) Save() {
 	catoryId, _ := strconv.ParseInt(catory, 10, 64)
 	labels := this.GetStrings("labels[]")
 	blog := &models.Blog{Title: title, BlogHtml: blogHtml, CategoryId: catoryId, UserId: uid.(int64)}
-	err := service.SaveBlog(blog, labels)
+	err := blogService.SaveBlog(blog, labels)
 	if err == nil {
 		this.Data["json"] = models.ReurnData("",blog.Id)
 	} else {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
-	service.CountBlog(uid.(int64))
+	userService.CountBlog(uid.(int64))
 	return
 }
 
 func (this *MBlogController) Edit() {
+	userService := service.UserService{}
+	blogService := service.BlogService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
@@ -125,7 +122,7 @@ func (this *MBlogController) Edit() {
 	catory := this.GetString("catory")
 	catoryId, _ := strconv.ParseInt(catory, 10, 64)
 	labels := this.GetStrings("labels[]")
-	blog,err :=service.GetBlog(id)
+	blog,err :=blogService.GetBlog(id)
 	if err != nil {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 		this.ServeJSON()
@@ -135,18 +132,20 @@ func (this *MBlogController) Edit() {
 	blog.BlogHtml = blogHtml
 	blog.CategoryId = catoryId
 	blog.Utime = time.Now()
-	err = service.EditBlog(blog, labels)
+	err = blogService.EditBlog(blog, labels)
 	if err == nil {
 		this.Data["json"] = models.ReurnSuccess("")
 	} else {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
 	this.ServeJSON()
-	service.CountBlog(uid.(int64))
+	userService.CountBlog(uid.(int64))
 	return
 }
 
 func (this *MBlogController) Del() {
+	blogService := service.BlogService{}
+	userService := service.UserService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
@@ -155,7 +154,7 @@ func (this *MBlogController) Del() {
 	}
 	idStr := this.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
-	blog, err := service.GetBlog(id)
+	blog, err := blogService.GetBlog(id)
 	if err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
 		this.ServeJSON()
@@ -167,7 +166,7 @@ func (this *MBlogController) Del() {
 		return
 	}
 	blog.Delflag = 1
-	err = service.DelBlog(blog)
+	err = blogService.DelBlog(blog)
 	if err != nil {
 		this.Data["json"] = models.ReurnError(500, "")
 		this.ServeJSON()
@@ -175,6 +174,15 @@ func (this *MBlogController) Del() {
 	}
 	this.Data["json"] = models.ReurnSuccess("")
 	this.ServeJSON()
-	service.CountBlog(uid.(int64))
+	userService.CountBlog(uid.(int64))
 	return
+}
+
+func (this *MBlogController) New() {
+	uid := this.GetSession("userid")
+	if uid == nil {
+		this.Redirect("/login", 302)
+		return
+	}
+	this.TplName = "newblog.html"
 }
