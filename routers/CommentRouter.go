@@ -6,6 +6,6 @@ import (
 )
 
 func init() {
-	beego.Router("/comms/save", &controllers.CommentController{}, "post:Save")
-	beego.Router("/comms/del/:id([0-9]+)", &controllers.CommentController{}, "get:Del")
+	beego.Router("/api/comms/save", &controllers.CommentController{}, "post:Save")
+	beego.Router("/api/comms/del/:id([0-9]+)", &controllers.CommentController{}, "get:Del")
 }

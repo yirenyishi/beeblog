@@ -6,6 +6,6 @@ import (
 )
 
 func init() {
-	beego.Router("/like/:id([0-9]+)", &controllers.LikeController{}, "get:Save")
-	beego.Router("/unlike/:id([0-9]+)", &controllers.LikeController{}, "get:Delete")
+	beego.Router("/api/like/:id([0-9]+)", &controllers.LikeController{}, "get:Save")
+	beego.Router("/api/unlike/:id([0-9]+)", &controllers.LikeController{}, "get:Delete")
 }
