@@ -43,6 +43,7 @@ func (this *PageController) IframeNote() {
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Data["IsLogin"] =  false
+		this.Data["NoteColl"] = []string{}
 	}else {
 		this.Data["IsLogin"] = true
 		noteColls,err:=noteService.GetNoteColl(uid.(int64))

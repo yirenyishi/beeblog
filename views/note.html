@@ -125,7 +125,7 @@
             });
             return
         }
-        $.post('/note/edit/' + note.Id, {
+        $.post('/api/note/edit/' + note.Id, {
                     noteHtml: noteHtml
                 },
                 function (data) {
@@ -140,7 +140,7 @@
     }
 
     function noteClick(id) {
-        $.get('/note/' + id,
+        $.get('/api/note/' + id,
                 function (data) {
                     if (!data.Status) {
                         if (data.NoteHtml && data.NoteHtml.trim().length != 0) {
@@ -205,7 +205,7 @@
             layer.confirm('删除确认', {
                 btn: ['确认', '手滑了'] //按钮
             }, function () {
-                $.post('/note/del/' + note.Id,
+                $.post('/api/note/del/' + note.Id,
                         function (data) {
                             if (data.Status == 0) {
                                 var subMenu = $(".sub-menu li a")

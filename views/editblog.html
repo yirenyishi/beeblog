@@ -83,7 +83,7 @@
     })
 
     function saveBlogCallback(callback) {
-        $.post('/blog/edit', tobj,
+        $.post('/api/blog/edit', tobj,
                 function (data) {
                     if (data.Status == 0) {
                         storage.removeItem("blogHtml");

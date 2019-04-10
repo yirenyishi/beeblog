@@ -112,7 +112,7 @@
                 });
                 return
             }
-            $.post('/comms/save', {
+            $.post('/api/comms/save', {
                         blog: {{.Blog.Id}},
                         commval: commval
                     },
@@ -168,7 +168,7 @@
                 layer.close(index);
                 return
             }
-            $.post('/comms/save', {blog: {{.Blog.Id}},commval: val,pid: pid},
+            $.post('/api/comms/save', {blog: {{.Blog.Id}},commval: val,pid: pid},
                     function (data) {
                         if (data.Status == 0) {
                             var res = '<div style="margin-left: 18px" class="ccomm-' + data.Data.Id + '">\n' +
@@ -198,7 +198,7 @@
     }
 
     function like(id) {
-        $.get('/like/' + id,
+        $.get('/api/like/' + id,
                 function (data) {
                     if (data.Status == 0) {
                         window.location.href = window.location.href
@@ -211,7 +211,7 @@
     }
 
     function unlike(id) {
-        $.get('/unlike/' + id,
+        $.get('/api/unlike/' + id,
                 function (data) {
                     if (data.Status == 0) {
                         window.location.href = window.location.href

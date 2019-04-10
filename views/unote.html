@@ -46,7 +46,7 @@
                 layer.close(index);
                 return
             }
-            $.post('/notecoll/edit', {
+            $.post('/api/notecoll/edit', {
                         title: val.trim(),
                         id: id
                     },
@@ -70,7 +70,7 @@
         layer.confirm('文件夹下的所有笔记都将会删除', {
             btn: ['确认', '手滑了'] //按钮
         }, function () {
-            $.post('/notecol/del/' + id,
+            $.post('/api/notecol/del/' + id,
                     function (data) {
                         if (data.Status == 0) {
                             $(obj).parent().parent().remove()
@@ -101,7 +101,7 @@
                     layer.close(index);
                     return
                 }
-                $.post('/notecoll/save', {
+                $.post('/api/notecoll/save', {
                             title: val.trim()
                         },
                         function (data) {

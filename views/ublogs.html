@@ -61,7 +61,7 @@
         layer.confirm('删除后将无法恢复', {
             btn: ['确认', '手滑了'] //按钮
         }, function () {
-            $.post('/blog/del/' + id,
+            $.post('/api/blog/del/' + id,
                     function (data) {
                         if (data.Status == 0) {
                             $(obj).parent().parent().parent().remove()

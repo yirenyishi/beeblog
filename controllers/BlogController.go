@@ -135,6 +135,7 @@ func (this *BlogController) Get() {
 func (this *BlogController) Del() {
 	blogService := service.BlogService{}
 	userService := service.UserService{}
+	likeService := service.LikeService{}
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Data["json"] = models.ReurnError(401, "")
@@ -164,6 +165,7 @@ func (this *BlogController) Del() {
 	this.Data["json"] = models.ReurnSuccess("")
 	this.ServeJSON()
 	userService.CountBlog(uid.(int64))
+	likeService.DelLikeByBlog(id)
 	return
 }
 

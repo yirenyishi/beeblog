@@ -11,8 +11,8 @@ import (
 
 func init() {
 	models.RegistDB()
-	beego.InsertFilter("/*", beego.BeforeRouter, filter.FilterAdmin)
-	//beego.InsertFilter("/*", beego.FinishRouter, filter.FilterLoginInfo)
+	beego.InsertFilter("/*", beego.BeforeRouter, filter.LogFilter)
+	beego.InsertFilter("/api/*", beego.BeforeRouter, filter.FilterAdmin)
 }
 func main() {
 	orm.Debug = false

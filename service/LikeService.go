@@ -66,3 +66,6 @@ func (this *LikeService) countLike(num int, size int, uid int64) (*utils.Page, e
 	}
 	return utils.PageUtil(totalCount, num, size), nil
 }
+func (likeService LikeService) DelLikeByBlog(id int64) {
+	orm.NewOrm().QueryTable(models.Like{}).Filter("BlogId", id).Delete()
+}
