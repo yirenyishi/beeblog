@@ -1,68 +1,32 @@
 {{template "header" .}}
-    <meta name="keywords" content="{{.Blog.Title}}">
-    <meta name="description" content="{{.Blog.Title}}">
-    <title>{{.Blog.Title}} - 云悦</title>
-    <link type="text/css" rel="styleSheet" href="/static/css/blog.css"/>
+<meta name="keywords" content="{{.Blog.Title}}">
+<meta name="description" content="{{.Blog.Title}}">
+<title>{{.Blog.Title}} - 云悦</title>
+<link type="text/css" rel="styleSheet" href="/static/css/blog.css"/>
 </head>
 <body>
 <div class="root-container">
-{{template "nav" .}}
-    <div class="blog-user">
-        <div style="height: 50px;line-height: 50px">
-            <a href="/u/{{.Blog.User.Id}}"><img src="{{.Blog.User.Headimg}}" alt="头像" class="img-circle"></a>
-            <a href="/u/{{.Blog.User.Id}}"
-               style="margin-left: 15px;font-size: 18px;text-decoration: none">{{.Blog.User.NickName}}</a>
-        </div>
-        <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
-        <div style="display: flex;height: 30px;line-height: 30px;">
-            <div style="display: inline-block;width: 120px">
-                <span>文章: </span>
-                <span>{{.Blog.User.BlogCount}}</span>
-            </div>
-            <div style="display: inline-block;flex: 1">
-                <span>访问: </span>
-                <span>{{.Blog.User.BlogBrowes}}</span>
-            </div>
-        </div>
-        <div style="display: flex;height: 30px;line-height: 30px;">
-            <div style="display: inline-block;width: 120px">
-                <span>评论: </span>
-                <span>{{.Blog.User.BlogComment}}</span>
-            </div>
-            <div style="display: inline-block;flex: 1">
-                <span>喜欢: </span>
-                <span>{{.Blog.User.BlogLike}}</span>
-            </div>
-        </div>
-        <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 6px;"/>
-
-    {{range .Top}}
-        <div>
-            <a href="/blog/{{.Id}}"><p
-                    style="max-width:290px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{.Title}}</p>
-            </a>
-        </div>
-    {{end}}
-    </div>
+    {{template "nav" .}}
     <div class="blog-root">
-        <h1 style="text-align: center">{{.Blog.Title}}</h1>
+        <h1 class="blog-title">{{.Blog.Title}}</h1>
         <div class="blog-info">
-        {{if .IsLike}}
-            <span><img src="/static/img/liked.png" alt="" onclick="unlike({{.Blog.Id}})"></span>
-        {{else}}
-            <span><img src="/static/img/like.png" alt="" onclick="like({{.Blog.Id}})"></span>
-        {{end}}
-            <span><a href="/u/{{.Blog.User.Id}}">{{.Blog.User.NickName}}</a></span>
-            <span><em>时间:</em>{{.Blog.Ctime.Format "2006-01-02"}}</span>
-            <span><em>阅读数:</em>{{.Blog.Browses}}</span>
-            <div class="tag-group" style="display: inline-block">
-            {{range .Blog.Lables}}
-                <label class='tag tag-info disabled'>{{.Title}}</label>
-            {{end}}
+            <div class="blog-author">
+                <div class="author-headimg">
+                    <a href="/u/{{.Blog.User.Id}}"><img src="{{.Blog.User.Headimg}}" alt="头像" class="img-circle"></a>
+                </div>
+                <div class="author-info">
+                    <a href="/u/{{.Blog.User.Id}}">{{.Blog.User.NickName}}</a><br>
+                    <span>{{.Blog.Ctime.Format "2006-01-02"}}</span><span>阅读 {{.Blog.Browses}}</span>
+                </div>
+                <div class="blog-label">
+                    {{range .Blog.Lables}}
+                        <label>{{.Title}}</label>
+                    {{end}}
+                </div>
             </div>
         </div>
         <div style="width: 100%">
-        {{str2html .Blog.BlogHtml}}
+            {{str2html .Blog.BlogHtml}}
         </div>
     </div>
     <div class="comms-root">
@@ -71,7 +35,7 @@
             <button type="button" class="btn btn-info btn-bordered" id="commBtn">发表评论</button>
         </div>
         <div class="comm-container">
-        {{range .Blog.Comms}}
+            {{range .Blog.Comms}}
             <div style="font-size: 14px;margin-top: 10px" class="pcomm-{{.Id}}">
                 <span><a href="/u/{{.CUser.Id}}">{{.CUser.NickName}}</a>:</span>
                 <span>{{.ComVal}}</span>
@@ -79,7 +43,7 @@
                         href="javascript:void(0)">回复</a></span>
                 <hr style="height:1px;border:none;border-top:1px solid #EEE;margin: 5px"/>
                 <div class="child-container">
-                {{range .Childs}}
+                    {{range .Childs}}
                     <div style="margin-left: 18px" class="ccomm-{{.Id}}">
                     <span>
                         <a href="/u/{{.CUser.Id}}">{{.CUser.NickName}}</a> 回复
@@ -90,14 +54,24 @@
                                 href="javascript:void(0)">回复</a></span>
                     </div>
 
-                {{end}}
+                    {{end}}
                 </div>
             </div>
-        {{end}}
+            {{end}}
         </div>
 
         <div style="margin-top: 50px">
-        {{template "footer"}}
+            {{template "footer"}}
+        </div>
+        <div class="blog-referral">
+            {{range .Top}}
+            <div>
+                <a href="/blog/{{.Id}}"><p
+                        style="max-width:290px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                    {{.Title}}</p>
+                </a>
+            </div>
+            {{end}}
         </div>
     </div>
 </div>
@@ -160,6 +134,7 @@
         var s = document.getElementsByTagName("script")[1];
         s.parentNode.insertBefore(qihuo, s);
     })
+
     function recomm(pid, flag) {
         layer.prompt({title: '请输入评论内容', value: name, formType: 2}, function (val, index) {
             if (val.trim().length < 3) {

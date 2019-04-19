@@ -4,6 +4,7 @@ import (
 	_ "beeblog/routers"
 	"github.com/astaxie/beego"
 	"beeblog/models"
+	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
 	"beeblog/filter"
 	"github.com/astaxie/beego/plugins/cors"
@@ -18,8 +19,10 @@ func main() {
 	orm.Debug = false
 	orm.RunSyncdb("default", false, true)
 	beego.AddFuncMap("NAdd",NAdd)
-	beego.SetLevel(beego.LevelInformational)
-	beego.SetLogger("file", `{"filename":"/opt/logs/aiprose.log"}`)
+	//beego.SetLevel(beego.LevelInformational)
+	//logs.LevelDebug
+	//beego.SetLogger("file", `{"filename":"/opt/logs/aiprose.log"}`)
+	logs.SetLogger(logs.AdapterFile, `{"filename":"test.log","level":3}`)
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		AllowAllOrigins:  true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
