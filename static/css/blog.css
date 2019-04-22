@@ -35,7 +35,7 @@
 .blog-info .blog-author .blog-label label{
    color: #888;
    border:1px dotted #aaa;
-    padding: 0 5px;
+    padding: 5px;
     border-radius: 5px;
     font-size: 10px;
 }
@@ -89,4 +89,7 @@ img {
 .blog-referral{
     width: 100%;
     margin: 40px auto;
+}
+.blog-referral p{
+    padding: 3px 0;
 }

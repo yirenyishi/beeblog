@@ -62,18 +62,17 @@
         <div class="blog-referral">
             {{range .Top}}
             <div>
-                <a href="/blog/{{.Id}}"><p
-                        style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-                    {{.Title}}</p>
+                <a href="/blog/{{.Id}}">
+                    <p>
+                        {{.Title}}
+                    </p>
                 </a>
             </div>
             {{end}}
         </div>
-
-        <div style="margin-top: 50px">
-            {{template "footer"}}
-        </div>
-
+    </div>
+    <div class="footer-container">
+        {{template "footer"}}
     </div>
 </div>
 </div>

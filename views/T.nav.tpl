@@ -1,58 +1,55 @@
 {{define "nav"}}
 <div class='nav-container'>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/"> 云悦 </a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li {{if .IsHome}} class="active" {{end}}>
-                        <a href="/">首页 </a>
-                    </li>
-                    <li {{if .IsBlog}} class="active" {{end}}>
-                        <a href="/blogs">博客 </a>
-                    </li>
-                    <li>
-                        <a href="/note" target="_blank">笔记</a>
-                    </li>
-                    <li {{if .IsMap}} class="active" {{end}}>
-                        <a href="/map">地图</a>
-                    </li>
-                    <li {{if .IsUs}} class="active" {{end}}>
-                        <a href="/us">福利</a>
-                    </li>
-                </ul>
-            {{/*<form class="navbar-form navbar-left" role="search">*/}}
-            {{/*<div class="form-group">*/}}
-            {{/*<input type="text" class="form-control" placeholder="Search">*/}}
-            {{/*</div>*/}}
-            {{/*<button type="submit" class="btn btn-default">Submit</button>*/}}
-            {{/*</form>*/}}
-                <ul class="nav navbar-nav navbar-right">
-                {{if .IsLogin }}
-                    <li><a href="/me/blog" style="padding: 0;"><img src="{{.HeadImg}}" alt="头像" class="img-circle"></a>
-                    </li>
-                {{else}}
-                    <li><a href="/login">登录</a></li>
-                    <li><a href="/regist">注册</a></li>
-                {{end}}
-                {{if .IsLogin }}
-                    <li class="dropdown">
-                        <a href="/me/blog" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        {{.NickName}}<span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="/me/blog">个人中心</a></li>
-                            <li><a href="/note" target="_blank">我的笔记</a></li>
-                            <li><a href="/u/{{.UserId}}">我的首页</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/logout">安全退出</a></li>
-                        </ul>
-                    </li>
-                {{end}}
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+    <nav>
+        <ul class="layui-nav layui-bg-molv" lay-filter="">
+            <p>云悦</p>
+            <li class="layui-nav-item">
+                <a href="/blog/new"><i class="layui-icon">&#xe642;</i>写文章</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/">首页 </a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/blogs">博客 </a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/note" target="_blank">笔记</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/map">地图</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/us">福利</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/me/info">个人中心</span></a>
+            </li>
+            {{if .IsLogin }}
+            <li class="layui-nav-item">
+                <a href=""><img src="{{.HeadImg}}" class="layui-nav-img"></a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/me/info">个人中心</a></dd>
+                    <dd><a href="/note">我的笔记</a></dd>
+                    <dd><a href="/logout">退出登录</a></dd>
+                </dl>
+            </li>
+            {{else}}
+            <li class="layui-nav-item">
+                <a href="/login">登录 <span class="layui-badge-dot"></span></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/regist">注册</a>
+            </li>
+            {{end}}
+        </ul>
     </nav>
 </div>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+</script>
 {{end}}

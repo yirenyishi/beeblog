@@ -6,4 +6,6 @@ a {
     display: flex;
     margin-left: 5%;
     font-size: 16px;
+    min-height: 720px;
+    height: 100%;
 }

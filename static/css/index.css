@@ -1,7 +1,16 @@
 .blog-root h5{
     color: #888;
+    font-size: 14px;
+    margin: 9px 0;
+    font-family: inherit;
+    font-weight: 700;
+    line-height: 1.5;
 }
 
 .blog-root a {
     text-decoration: none;
+}
+
+.blog-root p {
+    margin: 1px 0 9px;
 }

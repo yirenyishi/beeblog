@@ -3,6 +3,15 @@ body {
     background: #fff;
 }
 
+a{
+    color: #28a3ef;
+    text-decoration: none;
+}
+
+.layui-nav{
+    text-align: right;
+}
+
 .navbar-default{
     border-color: #f8d9ea !important;
 }
@@ -25,21 +34,31 @@ body {
 }
 
 .nav-container {
-    max-height: 40px;
+    max-height: 50px;
     position: fixed;
     width: 100%;
     z-index: 1000;
     left: 0;
     top: 0;
 }
+.nav-container li a:hover {
+    transform: rotate(5deg) scale(1.1);
+}
+.nav-container p {
+    display: inline-block;
+    float: left;
+    line-height: 48px;
+    font-size: 20px;
+    font-weight: 600;
+}
 
-.nav-container .sui-navbar .navbar-inner {
-    padding: 0 50px;
+.layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after{
+    height: 2px;
 }
 
 ::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
+    width: 1px;
+    /*height: 0px;*/
 }
 
 ::-webkit-scrollbar-track-piece {
@@ -52,28 +71,38 @@ body {
 }
 
 .footer-root{
+    color: rgba(255,255,255,.7);
     position: relative;
     width: 100%;
     height: 105px;
+    display: flex;
 }
 
 .footer-friend{
     text-align: center;
     height: 25px;
     line-height: 25px;
-    color: #555;
 }
 .footer-friend a{
-    color: #555;
+    color: rgba(255,255,255,.7);
     text-decoration: none;
 }
 
-.wxcode{
-    position: absolute;
-    right: 11px;
-    top: 11px;
+.img-circle{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
 }
 
 .login-footer .wxcode{
     margin-right: 20px;
+}
+
+.layui-nav .layui-nav-item{
+    line-height: 48px;
+}
+
+.footer-container{
+    background-color: #393D49;
+    padding: 30px 5% 0 5%;
 }
