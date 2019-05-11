@@ -1,6 +1,6 @@
 .home-container{
     height: 100%;
-    margin: 50px 4% 0 4%;
+    margin: 50px 5% 0 5%;
 }
 .home-container hr{
     margin: 0;
@@ -12,7 +12,20 @@
     height: 30px;
     line-height: 30px;
 }
-
+.home-hearder .m-select{
+    width: 150px;
+    display: inline-block;
+    height: 32px;
+    border-radius: 3px;
+    padding: 4px 14px;
+}
+.home-hearder .layui-btn-group .active a{
+    color: #fff;
+}
+.home-hearder .layui-btn-group a{
+    color: #333;
+    text-decoration: none;
+}
 .nelson-btn{
     color: #ec6149 !important;
     border-radius: 15px;

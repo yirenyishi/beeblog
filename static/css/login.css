@@ -1,6 +1,5 @@
 .login-root {
-    background: #f0e7db url("/static/img/login.png") no-repeat;
-    padding-top: 50px;
+    background: url("/static/img/login.png") no-repeat;
     position: absolute;
     min-height: 100%;
     width: 100%;
@@ -25,12 +24,37 @@
 .login-root .input-container .input-root .inputs-class{
     padding: 0 50px;
 }
+.login-root .input-container .input-root .input-group{
+    display: table;
+    border-collapse: separate;
+}
 .login-root .input-container .input-root .inputs-class .input-class{
-    height: 35px;
-    margin: 18px 0
+    height: 32px;
+    margin: 18px 0;
+    display: flex;
 }
 .login-root .input-container .input-root .inputs-class .input-class input{
-    height: 35px !important;
+    flex: 1;
+    height: 26px !important;
+    padding: 2px 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    display: table-cell;
+    border: 1px solid #ccc;
+}
+.login-root .input-container .input-root .inputs-class .input-class .input-group-addon{
+    color: #555;
+    line-height: 26px !important;
+    font-size: 12px;
+    padding: 2px 14px;
+    line-height: 1.5;
+    border-radius: 3px;
+    display: table-cell;
+    border: 1px solid #ccc;
+    border-right: none;
 }
 
 .login-footer{

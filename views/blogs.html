@@ -10,20 +10,16 @@
         <div class="home-hearder">
             <div style="flex: 1">
                 <span>
-                    <select class="form-control input-lg" style="width: 150px;display: inline-block;height: 32px" id="selCat">
+                    <select name="city" id="selCat" class="m-select">
                         <option value="-1">选择分类</option>
                     {{range .Cats}}
                         <option value="{{.Id}}">{{.Title}}</option>
                     {{end}}
-                    </select>
+                      </select>
                 </span>
-                <div class="btn-group" role="group" style="display: inline-block;margin-top: -3px">
-                    <span class="{{if eq 0 .Flag}}active{{end}}">
-                        <a href="/blogs?num=1&flag=0&cat={{.Cat}}" style="color: #555;text-decoration: none;">最新</a>
-                    </span>
-                    <span class="{{if eq 1 .Flag}}active{{end}}">
-                        <a href="/blogs?num=1&flag=1&cat={{.Cat}}" style="color: #555;text-decoration: none;">最热</a>
-                    </span>
+                <div class="layui-btn-group" style="display: inline-block;margin-top: -5px">
+                    <button class="layui-btn layui-btn-sm {{if eq 0 .Flag}}active{{end}}"><a href="/blogs?num=1&flag=0&cat={{.Cat}}" >最新</a></button>
+                    <button class="layui-btn layui-btn-sm {{if eq 1 .Flag}}active{{end}}"><a href="/blogs?num=1&flag=1&cat={{.Cat}}" >最热</a></button>
                 </div>
             </div>
             <button type="button" onclick="window.open('/blog/new')" class="layui-btn layui-btn-radius layui-btn-danger" style="border-radius: 12px">
@@ -35,16 +31,16 @@
                 <div class="home-content-title cursor" style="font-size: 14px">
                     文章标题
                 </div>
-                <div style="display: inline-block;width: 260px">
+                <div style="display: inline-block;width: 300px">
                     <div class="home-content-desc">
-                        <span style="width: 60px;font-size: 14px">类型</span>
-                        <span style="width: 60px"> 用户</span>
-                        <span style="width: 60px;font-size: 14px">浏览量</span>
-                        <span style="flex: 1;font-size: 14px">日期</span>
+                        <span style="width: 100px;font-size: 14px">类型</span>
+                        <span style="width: 50px"> 用户</span>
+                        <span style="flex: 1;font-size: 14px">浏览量</span>
+                        <span style="min-width: 80px;font-size: 14px">日期</span>
                     </div>
                 </div>
             </div>
-            <hr style="height:1px;border:none;border-top:1px solid lightgray;"/>
+            <hr style="border:none"/>
         </div>
     {{range .Page.List}}
         <div>
@@ -52,16 +48,18 @@
                 <div class="home-content-title cursor">
                     <a href="/blog/{{.Id}}" target="_blank">{{.Title}}</a>
                 </div>
-                <div style="display: inline-block;width: 260px">
+                <div style="display: inline-block;width: 300px">
                     <div class="home-content-desc">
-                        <span style="width: 60px;font-size: 14px">{{.CateName}}</span>
-                        <span style="width: 60px" class="cursor">{{.UserName}}</span>
-                        <span style="width: 60px;font-size: 14px">{{.Browses}}</span>
-                        <span style="flex: 1;font-size: 14px">{{.Ctime.Format "2006-01-02"}}</span>
+                        <span style="width: 100px;font-size: 12px">{{.CateName}}</span>
+                        <span style="width: 50px;text-align: center">
+                            <a href="/u/{{.UserId}}"><img src="{{.HeadImg}}" alt="头像" class="img-circle"></a>
+                        </span>
+                        <span style="flex: 1;font-size: 14px">{{.Browses}}</span>
+                        <span style="min-width: 80px;font-size: 14px">{{.Ctime.Format "2006/01/02"}}</span>
                     </div>
                 </div>
             </div>
-            <hr style="height:1px;border:none;border-top:1px solid #EEE;"/>
+            <hr style="border:none;"/>
         </div>
     {{end}}
 

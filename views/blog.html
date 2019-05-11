@@ -3,6 +3,10 @@
 <meta name="description" content="{{.Blog.Title}}">
 <title>{{.Blog.Title}} - 云悦</title>
 <link type="text/css" rel="styleSheet" href="/static/css/blog.css"/>
+<!--<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/default.min.css" rel="stylesheet">-->
+<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/school-book.min.css" rel="stylesheet">
+<!--<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/atelier-dune-light.min.css" rel="stylesheet">-->
+<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
 </head>
 <body>
 <div class="root-container">
@@ -25,12 +29,13 @@
                 </div>
             </div>
         </div>
-        <div style="width: 100%">
+        <div style="width: 100%" class="blog-detaile">
             {{str2html .Blog.BlogHtml}}
         </div>
     </div>
     <div class="comms-root">
-        <textarea class="form-control" rows="3" id="commval"></textarea>
+        <textarea name="desc" placeholder="请输入内容" id="commval" class="layui-textarea"></textarea>
+
         <div style="text-align: end">
             <button type="button" class="btn btn-info btn-bordered" id="commBtn">发表评论</button>
         </div>
@@ -78,6 +83,8 @@
 </div>
 </body>
 <script>
+    hljs.initHighlightingOnLoad();
+
     $(function () {
         $("#commBtn").click(function () {
             var commval = $("#commval").val()
