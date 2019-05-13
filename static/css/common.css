@@ -100,3 +100,25 @@ a{
     background-color: #393D49;
     padding: 30px 5% 0 5%;
 }
+
+.pagination{
+    margin: 18px 0;
+}
+
+.pagination ul li{
+    line-height: 20px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border-color: #28a3ef;
+    font-size: 16px;
+}
+.pagination ul li .next .prev{
+    font-size: 20px !important;
+}
+.pagination ul .active{
+    background-color: #28a3ef;
+}
+.pagination ul .active a{
+    color: #fff;
+}
