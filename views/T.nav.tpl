@@ -2,7 +2,7 @@
 <div class='nav-container'>
     <nav>
         <ul class="layui-nav layui-bg-molv" lay-filter="">
-            <p>云悦</p>
+            <p>码农随笔</p>
             <li class="layui-nav-item">
                 <a href="/blog/new"><i class="layui-icon">&#xe642;</i>写文章</a>
             </li>

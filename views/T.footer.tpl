@@ -8,7 +8,7 @@
         </div>
         <div class="footer-friend">
         <span>© 2018 - © 2019
-        <a href="https://www.aiprose.com/">云悦</a> </span>
+        <a href="https://www.aiprose.com/">码农随笔</a> </span>
             <span>版权所有&nbsp;&nbsp;&nbsp; ICP证：</span>
             <a href="http://www.miitbeian.gov.cn/" target="_blank">陕ICP备18016846号</a>
         </div>

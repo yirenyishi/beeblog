@@ -1,32 +1,18 @@
 {{template "header" .}}
-<meta name="keywords" content="云悦,个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,www.aiprose.com,aiprose.com,aiprose">
-<title>发布博客 - 云悦</title>
-<link type="text/css" rel="styleSheet" href="/static/css/newblog.css"/>
+<meta name="keywords" content="码农随笔,个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,www.aiprose.com,aiprose.com,aiprose">
+<title>发布博客 - 码农随笔</title>
 <script src="/static/js/wangEditor.min.js"></script>
 </head>
 <body>
 <div class="root-container">
     <div class="blog-title">
         <input type="text" id="blog-title" placeholder="请输入文章标题">
-        <button type="button" id="newBtn" class="btn btn-danger" style="border-radius: 12px">发布文章</button>
+        <button type="button" id="newBtn"  class="layui-btn layui-btn-radius layui-btn-danger layui-btn-sm " style="border-radius: 12px">
+            发布文章
+        </button>
     </div>
     <div id="editor" class="editor">
 
-    </div>
-    <div id="myModal" tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
-                    <h4 id="myModalLabel" class="modal-title">Modal title</h4>
-                </div>
-                <div class="modal-body">我是内容body</div>
-                <div class="modal-footer">
-                    <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large">可自定ok</button>
-                    <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">可自定dismiss</button>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 </body>

@@ -1,6 +1,6 @@
 {{template "header" .}}
 <meta name="keywords" content="{{.Blog.Title}}">
-<title>{{.Blog.Title}} - 云悦</title>
+<title>{{.Blog.Title}} - 码农随笔</title>
 <link type="text/css" rel="styleSheet" href="/static/css/newblog.css"/>
 <script src="/static/js/wangEditor.min.js"></script>
 </head>
@@ -8,7 +8,9 @@
 <div class="root-container">
     <div class="blog-title">
         <input type="text" id="blog-title" placeholder="请输入文章标题" value="{{.Blog.Title}}">
-        <button type="button" id="newBtn" class="btn btn-danger" style="border-radius: 12px">发布文章</button>
+        <button type="button" id="newBtn"  class="layui-btn layui-btn-radius layui-btn-danger layui-btn-sm " style="border-radius: 12px">
+            发布文章
+        </button>
     </div>
     <div id="editor" class="editor">
 

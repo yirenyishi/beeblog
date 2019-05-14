@@ -1,7 +1,6 @@
 {{template "header" .}}
-    <meta name="keywords" content="云悦,个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,aiprose">
-    <title>博客列表 - 云悦</title>
-    <link type="text/css" rel="styleSheet" href="/static/css/blogs.css"/>
+    <meta name="keywords" content="码农随笔,个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,aiprose">
+    <title>博客列表 - 码农随笔</title>
 </head>
 <body>
 <div class="root-container">
@@ -22,7 +21,7 @@
                     <button class="layui-btn layui-btn-sm {{if eq 1 .Flag}}active{{end}}"><a href="/blogs?num=1&flag=1&cat={{.Cat}}" >最热</a></button>
                 </div>
             </div>
-            <button type="button" onclick="window.open('/blog/new')" class="layui-btn layui-btn-radius layui-btn-danger" style="border-radius: 12px">
+            <button type="button" onclick="window.open('/blog/new')" class="layui-btn layui-btn-radius layui-btn-danger layui-btn-sm " style="border-radius: 12px">
                 写文章
             </button>
         </div>
