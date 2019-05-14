@@ -77,7 +77,7 @@ func (this *NoteController) SaveNoteColl() {
 	note := &models.NoteColl{Title: title, UserId: uid.(int64)}
 	err := noteService.SaveNoteColl(note)
 	if err == nil {
-		this.Data["json"] = models.ReurnSuccess("")
+		this.Data["json"] = models.ReurnData("",note)
 	} else {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
@@ -200,6 +200,8 @@ func (this *NoteController) Note() {
 	} else {
 		noteColls = make([]*models.NoteColl, 0)
 	}
+	this.Data["HeadImg"] = this.GetSession("headimg")
+	this.Data["NickName"] = this.GetSession("nickname")
 	this.Data["NoteColls"] = noteColls
 	this.TplName = "note.html"
 }

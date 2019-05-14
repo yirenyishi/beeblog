@@ -2,7 +2,7 @@
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 99999;
+    z-index: 6;
 }
 
 
@@ -14,7 +14,6 @@ input[id*="joacims-menu"] + label {
     display:block;
     width:40px;
     height:40px;
-    background:#64807d;
     cursor:pointer;
     font-size:30px;
     color:#fff;
@@ -24,7 +23,6 @@ input[id*="joacims-menu"] + label {
 input[id*="joacims-menu"] + label span {
     display:block;
     position:absolute;
-    top: 8px;
     left: 5px;
     transition:.2s;
 }

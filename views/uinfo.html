@@ -63,7 +63,7 @@
             //回调函数，可以传递给后台等等
             var file = files[0];
             console.log(file.name);
-            debugger
+
             var formData = new FormData();
             formData.append("imgfile",file );
             if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(file.name))

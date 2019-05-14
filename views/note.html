@@ -4,26 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="description" content="云悦,个人随笔是一个面向IT技术人员,提供个人平时工作总结和在线记录学习笔记,个人技术博客,在线云笔记,码农笔录,最新的技术博客,www.aiprose.com">
-    <meta name="keywords"
-          content="云悦,个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,aiprose">
+    <meta name="keywords" content="云悦,个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,aiprose">
     <title>我的笔记 - 云悦</title>
+    <!--Material Design Iconic Font-->
+    <link rel="stylesheet" href="/static/material-design/css/material-design-iconic-font.css"/>
+    <!--jSide Menu CSS-->
+    <link rel="stylesheet" href="/static/css/jslide/jside-menu.css"/>
+    <!--jSide Skins-->
+    <link rel="stylesheet" href="/static/css/jslide/jside-skins.css"/>
+    <link rel="stylesheet" href="/static/css/jslide/demo-only.css"/>
+
     <script type="text/javascript" src="/static/js/checkm.js"></script>
     <link type="text/css" rel="styleSheet" href="/static/css/menu-reset.css"/>
-    <link type="text/css" rel="styleSheet" href="/static/css/notemenu.css"/>
     <link type="text/css" rel="styleSheet" href="/static/css/menunav.css"/>
 
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/layer.js"></script>
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <script type="text/javascript" src="/static/layui/layui.js"></script>
-    <script src="/static/js/menu.js"></script> <!-- Modernizr -->
     <script src="/static/js/wangEditor.min.js"></script>
-
+    <!--<link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/school-book.min.css" rel="stylesheet">-->
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/atelier-dune-light.min.css" rel="stylesheet">
     <style>
+        html, body {
+            height: 100%;
+            min-height: 100%;
+        }
+
+        main {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            background-color: #f5f4e9;
+        }
+
+        .current-title {
+            color: #ddd;
+            z-index: 5;
+            padding: 4px 30px;
+        }
+
+        .skin-container {
+            position: absolute;
+            right: 5px;
+            top: 0;
+        }
+
+        .skin-container select {
+            height: 40px;
+            color: #fff;
+            border: none;
+            background-color: rgba(0, 0, 0, 0);
+        }
+        .skin-container select option{
+            color: #222;
+        }
         .w-e-toolbar {
             height: 40px;
             line-height: 30px;
-            padding-left: 45px;
+        }
+
+        .w-e-text-container {
+            z-index: 5 !important;
+        }
+
+        .w-e-menu {
+            z-index: 6 !important;
+        }
+
+        .w-e-menu i {
+            color: #ddd !important;
         }
 
         ::-webkit-scrollbar {
@@ -38,55 +87,121 @@
     </style>
 </head>
 <body>
-<header id="slide-container">
-    <a id="cd-menu-trigger" href="javascript:void(0)"><span class="cd-menu-icon"></span></a>
-</header>
+<menu class="menubar">
+    <menuitem>
+        <button class="menu-trigger"></button>
+    </menuitem>
+</menu>
 
-<div class="cd-main-content">
-    <div id="editor" class="editor">
-    </div>
+<div class="menu-head">
+	   <span class="layer">
+            <div class="col">
+              <div class="row for-pic">
+               <div class="profile-pic"> <img src="{{.HeadImg}}" alt="Asif Mughal"/></div>
+              </div>
+                 <div class="row for-name">
+                    <h3 title="User Name"> {{.NickName}}</h3>
+                    <span class="tagline"> 私密笔记,别人无法看到 </span>
+                 </div>
+            </div> <!--//col-->
+	  </span>
+</div> <!--//menu-head-->
 
+<nav class="menu-container">
+
+    <ul class="menu-items">
+        {{if eq 0 (.NoteColls|len)}}
+        <li><a href="/me/note">新增文件夹</a></li>
+        {{end}}
+        <!--<li><span class="item-icon"><i class="zmdi zmdi-android"></i></span> <a href="#1">-->
+        <!--Main item one </a></li>-->
+
+        <!--<li><span class="item-icon"> <i class="zmdi zmdi-apple"></i> </span> <a href="#1">Main item two </a></li>-->
+
+        {{range .NoteColls}}
+        <li class="has-sub"><span class="item-icon"> <i class="zmdi zmdi-windows"></i> </span>
+            <span class="dropdown-heading">{{.Title}}</span>
+            <ul value="{{.Id}}" class="sub-menu">
+                {{range .Notes}}
+                <li>
+                    <a href="javascript:void(0)" onclick="noteClick({{.Id}})" value="{{.Id}}">{{.Title}}</a>
+                </li>
+                {{end}}
+            </ul>
+        </li>
+        {{end}}
+    </ul>
+</nav>
+
+<div class="dim-overlay"></div>
+
+<main>
+    <div id="editor" class="editor"></div>
     <nav class="note-nav">
         <input type="checkbox" id="joacims-menu"/>
         <label for="joacims-menu"><span><img src="/static/img/menu.png"
-                                             style="width: 25px;height: 25px;"> </span></label>
+                                             style="width: 23px;height: 23px;"> </span></label>
         <nav>
             <a href="javascript:void(0)" id="saveNote">保存笔记</a>
             <a href="/" target="_blank">首页</a>
             <a href="javascript:void(0)" id="newNote">新增笔记</a>
-            <a href="/me/note" id="newNoteColl">管理文件夹</a>
+            <a href="javascript:void(0)" id="newNoteColl">新增文件夹</a>
             <a href="javascript:void(0)" id="delNote">删除笔记</a>
-            <a href="/me/blog" target="_blank">个人中心</a>
+            <a href="/me/info" target="_blank">个人中心</a>
         </nav>
     </nav>
-</div> <!-- cd-main-content -->
 
-<nav id="cd-lateral-nav">
-{{if eq 0 (.NoteColls|len)}}
-    <ul class="cd-navigation cd-single-item-wrapper">
-        <li><a href="/me/note">新增文件夹</a></li>
-    </ul>
-{{end}}
-    <ul class="cd-navigation">
-    {{range .NoteColls}}
-        <li class="item-has-children">
-            <a href="javascript:void(0)">{{.Title}}</a>
-            <ul class="sub-menu" value="{{.Id}}">
-            {{range .Notes}}
-                <li>
-                    <a href="javascript:void(0)" onclick="noteClick({{.Id}})" value="{{.Id}}">{{.Title}}</a>
-                </li>
-            {{end}}
-            </ul>
-        </li>
-    {{end}}
-    </ul>
-</nav>
+    <div class="skin-container">
+        <select name="skin-select" class="skin-select">
+            <option value="between-clouds">默认皮肤</option>
+            <option value="red">红色</option>
+            <option value="green">绿色</option>
+            <option value="blue">天空蓝</option>
+            <option value="bnp">紫色</option>
+            <option value="orange">橘色</option>
+            <option value="greenish">墨绿</option>
+            <option value="greenish">木材色</option>
+            <option value="flickr">渐变红</option>
+            <option value="fb-messenger">渐变蓝</option>
+            <option value="moonlit">渐变墨绿</option>
+            <option value="park-life">渐变绿</option>
+            <option value="d2f">橙红渐变</option>
+            <option value="steel-man">蓝红渐变</option>
+            <option value="crazy-orange">紫橙渐变</option>
+            <option value="endless-river">水蓝渐变</option>
+        </select>
+    </div>
+</main>
 
-<script src="/static/js/menu.js"></script> <!-- Resource jQuery -->
-<script type="text/javascript" src="/static/js/layer.js"></script>
+
 </body>
+<script src="/static/js/jslide/jquery.jside.menu.js"></script>
+<!--<script src="/static/js/jslide/demo-only.js"></script>-->
+<script src="https://cdn.bootcss.com/highlight.js/9.15.6/highlight.min.js"></script>
 <script>
+    var storage=window.localStorage
+    $(document).ready(function () {
+        var skin = storage.getItem("skin");
+        $(".skin-select").val(skin);
+        $.mjSideMenu = $(".menu-container").jSideMenu({
+            jSidePosition: "position-left", //possible options position-left or position-right
+
+            jSideSticky: true, // menubar will be fixed on top, false to set static
+            jSideSkin: skin ? skin : "between-clouds", // to apply custom skin, just put its name in this string
+        });
+
+        $(".skin-select").on('change', function () {
+            var skin = $(".skin-select").val();
+            storage.setItem("skin",skin);
+            $(".menubar").attr('class', skin).addClass("menubar sticky");
+            $(".menu-container").attr('class', skin).addClass("menu-container position-left");
+            $(".menu-head").attr('class', skin).addClass("menu-head position-left");
+        });
+
+    });
+</script>
+<script>
+    hljs.initHighlightingOnLoad();
     var E = window.wangEditor
     var editor = new E('#editor')
     var note = null
@@ -95,12 +210,12 @@
     editor.customConfig.uploadImgHooks = {
         customInsert: function (insertImg, result, editor) {
             insertImg(result.Data);
-            debugger
+
         }
     }
     editor.create()
     editor.txt.html("<p>点击右上角菜单新建或者选择笔记</p><p>点击左上角菜单进行新建笔记或者导航</p><span>一定要记得先新建笔记然后在编辑,ctrl+s 快捷键可以快速保存哦</span>");
-
+    $(".w-e-toolbar").append("<span class='current-title'>新增笔记</span>")
     document.onkeydown = keyDown;
 
     function keyDown(e) {
@@ -117,7 +232,7 @@
 
     function saveNote() {
         if (!note || !note.Id) {
-            layer.msg('请在右边菜单中选择笔记', function () {
+            layer.msg('请在左边菜单中选择笔记', function () {
             });
             return
         }
@@ -128,37 +243,39 @@
             return
         }
         $.post('/api/note/edit/' + note.Id, {
-                    noteHtml: noteHtml
-                },
-                function (data) {
-                    if (data.Status == 0) {
-                        layer.msg("保存成功", {icon: 6});
-                    } else if (data.Status == 401) {
-                        window.location.href = "/login"
-                    } else {
-                        layer.msg("服务器异常", {icon: 5});
-                    }
-                }, 'json')
+                noteHtml: noteHtml
+            },
+            function (data) {
+                if (data.Status == 0) {
+                    layer.msg("保存成功", {icon: 6});
+                } else if (data.Status == 401) {
+                    window.location.href = "/login"
+                } else {
+                    layer.msg("服务器异常", {icon: 5});
+                }
+            }, 'json')
     }
 
     function noteClick(id) {
         $.get('/api/note/' + id,
-                function (data) {
-                    if (!data.Status) {
-                        if (data.NoteHtml && data.NoteHtml.trim().length != 0) {
-                            editor.txt.html(data.NoteHtml);
-                        } else if (note) {
-                            editor.txt.html("");
-                        }
-                        note = data
-                    } else if (data.Status == 401) {
-                        window.location.href = "/login"
-                    } else if (data.Status == 403) {
-                        layer.msg("暂无权限", {icon: 5});
-                    } else {
-                        layer.msg("服务器异常", {icon: 5});
+            function (data) {
+                if (!data.Status) {
+
+                    if (data.NoteHtml && data.NoteHtml.trim().length != 0) {
+                        editor.txt.html(data.NoteHtml);
+                        $(".current-title").text(data.Title)
+                    } else if (note) {
+                        editor.txt.html("");
                     }
-                }, 'json')
+                    note = data
+                } else if (data.Status == 401) {
+                    window.location.href = "/login"
+                } else if (data.Status == 403) {
+                    layer.msg("暂无权限", {icon: 5});
+                } else {
+                    layer.msg("服务器异常", {icon: 5});
+                }
+            }, 'json')
 
     }
 
@@ -170,6 +287,7 @@
                 $(el).append(child)
                 if (!note || !note.Id) {
                     note = obj
+                    $(".current-title").text(obj.Title)
                 }
                 return
             }
@@ -197,6 +315,52 @@
                 content: '/iframe/note.html' //iframe的url
             });
         })
+        $("#newNoteColl").click(function () {
+            layer.prompt({title: '请输入文件夹名称'}, function (val, index) {
+                if (val.trim().length < 3) {
+                    layer.msg('文件夹名称最低三个字哦', function () {
+                    });
+                    layer.close(index);
+                    return
+                }
+                $.post('/api/notecoll/save', {
+                        title: val.trim()
+                    },
+                    function (data) {
+                        if (data.Status == 0) {
+                            layer.close(index);
+                            parent.layer.msg("保存成功", {icon: 6});
+
+                            var thtml = '<li class="has-sub"><span class="item-icon"> <i class="zmdi zmdi-windows"></i> </span>\n' +
+                                '            <span class="dropdown-heading dropdown-heading' + data.Data.Id + '">' + data.Data.Title + '' +
+                                '               <i class="zmdi zmdi-chevron-down arrow"></i></span>\n' +
+                                '            <ul value="' + data.Data.Id + '" class="sub-menu">\n' +
+                                '            </ul>\n' +
+                                '        </li>'
+                            $(".menu-items").append(thtml)
+                            $(".dropdown-heading" + data.Data.Id).click(function () {
+
+                                var n = $(".has-sub").find("span:hover + ul li").length;
+                                var h = $(".has-sub").find("span:hover + ul li").outerHeight();
+                                var dropdown = h * n;
+                                var todrop = $(".has-sub").find("span:hover + ul");
+                                var nodrop = $(".has-sub ul");
+
+                                $(todrop).animate({"height": dropdown}, 100);
+                                $(this).find("i").toggleClass("arrowdown");
+                                if ($(todrop).height() == dropdown) {
+                                    $(todrop).animate({"height": 0}, 100);
+                                }
+
+                                if ($(nodrop).height(dropdown)) {
+                                    $(nodrop).not(todrop).height(0);
+                                    $(".dropdown-heading").not(this).find("i").removeClass("arrowdown");
+                                }
+                            });
+                        }
+                    }, 'json')
+            });
+        })
 
         $("#delNote").click(function () {
             if (!note || !note.Id) {
@@ -208,25 +372,25 @@
                 btn: ['确认', '手滑了'] //按钮
             }, function () {
                 $.post('/api/note/del/' + note.Id,
-                        function (data) {
-                            if (data.Status == 0) {
-                                var subMenu = $(".sub-menu li a")
-                                $.each(subMenu, function (index, el) {
-                                    if ($(el).attr("value") == note.Id) {
-                                        $(el).remove()
-                                        return
-                                    }
-                                })
-                                note = null
-                                layer.msg("删除成功", {icon: 6});
-                            } else if (data.Status == 401) {
-                                window.location.href = "/login"
-                            } else if (data.Status == 403) {
-                                layer.msg("暂无权限", {icon: 5});
-                            } else {
-                                layer.msg("服务器异常", {icon: 5});
-                            }
-                        }, 'json')
+                    function (data) {
+                        if (data.Status == 0) {
+                            var subMenu = $(".sub-menu li a")
+                            $.each(subMenu, function (index, el) {
+                                if ($(el).attr("value") == note.Id) {
+                                    $(el).remove()
+                                    return
+                                }
+                            })
+                            note = null
+                            layer.msg("删除成功", {icon: 6});
+                        } else if (data.Status == 401) {
+                            window.location.href = "/login"
+                        } else if (data.Status == 403) {
+                            layer.msg("暂无权限", {icon: 5});
+                        } else {
+                            layer.msg("服务器异常", {icon: 5});
+                        }
+                    }, 'json')
             }, function () {
 
             });
