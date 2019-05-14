@@ -122,3 +122,6 @@ a{
 .pagination ul .active a{
     color: #fff;
 }
+.breadcrumb-container{
+    padding: 20px;
+}

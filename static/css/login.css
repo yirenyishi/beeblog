@@ -1,5 +1,5 @@
 .login-root {
-    background: url("/static/img/login.png") no-repeat;
+    background:  #f0e7db url("/static/img/login.png") no-repeat;
     position: absolute;
     min-height: 100%;
     width: 100%;

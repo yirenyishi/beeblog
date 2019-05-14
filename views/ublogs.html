@@ -9,11 +9,14 @@
 
     <div class="me-blog-root">
         <div class="me-blog-list">
-            <ol class="breadcrumb">
-                <li>个人中心</li>
-                <li>我的博客</li>
-                <li class="active">博客列表</li>
-            </ol>
+            <div class="breadcrumb-container">
+                <span class="layui-breadcrumb">
+                  <a href="/">首页</a>
+                  <a href="">个人中心</a>
+                  <a href="/me/blog">我的博客</a>
+                  <a><cite>博客列表</cite></a>
+                </span>
+            </div>
         {{range .Page.List}}
             <div>
                 <p><a href="/blog/{{.Id}}">{{.Title}}</a></p>

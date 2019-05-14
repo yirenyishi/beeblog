@@ -9,12 +9,15 @@
 
     <div class="me-blog-root">
         <div class="me-blog-list">
-            <ol class="breadcrumb">
-                <li>个人中心</li>
-                <li>笔记文件夹</li>
-                <li class="active">管理文件夹</li>
-                <button type="button" class="btn btn-primary" style="margin-left: 30px" id="newBtn">新增</button>
-            </ol>
+            <div class="breadcrumb-container">
+                <span class="layui-breadcrumb">
+                  <a href="/">首页</a>
+                  <a href="">个人中心</a>
+                  <a href="/me/note">我的收藏</a>
+                  <a><cite>管理文件夹</cite></a>
+                    <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" style="margin-left: 30px" id="newBtn">新增</button>
+                </span>
+            </div>
         </div>
 
     {{range .Note}}
