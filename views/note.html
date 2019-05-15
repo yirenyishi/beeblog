@@ -110,9 +110,9 @@
 <nav class="menu-container">
 
     <ul class="menu-items">
-        {{if eq 0 (.NoteColls|len)}}
-        <li><a href="/me/note">新增文件夹</a></li>
-        {{end}}
+        <!--{{if eq 0 (.NoteColls|len)}}-->
+        <li><a href="javascript:void(0)" id="nullNoteColl">新增文件夹</a></li>
+        <!--{{end}}-->
         <!--<li><span class="item-icon"><i class="zmdi zmdi-android"></i></span> <a href="#1">-->
         <!--Main item one </a></li>-->
 
@@ -148,6 +148,7 @@
             <a href="javascript:void(0)" id="newNoteColl">新增文件夹</a>
             <a href="javascript:void(0)" id="delNote">删除笔记</a>
             <a href="/me/info" target="_blank">个人中心</a>
+            <a href="/logout">安全退出</a>
         </nav>
     </nav>
 
@@ -160,7 +161,7 @@
             <option value="bnp">紫色</option>
             <option value="orange">橘色</option>
             <option value="greenish">墨绿</option>
-            <option value="greenish">木材色</option>
+            <option value="wood">木材色</option>
             <option value="flickr">渐变红</option>
             <option value="fb-messenger">渐变蓝</option>
             <option value="moonlit">渐变墨绿</option>
@@ -317,7 +318,7 @@
                 content: '/iframe/note.html' //iframe的url
             });
         })
-        $("#newNoteColl").click(function () {
+        function newNoteColl(){
             layer.prompt({title: '请输入文件夹名称'}, function (val, index) {
                 if (val.trim().length < 3) {
                     layer.msg('文件夹名称最低三个字哦', function () {
@@ -362,6 +363,13 @@
                         }
                     }, 'json')
             });
+        }
+        $("#newNoteColl").click(function () {
+            newNoteColl();
+        })
+
+        $("#nullNoteColl").click(function () {
+            newNoteColl();
         })
 
         $("#delNote").click(function () {

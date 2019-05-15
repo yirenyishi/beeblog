@@ -52,6 +52,7 @@ input[id*="joacims-menu"] ~ nav a:nth-child(3) { box-shadow:5px 0 0 #e67e22; tra
 input[id*="joacims-menu"] ~ nav a:nth-child(4) { box-shadow:5px 0 0 #c0392b; transition-delay:.20s; }
 input[id*="joacims-menu"] ~ nav a:nth-child(5) { box-shadow:5px 0 0 #2c3e50; transition-delay:.25s; }
 input[id*="joacims-menu"] ~ nav a:nth-child(6) { box-shadow:5px 0 0 #f1c40f; transition-delay:.30s; }
+input[id*="joacims-menu"] ~ nav a:nth-child(7) { box-shadow:5px 0 0 #222222; transition-delay:.35s; }
 
 input[id*="joacims-menu"]:checked ~ nav a {
     margin-left:0px;
