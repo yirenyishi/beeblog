@@ -113,6 +113,7 @@
         <!--{{if eq 0 (.NoteColls|len)}}-->
         <!--{{end}}-->
         <li><a href="javascript:void(0)" id="nullNoteColl">新增文件夹</a></li>
+        <li><a href="javascript:void(0)" id="nullNote">新增笔记</a></li>
         {{range .NoteColls}}
         <li class="has-sub"><span class="item-icon"> <i class="zmdi zmdi-windows"></i> </span>
             <span class="dropdown-heading">{{.Title}}</span>
@@ -304,6 +305,16 @@
         })
 
         $("#newNote").click(function () {
+            layer.open({
+                type: 2,
+                title: '新增笔记',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['360px', '280px'],
+                content: '/iframe/note.html' //iframe的url
+            });
+        })
+        $("#nullNote").click(function () {
             layer.open({
                 type: 2,
                 title: '新增笔记',
