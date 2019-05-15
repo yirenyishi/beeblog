@@ -111,8 +111,8 @@
 
     <ul class="menu-items">
         <!--{{if eq 0 (.NoteColls|len)}}-->
-        <li><a href="javascript:void(0)" id="nullNoteColl">新增文件夹</a></li>
         <!--{{end}}-->
+        <li><a href="javascript:void(0)" id="nullNoteColl">新增文件夹</a></li>
         {{range .NoteColls}}
         <li class="has-sub"><span class="item-icon"> <i class="zmdi zmdi-windows"></i> </span>
             <span class="dropdown-heading">{{.Title}}</span>
