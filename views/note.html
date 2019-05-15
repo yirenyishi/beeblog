@@ -113,11 +113,6 @@
         <!--{{if eq 0 (.NoteColls|len)}}-->
         <li><a href="javascript:void(0)" id="nullNoteColl">新增文件夹</a></li>
         <!--{{end}}-->
-        <!--<li><span class="item-icon"><i class="zmdi zmdi-android"></i></span> <a href="#1">-->
-        <!--Main item one </a></li>-->
-
-        <!--<li><span class="item-icon"> <i class="zmdi zmdi-apple"></i> </span> <a href="#1">Main item two </a></li>-->
-
         {{range .NoteColls}}
         <li class="has-sub"><span class="item-icon"> <i class="zmdi zmdi-windows"></i> </span>
             <span class="dropdown-heading">{{.Title}}</span>
