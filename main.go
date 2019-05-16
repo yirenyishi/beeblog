@@ -1,14 +1,36 @@
 package main
 
 import (
+	"beeblog/filter"
+	"beeblog/models"
 	_ "beeblog/routers"
 	"github.com/astaxie/beego"
-	"beeblog/models"
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
-	"beeblog/filter"
 	"github.com/astaxie/beego/plugins/cors"
+	"github.com/olivere/elastic"
+	"log"
+	"os"
+	"time"
 )
+
+
+var host = "http://47.98.109.5:8209/"
+
+func connect() *elastic.Client {
+	client, err := elastic.NewClient(
+		elastic.SetURL(host),
+		elastic.SetSniff(false),
+		elastic.SetHealthcheckInterval(10*time.Second),
+		elastic.SetGzip(true),
+		elastic.SetErrorLog(log.New(os.Stderr, "ELASTIC ", log.LstdFlags)),
+		elastic.SetInfoLog(log.New(os.Stdout, "", log.LstdFlags)))
+
+	if err != nil {
+		panic(err)
+	}
+	return client
+}
 
 func init() {
 	models.RegistDB()
@@ -19,10 +41,8 @@ func main() {
 	orm.Debug = false
 	orm.RunSyncdb("default", false, true)
 	beego.AddFuncMap("NAdd",NAdd)
-	//beego.SetLevel(beego.LevelInformational)
-	//logs.LevelDebug
-	//beego.SetLogger("file", `{"filename":"/opt/logs/aiprose.log"}`)
-	logs.SetLogger(logs.AdapterFile, `{"filename":"test.log","level":3}`)
+
+	logs.SetLogger(logs.AdapterFile, `{"filename":"/opt/logs/aiprose.log","level":3}`)
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		AllowAllOrigins:  true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -30,6 +50,8 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Content-Type"},
 		AllowCredentials: true,
 	}))
+	//client := connect()
+	//fmt.Println("client", client)
 	beego.Run()
 }
 

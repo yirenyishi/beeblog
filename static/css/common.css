@@ -608,3 +608,8 @@ img {
     display: none !important;
     visibility: hidden !important;
 }
+
+.blog-detaile p code{
+    color: red;
+    padding: 2px 5px;
+}
