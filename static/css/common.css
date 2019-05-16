@@ -132,6 +132,7 @@ a{
     margin: 40px auto;
 }
 .blog-root .blog-title{
+    display: block;
     margin: 60px 0 20px 0;
     text-align: center
 }
@@ -569,6 +570,7 @@ img {
 }
 
 .blog-title{
+    display: flex;
     height: 50px;
     line-height: 50px;
 }
