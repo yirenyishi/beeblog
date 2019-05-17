@@ -8,29 +8,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/plugins/cors"
-	"github.com/olivere/elastic"
-	"log"
-	"os"
-	"time"
 )
-
-
-var host = "http://47.98.109.5:8209/"
-
-func connect() *elastic.Client {
-	client, err := elastic.NewClient(
-		elastic.SetURL(host),
-		elastic.SetSniff(false),
-		elastic.SetHealthcheckInterval(10*time.Second),
-		elastic.SetGzip(true),
-		elastic.SetErrorLog(log.New(os.Stderr, "ELASTIC ", log.LstdFlags)),
-		elastic.SetInfoLog(log.New(os.Stdout, "", log.LstdFlags)))
-
-	if err != nil {
-		panic(err)
-	}
-	return client
-}
 
 func init() {
 	models.RegistDB()
@@ -50,8 +28,6 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Content-Type"},
 		AllowCredentials: true,
 	}))
-	//client := connect()
-	//fmt.Println("client", client)
 	beego.Run()
 }
 

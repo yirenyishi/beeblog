@@ -3,6 +3,7 @@ package controllers
 import (
 	"beeblog/models"
 	"beeblog/service"
+	"beeblog/utils"
 	"github.com/astaxie/beego"
 	"strconv"
 	"time"
@@ -103,6 +104,8 @@ func (this *BlogController) Get() {
 	idStr := this.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	blog, err := blogService.GetBlog(id)
+	blog.User.Salt = ""
+	blog.User.UserPwd = ""
 	if err != nil {
 		this.Redirect("/404", 302)
 		return
@@ -118,6 +121,8 @@ func (this *BlogController) Get() {
 	if blogs, err := blogService.TopBlogByUser(blog.UserId); err == nil {
 		this.Data["Top"] = blogs
 	}
+	//utils.Index()
+	utils.Save(blog)
 	this.Data["Blog"] = blog
 	this.Data["UserId"] = this.GetSession("userid")
 	this.Data["HeadImg"] = this.GetSession("headimg")
