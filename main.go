@@ -20,7 +20,7 @@ func main() {
 	orm.RunSyncdb("default", false, true)
 	beego.AddFuncMap("NAdd",NAdd)
 
-	logs.SetLogger(logs.AdapterFile, `{"filename":"/opt/logs/aiprose.log","level":3}`)
+	logs.SetLogger(logs.AdapterFile, `{"filename":"/opt/logs/aiprose.log","level":1}`)
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		AllowAllOrigins:  true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},

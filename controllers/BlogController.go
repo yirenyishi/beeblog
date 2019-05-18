@@ -122,7 +122,7 @@ func (this *BlogController) Get() {
 		this.Data["Top"] = blogs
 	}
 	//utils.Index()
-	utils.Save(blog)
+	utils.ESSave(blog)
 	this.Data["Blog"] = blog
 	this.Data["UserId"] = this.GetSession("userid")
 	this.Data["HeadImg"] = this.GetSession("headimg")
@@ -148,6 +148,7 @@ func (this *BlogController) Del() {
 		return
 	}
 	idStr := this.Ctx.Input.Param(":id")
+	utils.ESDelete(idStr)
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 	blog, err := blogService.GetBlog(id)
 	if err != nil {
@@ -219,5 +220,11 @@ func (this *BlogController) BlogsPage() {
 	this.Data["Flag"] = flag
 	this.Data["IsBlog"] = true
 	this.TplName = "blogs.html"
+}
+
+func (this *BlogController) Search() {
+	blog, _ := utils.Search("elk")
+	this.Data["json"] = models.ReurnData("",blog)
+	this.ServeJSON()
 }
 
