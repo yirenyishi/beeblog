@@ -84,16 +84,15 @@ func Index()  {
 func ESSave(blog *models.Blog)  {
 	ctx := context.Background()
 	id := strconv.FormatInt(blog.Id,10)
-	put1, err := client.Index().Index("beeblog").Type("beeblog").Id(id).BodyJson(blog).Do(ctx)
+	_, err := client.Index().Index("beeblog").Type("beeblog").Id(id).BodyJson(blog).Do(ctx)
 	if err != nil {
-		// Handle error
-		panic(err)
+		fmt.Println(err)
+		return
 	}
-	fmt.Printf("Indexed beeblog %s to index %s, type %s\n", put1.Id, put1.Index, put1.Type)
 }
 //删除
 func ESDelete(id string) {
-	res, err := client.Delete().Index("beeblog").
+	_, err := client.Delete().Index("beeblog").
 		Type("beeblog").
 		Id(id).
 		Do(context.Background())
@@ -101,7 +100,6 @@ func ESDelete(id string) {
 		println(err.Error())
 		return
 	}
-	fmt.Printf("delete result %s\n", res.Result)
 }
 
 func Search(key string) (*models.Blog,error) {
