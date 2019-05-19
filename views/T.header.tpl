@@ -13,5 +13,6 @@
     <script type="text/javascript" src="/static/js/layer.js"></script>
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <script type="text/javascript" src="/static/layui/layui.js"></script>
-    <link type="text/css" rel="styleSheet" href="/static/css/common.min.css"/>
+<!--    <link type="text/css" rel="styleSheet" href="/static/css/common.min.css"/>-->
+    <link type="text/css" rel="styleSheet" href="/static/css/common.css"/>
 {{end}}

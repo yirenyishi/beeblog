@@ -1,0 +1,67 @@
+{{template "header" .}}
+<meta name="keywords" content="码农随笔,个人随笔,博客,个人博客,个人笔记,技术博客,免费云笔记,云笔记,随笔,IT博客,谷歌地图,码农笔录,aiprose">
+<title>搜索 - 码农随笔</title>
+</head>
+<body>
+<div class="root-container">
+    {{template "nav" .}}
+    <div class="search-root">
+        <div>
+            <div>
+                <div class="input-group input-class">
+                    <input type="text" class="form-control" placeholder="请输入关键字" aria-describedby="sizing-addon1"
+                           id="searchVal">
+                    <span class="input-group-addon" id="searchBtn">搜索</span>
+                </div>
+            </div>
+        </div>
+        <div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var searchParms = {
+        from: 0,
+        size: 20,
+        query: {
+            multi_match: {
+                query: "linux",
+                // type: "best_fields",
+                fields: ["Title", "BlogHtml"]
+            }
+        }
+    }
+    $(function () {
+        $("#searchBtn").click(function () {
+            var searchVal = $("#searchVal").val()
+            if (!searchVal || searchVal.trim().length == 0) {
+                layer.msg("请输入查询内容")
+            }
+            var stringify = JSON.stringify(searchParms);
+            $.ajax({
+                url: "http://47.98.109.5:8209/beeblog/beeblog/_search",    //请求的url地址
+                headers:{'Content-Type':'application/json;charset=utf8'},
+                dataType: "json",   //返回格式为json
+                async: true,//请求是否异步，默认为异步，这也是ajax重要特性
+                data: stringify,    //参数值
+                type: "POST",   //请求方式
+                beforeSend: function () {
+                    //请求前的处理
+                },
+                success: function (resp) {
+                    debugger
+                    //请求成功时处理
+                },
+                complete: function () {
+                    //请求完成的处理
+                },
+                error: function () {
+                    //请求出错处理
+                }
+            })
+        })
+    })
+</script>
+</html>
