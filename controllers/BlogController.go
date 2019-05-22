@@ -54,6 +54,9 @@ func (this *BlogController) Save() {
 	err := blogService.SaveBlog(blog, labels)
 	if err == nil {
 		this.Data["json"] = models.ReurnData("", blog.Id)
+		blog.User.Salt = ""
+		blog.User.UserPwd = ""
+		utils.ESSave(blog)
 	} else {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
@@ -92,6 +95,9 @@ func (this *BlogController) Edit() {
 	err = blogService.EditBlog(blog, labels)
 	if err == nil {
 		this.Data["json"] = models.ReurnSuccess("")
+		blog.User.Salt = ""
+		blog.User.UserPwd = ""
+		utils.ESSave(blog)
 	} else {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
@@ -125,7 +131,7 @@ func (this *BlogController) Get() {
 		this.Data["Top"] = blogs
 	}
 	//utils.Index()
-	utils.ESSave(blog)
+	//utils.ESSave(blog)
 	this.Data["Blog"] = blog
 	this.Data["UserId"] = this.GetSession("userid")
 	this.Data["HeadImg"] = this.GetSession("headimg")

@@ -186,6 +186,7 @@ func (this *NoteController) Note() {
 	uid := this.GetSession("userid")
 	if uid == nil {
 		this.Redirect("/login", 302)
+		return
 	}
 	noteColls, err := noteService.GetNoteColl(uid.(int64))
 	if err == nil {
