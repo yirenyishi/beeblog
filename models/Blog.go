@@ -10,6 +10,7 @@ type Blog struct {
 	Title      string
 	BlogValue  string    `orm:"type(text)"`
 	BlogHtml   string    `orm:"type(text)"`
+	BlogDesc   string
 	Ctime      time.Time `orm:"auto_now_add;type(datetime)"`
 	Utime      time.Time `orm:"auto_now_add;type(datetime)"`
 	Browses    int64     `orm:"default(0)"`

@@ -1,7 +1,6 @@
 {{template "header" .}}
 <meta name="keywords" content="{{.Blog.Title}}">
 <title>{{.Blog.Title}} - 码农随笔</title>
-<link type="text/css" rel="styleSheet" href="/static/css/newblog.css"/>
 <script src="/static/js/wangEditor.min.js"></script>
 </head>
 <body>
@@ -56,6 +55,7 @@
             return
         }
         tobj.blogHtml = editor.txt.html();
+        tobj.blogDesc = editor.txt.text().substring(0,200)
         storage.setItem("blogHtml", tobj.blogHtml);
         storage.setItem("blogTitle", tobj.title);
         layer.open({

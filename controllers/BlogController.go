@@ -46,13 +46,14 @@ func (this *BlogController) Save() {
 	}
 	title := this.GetString("title")
 	blogHtml := this.GetString("blogHtml")
+	blogDesc := this.GetString("blogDesc")
 	catory := this.GetString("catory")
 	catoryId, _ := strconv.ParseInt(catory, 10, 64)
 	labels := this.GetStrings("labels[]")
-	blog := &models.Blog{Title: title, BlogHtml: blogHtml, CategoryId: catoryId, UserId: uid.(int64)}
+	blog := &models.Blog{Title: title, BlogHtml: blogHtml, CategoryId: catoryId, UserId: uid.(int64), BlogDesc: blogDesc}
 	err := blogService.SaveBlog(blog, labels)
 	if err == nil {
-		this.Data["json"] = models.ReurnData("",blog.Id)
+		this.Data["json"] = models.ReurnData("", blog.Id)
 	} else {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 	}
@@ -70,13 +71,14 @@ func (this *BlogController) Edit() {
 		this.ServeJSON()
 		return
 	}
-	id,_ := this.GetInt64("id")
+	id, _ := this.GetInt64("id")
 	title := this.GetString("title")
 	blogHtml := this.GetString("blogHtml")
+	blogDesc := this.GetString("blogDesc")
 	catory := this.GetString("catory")
 	catoryId, _ := strconv.ParseInt(catory, 10, 64)
 	labels := this.GetStrings("labels[]")
-	blog,err :=blogService.GetBlog(id)
+	blog, err := blogService.GetBlog(id)
 	if err != nil {
 		this.Data["json"] = models.ReurnError(500, "保存失败")
 		this.ServeJSON()
@@ -84,6 +86,7 @@ func (this *BlogController) Edit() {
 	}
 	blog.Title = title
 	blog.BlogHtml = blogHtml
+	blog.BlogDesc = blogDesc
 	blog.CategoryId = catoryId
 	blog.Utime = time.Now()
 	err = blogService.EditBlog(blog, labels)
@@ -224,7 +227,6 @@ func (this *BlogController) BlogsPage() {
 
 func (this *BlogController) Search() {
 	blog, _ := utils.Search("elk")
-	this.Data["json"] = models.ReurnData("",blog)
+	this.Data["json"] = models.ReurnData("", blog)
 	this.ServeJSON()
 }
-
